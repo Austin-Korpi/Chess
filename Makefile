@@ -14,7 +14,7 @@
 #CXX = g++
 #CXX = clang++
 
-EXE = chess_app
+EXE = chess.app
 IMGUI_DIR = imgui
 SRC_DIR = src
 INCLUDE_DIR = inc
