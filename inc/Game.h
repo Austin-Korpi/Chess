@@ -22,7 +22,7 @@ public:
 	//Methods
 	void initialize_board();
 	std::string switch_turns();
-	std::string check_for_winner(bool color);
+	int check_for_winner(bool color);
 	bool check_for_check(bool color, position type = {-1, -1});
 	move_info try_move(Piece* piece, position location);
 	void move(Piece* piece, position location);

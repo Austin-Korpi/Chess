@@ -12,6 +12,7 @@
 #include "imgui_impl_opengl3.h"
 #include <iostream>
 #include <stdio.h>
+#include <unistd.h>
 #define GL_SILENCE_DEPRECATION
 #include <glfw3.h> // Will drag system OpenGL headers
 
@@ -241,7 +242,7 @@ int main(int, char**)
             ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings;
             ImGui::Begin("Game Over!", nullptr, window_flags);
 
-            ImGui::Text(winner.c_str());
+            ImGui::Text("%s", winner.c_str());
             ImGui::End();
             ImGui::PopStyleVar();
         }
@@ -262,18 +263,18 @@ int main(int, char**)
         if (ImGui::IsMouseReleased(0)) {
             takeTurn = 5;
         }
-        if (game.turn == false) {
+        // if (game.turn == false) {
             if (takeTurn > 0) {
                 takeTurn--;
             }
             else if(winner == ""){
-                //take_move(game);
-                take_move_fast(game);
+                take_move(game);
+                // take_move_fast(game);
                 winner = game.switch_turns();
                 takeTurn = false;
-                //Sleep(500);
+                // usleep(200000);
             }
-        }
+        // }
 
         // Rendering
         ImGui::Render();

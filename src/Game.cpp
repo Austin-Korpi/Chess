@@ -152,15 +152,20 @@ void Game::initialize_board() {
 }
 
 std::string Game::switch_turns() {
-    std::string winner;
+    int winner;
     winner = check_for_winner(turn);
 
     turn = !turn;
 
-    return winner;
+    if (winner == 1) {
+        return turn ? "Black Wins!" : "White Wins!";
+    } else if (winner == -1) {
+        return "Stalemate";
+    } 
+    return "";
 }
 
-std::string Game::check_for_winner(bool color) {
+int Game::check_for_winner(bool color) {
     //Check for stalemate
     if (move_log.size() > 9) {
         size_t n = move_log.size();
@@ -170,7 +175,8 @@ std::string Game::check_for_winner(bool color) {
             move_log[n - 3] == move_log[n - 7] &&
             move_log[n - 4] == move_log[n - 8])
         {
-            return "Stalemate";
+            // return "Stalemate";
+            return -1;
         }
     }
 
@@ -183,7 +189,8 @@ std::string Game::check_for_winner(bool color) {
             }
         }
         if (!capture) {
-            return "Stalemate";
+            // return "Stalemate";
+            return -1;
         }
     }
 
@@ -196,17 +203,20 @@ std::string Game::check_for_winner(bool color) {
             int n = piece->find_valid_moves(*this, moves);
             for (int j = 0; j < n; j++) {
                 if (!leap_then_look(piece, moves[j], curKing)) {
-                    return "";
+                    // return "";
+                    return 0;
                 }
             }
         }
     }
 
     if (check_for_check(!color)) {
-        return color ? "White Wins!" : "Black Wins!";
+        return 1;
+    //     return color ? "White Wins!" : "Black Wins!";
     }
 
-    return "Stalemate";
+    // return "Stalemate";
+    return -1;
 }
 
   
