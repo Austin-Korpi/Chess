@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string> 
 
 class Piece;
 class Game;
@@ -33,6 +34,10 @@ struct move_info {
 	bool operator==(const move_info & other) {
 		return(from == other.from && to == other.to/* && piece == other.piece && captured = other.captured*/);
 	}
+
+	std::string toString() {
+		return std::to_string(from.x) + std::to_string(from.y)+" "+std::to_string(to.x) +std::to_string(to.y);
+	}
 };
 
 
@@ -47,6 +52,7 @@ public:
 	int x, y;
 
 	Piece(int i, pieceOptions pc, bool wht, int hor, int ver);
+	virtual ~Piece(){}
 
 	bool can_capture(Piece* other);
 	virtual int find_valid_moves(Game &game, position (&moves)[27]) = 0;

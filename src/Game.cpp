@@ -59,6 +59,7 @@ void replace_pieces(std::vector<move_info>& move_log, Piece* oldPiece, Piece* ne
 }
 
 Game::Game(const Game &game) {
+    // printf("Duplicating a Game object\n");
     turn = game.turn;
 
     move_log = game.move_log;
@@ -89,6 +90,8 @@ Game::Game(const Game &game) {
         case king:
             newPiece = whiteKing;
             break;
+        default:
+            break;
         }
          
         whitePieces[newPiece->id] = newPiece;
@@ -117,6 +120,8 @@ Game::Game(const Game &game) {
         case king:
             newPiece = blackKing;
             break;
+        default:
+            break;
         }
          
         blackPieces[newPiece->id] = newPiece;
@@ -125,6 +130,15 @@ Game::Game(const Game &game) {
     }
 
     initialize_board();
+}
+
+Game::~Game() {
+    for(int i = 0; i < 16; i++) {
+        delete whitePieces[i];
+    }
+    for(int i = 0; i < 16; i++) {
+        delete blackPieces[i];
+    }
 }
 
 void Game::initialize_board() {
@@ -182,7 +196,7 @@ int Game::check_for_winner(bool color) {
 
     if (move_log.size() >= 50) {
         bool capture = false;
-        for (int i = move_log.size() - 50; i < move_log.size(); i++) {
+        for (unsigned int i = move_log.size() - 50; i < move_log.size(); i++) {
             if (move_log[i].captured != NULL) {
                 capture = true;
                 break;
@@ -417,6 +431,21 @@ bool Game::log_move(Piece* piece, position move) {
 
     return true;
 
+}
+
+move_info Game::get_random_move(bool color) {
+    Piece** pieces = color ? whitePieces : blackPieces;
+    Piece* piece;
+    int n = 0;
+    position pieceMoves[27];
+    while (n == 0) {
+        piece = pieces[rand()%16];
+        if (piece) {
+            n = piece->find_valid_moves(*this, pieceMoves);
+        }
+    }
+    
+    return move_info{ {piece->x, piece->y }, pieceMoves[rand()%n], piece, NULL, false};
 }
 
 std::vector<move_info> Game::get_all_moves(bool color) {

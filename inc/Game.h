@@ -11,6 +11,7 @@ class Game {
 public:
 	Game();
 	Game(const Game& game);
+	~Game();
 	Piece* board[8][8] = { 0 };
 	Piece* whitePieces[16] = { 0 };
 	Piece* blackPieces[16] = { 0 };
@@ -31,6 +32,7 @@ public:
 	bool leap_then_look(Piece* piece, position move, King* king);
 	bool log_move(Piece* piece, position move);
 	//std::vector<position> get_moves(Piece*);
+	move_info get_random_move(bool color);
 	std::vector<move_info> get_all_moves(bool color);
 	void undo();
 	void print_board();

@@ -15,10 +15,12 @@
 #include <unistd.h>
 #define GL_SILENCE_DEPRECATION
 #include <glfw3.h> // Will drag system OpenGL headers
-
+#include "MCTS.h"
 #include "Pieces.h"
 #include "Game.h"
 #include "Engine.h"
+
+#include <valgrind/callgrind.h>
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -263,18 +265,23 @@ int main(int, char**)
         if (ImGui::IsMouseReleased(0)) {
             takeTurn = 5;
         }
-        // if (game.turn == false) {
+        if (game.turn == false) {
             if (takeTurn > 0) {
                 takeTurn--;
             }
             else if(winner == ""){
-                take_move(game);
+                // take_move(game);
                 // take_move_fast(game);
+                CALLGRIND_START_INSTRUMENTATION;
+                CALLGRIND_TOGGLE_COLLECT;
+                monte_carlo(game);
+                CALLGRIND_TOGGLE_COLLECT;
+                CALLGRIND_STOP_INSTRUMENTATION;
                 winner = game.switch_turns();
                 takeTurn = false;
                 // usleep(200000);
             }
-        // }
+        }
 
         // Rendering
         ImGui::Render();
