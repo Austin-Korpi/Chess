@@ -27,7 +27,7 @@ UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
 CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(INCLUDE_DIR) -I$(LIB_DIR)
-CXXFLAGS += -g -Wall -Wformat
+CXXFLAGS += -O3 -Wall -Wformat
 LIBS = -pthread
 
 ##---------------------------------------------------------------------
@@ -90,3 +90,5 @@ $(EXE): $(OBJS)
 
 clean:
 	rm -f $(EXE) $(OBJS)
+
+fast: 

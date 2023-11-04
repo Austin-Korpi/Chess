@@ -15,6 +15,8 @@
 #include <unistd.h>
 #define GL_SILENCE_DEPRECATION
 #include <glfw3.h> // Will drag system OpenGL headers
+#include <vector>
+
 #include "MCTS.h"
 #include "Pieces.h"
 #include "Game.h"
@@ -136,9 +138,11 @@ int main(int, char**)
 
      //Initialize Game Object
     Game game = Game();
+    std::vector<Game> moveLog;
+    moveLog.push_back(game);
     //State variable to hold the current selection
-    position selection{-1, -1};
-    position moves[27];
+    Position selection{-1, -1};
+    Position moves[27];
     std::string winner = "";
     int takeTurn = 5;
 
@@ -171,7 +175,7 @@ int main(int, char**)
             for (int i = 0; i < 27; i++) {
                 moves[i] = { -1, -1 };
             }
-            game.board[selection.y][selection.x]->find_valid_moves(game, moves);
+            // game.board[selection.y][selection.x]->find_valid_moves(game, moves);
         }
         else {
             moves[0] = { -1, -1 };
@@ -187,7 +191,7 @@ int main(int, char**)
 
                 //Coloring
                 ImVec4 color;
-                if (selection == position{ x, y }) {
+                if (selection == Position{ x, y }) {
                     color = (ImVec4)ImColor::HSV(0.0f, 0.8f, 1.0f);
                 }
                 else{
@@ -195,38 +199,40 @@ int main(int, char**)
                     (ImVec4)ImColor::HSV(0.24f, 0.12f, 0.93f);
                 }
                 for (int i = 0; moves[i].x != -1; i++) {
-                    if (moves[i] == position {x, y}) {
-                        // color = (ImVec4)ImColor::ImColor(153, 204, 255);
+                    if (moves[i] == Position {x, y}) {
                         color = (ImVec4)ImColor::HSV(0.21f, .4f, 1.0f);
                         break;
                     }
                 }
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 
-
+                // Picture selection
                 int textureIndex = 0;
                 if (piece == NULL) {
                     textureIndex = 12;
                 }
                 else {
-                    textureIndex = game.board[y][x]->piece;
-                    if (!game.board[y][x]->white) {
+                    textureIndex = piece->type;
+                    if (!piece->white) {
                         textureIndex += 6;
                     }
                 }
+
+                // Button click
                 if (ImGui::ImageButton("", (void*)(intptr_t)pieceTextures[textureIndex], ImVec2(120.0f, 120.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), color, ImVec4(1.0f, 1.0f, 1.0f, 1.0f))) {
                     if (piece != NULL && piece->white == game.turn) {
                         selection = { x, y };
                     }
+                    // Move
                     else if (selection.x >= 0) {
-                        bool ret = game.log_move(game.board[selection.y][selection.x], { x, y });
+                        bool ret = game.log_move({selection, {x,y}});
                         selection = { -1, -1 };
+                        //Switch turns
                         if (ret) {
                             std::string message = game.switch_turns();
+                            moveLog.push_back(game);
                             if (message != "") {
                                 winner = message;
-
-                                //std::cout << message<<std::endl;
                             }
                         }
                     }
@@ -234,11 +240,11 @@ int main(int, char**)
                         selection = { -1, -1 };
                     }
                 }
-
                 ImGui::PopStyleColor();                
                 ImGui::PopID();
             }
 
+        // Game Over Pop Up
         if (winner != "") {
             ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(200, 150));
             ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings;
@@ -255,10 +261,13 @@ int main(int, char**)
 
         //Undo
         if (ImGui::IsMouseReleased(1)) {
-            game.undo();
-            game.undo();
-            selection = { -1, -1 };
-            winner = "";
+            if(moveLog.size() > 2){
+                moveLog.pop_back();
+                moveLog.pop_back();
+                game = moveLog.back();
+                selection = { -1, -1 };
+                winner = "";
+            }
         }
 
         //Engine Turn
@@ -271,13 +280,10 @@ int main(int, char**)
             }
             else if(winner == ""){
                 // take_move(game);
-                // take_move_fast(game);
-                CALLGRIND_START_INSTRUMENTATION;
-                CALLGRIND_TOGGLE_COLLECT;
-                monte_carlo(game);
-                CALLGRIND_TOGGLE_COLLECT;
-                CALLGRIND_STOP_INSTRUMENTATION;
+                take_move_fast(game);
+                // monte_carlo(game);
                 winner = game.switch_turns();
+                moveLog.push_back(game);
                 takeTurn = false;
                 // usleep(200000);
             }

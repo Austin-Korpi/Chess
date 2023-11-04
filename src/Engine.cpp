@@ -5,6 +5,8 @@
 #include "ctpl_stl.h"
 #include <climits>
 
+#define MAXDEPTH 7
+
 int heuristic(Game &game) {
 	int material = 0;
 	// Lookup table
@@ -12,20 +14,22 @@ int heuristic(Game &game) {
 
 	// White pieces
 	for (auto piece : game.whitePieces) {
-		if (piece != NULL) {
-			material += worth[piece->piece];
+		if (!piece.captured) {
+			material += worth[piece.type];
 		}
 	}
 	// Black pieces
 	for (auto piece : game.blackPieces) {
-		if (piece != NULL) {
-			material -= worth[piece->piece];
+		if (!piece.captured) {
+			material -= worth[piece.type];
 		}
 	}
 	return material;
 }
 
 int utility(int status, bool color, int depth){
+	//Color signifies who just took their move
+
 	// Stalemate
 	if (status == -1) {
 		return (color) ? -100 : 100;
@@ -33,11 +37,13 @@ int utility(int status, bool color, int depth){
 	// Win
 	return  (color ? 1000 : -1000) / depth;
 }
+
+// Global Data collection variables
 int pruned[10] = {0,0,0,0,0,0,0,0,0,0};
 int visited[10] = {0,0,0,0,0,0,0,0,0,0};
-int minimax(Game &game, int depth, bool color, int bestChoice) {
-	std::vector<move_info> moves = game.get_all_moves(color);
-	int bestMat = color ? INT_MIN : INT_MAX;
+int minimax(Game &game, int depth, int bestChoice) {
+	std::vector<move_info> moves = game.get_all_moves(game.turn);
+	int bestMat = game.turn ? INT_MIN : INT_MAX;
 
 	int total = moves.size();// Data collection
 	int i = 0;// Data collection
@@ -46,35 +52,33 @@ int minimax(Game &game, int depth, bool color, int bestChoice) {
 	for (auto move : moves) {
 		i++; // Data collection
 		// Make a move
-		move_info log = game.try_move(move.piece, move.to);
-		game.move_log.push_back(log);
+		Game copy = game;
+		move_info log = copy.try_move(copy.board[move.from.y][move.from.x], move.to);
+		copy.moveLog.push_back(log);
 
 		int material = 0;
 		// Check for termination
-		int terminated = game.check_for_winner(color);
+		int terminated = copy.check_for_winner(copy.turn);
 		if (terminated) {
-			material = utility(terminated, color, depth);
+			material = utility(terminated, copy.turn, depth);
 		}
 		// Check for depth limit
-		else if (depth == 5) {
-			material = heuristic(game);
+		else if (depth == MAXDEPTH) {
+			material = heuristic(copy);
 		}
 		// Recurse
 		else {
-			material = minimax(game, depth + 1, !color, bestMat);
+			copy.turn = !copy.turn;
+			material = minimax(copy, depth + 1, bestMat);
 		}
 
-		// Undo move
-		game.move_back(log);
-		game.move_log.pop_back();
-
 		// Set best material variable for pruning
-		if ((color && material > bestMat) || (!color && material < bestMat)) {
+		if ((game.turn && material > bestMat) || (!game.turn && material < bestMat)) {
 			bestMat = material;
 		}
 
 		// Prune
-		if ((color && material >= bestChoice) || (!color && material <= bestChoice)) {
+		if ((game.turn && material >= bestChoice) || (!game.turn && material <= bestChoice)) {
 			pruned[depth] += total - i;// Data collection
 			break;
 		}
@@ -94,15 +98,13 @@ void take_move(Game &game) {
 	visited[1] += moves.size();
 	for (auto move : moves) {
 		// Take move
-		log = game.try_move(move.piece, move.to);
-		game.move_log.push_back(log);
+		Game copy = game;
+		log = copy.try_move(copy.board[move.from.y][move.from.x], move.to);
+		copy.moveLog.push_back(log);
+		copy.turn = !copy.turn;
 
 		// Call minimax
-		int material = minimax(game, 2, !game.turn, bestMat);
-
-		// Undo move
-		game.move_back(log);
-		game.move_log.pop_back();
+		int material = minimax(copy, 2, bestMat);
 
 		// Keep best move for decision
 		if ((game.turn && material > bestMat) || (!game.turn && material < bestMat)) {
@@ -111,7 +113,7 @@ void take_move(Game &game) {
 		}
 	}
 	// Take the chosen move
-	game.log_move(choice.piece, choice.to);
+	game.log_move(choice);
 
 	// Data collection
 	printf("{");
@@ -121,17 +123,19 @@ void take_move(Game &game) {
 	printf("}\n");
 }
 
-void run_minimax(int, Game game, move_info move, std::mutex* writeLock, int* bestMat, move_info* choice) {
+void run_minimax(int, Game &game, move_info move, std::mutex* writeLock, int* bestMat, move_info* choice) {
 	visited[1]++;
+
+	Game copy = game;
 	// Try move - pointer to piece no longer valide, must use positions
-	move_info log = game.try_move(game.board[move.from.y][move.from.x], move.to);
-	game.move_log.push_back(log);
+	move_info log = copy.try_move(copy.board[move.from.y][move.from.x], move.to);
+	copy.moveLog.push_back(log);
 
 	int material;
 	// Check for termination
-	int terminated = game.check_for_winner(game.turn);
+	int terminated = copy.check_for_winner(copy.turn);
 	if (terminated) {
-		material = utility(terminated, game.turn, 1);
+		material = utility(terminated, copy.turn, 1);
 	}
 	else {
 		// Update cutoff to reflect current search progress
@@ -139,7 +143,8 @@ void run_minimax(int, Game game, move_info move, std::mutex* writeLock, int* bes
 		int cutOff = *bestMat;
 		writeLock->unlock();
 		// Recurse
-		material = minimax(game, 2, !game.turn, cutOff);
+		copy.turn = !copy.turn;
+		material = minimax(copy, 2, cutOff);
 	}
 
 	// Update choice if we have a better move
@@ -150,20 +155,15 @@ void run_minimax(int, Game game, move_info move, std::mutex* writeLock, int* bes
 	}
 	writeLock->unlock();
 	// std::cout << material << std::endl;
-
-	// Undo move
-	game.move_back(log);
-	game.move_log.pop_back();
 }
 
 
 void take_move_fast(Game& game) {
 	// DATA COLLECTION
-	
 
 	std::vector<move_info> moves = game.get_all_moves(game.turn);
 	int bestMat = game.turn ? INT_MIN : INT_MAX;
-	move_info choice = move_info{ {-1, -1}, {-1, -1}, NULL, NULL, false };
+	move_info choice = move_info{ {-1, -1}, {-1, -1}};//, NULL, NULL, false };
 
 	std::mutex writeLock;
 	ctpl::thread_pool p(16); /* sixteen threads in the pool */
@@ -184,6 +184,5 @@ void take_move_fast(Game& game) {
 		printf("%d/%d  ", pruned[i], visited[i]);
 	}
 	printf("}\n");
-	// printf("{%d/%d,%d/%d,%d/%d,%d/%d,%d/%d,%d/%d,%d/%d,%d/%d,%d/%d,%d/%d}\n", pruned[0],visited[0],pruned[1],visited[1],pruned[2],visited[2],pruned[3],visited[3],pruned[4],visited[4],pruned[5],visited[5],pruned[6],visited[6],pruned[7],visited[7],pruned[8],visited[8],pruned[9],visited[9]);
-	game.log_move(game.board[choice.from.y][choice.from.x], choice.to);
+	game.log_move(choice);
 }

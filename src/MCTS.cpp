@@ -9,7 +9,7 @@ move_info MCNode::getBestMove()
     move_info bestMove;
     for (auto child : children)
     {
-        move_info move = child->state.move_log.back();
+        move_info move = child->state.moveLog.back();
         printf("%s %f/%d\n", move.toString().c_str(), child->wins, child->visited);
         if (child->visited > max)
         {
@@ -57,7 +57,7 @@ int MCNode::simulate()
     while (true)
     {
         move_info move = state.get_random_move(state.turn);
-        state.log_move(move.piece, move.to);
+        state.log_move(move);
         std::string result = state.switch_turns();
         if (result != "")
         {
@@ -118,7 +118,7 @@ MCNode::~MCNode()
 MCNode::MCNode(Game game, move_info &move, MCNode *parent) : state(game)
 {
     this->parent = parent;
-    state.log_move(state.board[move.from.y][move.from.x], move.to);
+    state.log_move(move);
     if (state.switch_turns() != "")
     {
         // TODO propogate so that we never come back here
@@ -156,7 +156,8 @@ move_info monte_carlo_tree_search(Game &game)
 void monte_carlo(Game &game)
 {
     move_info move = monte_carlo_tree_search(game);
-    if (!game.log_move(game.board[move.from.y][move.from.x], move.to)) {
+    if (!game.log_move(move))
+    {
         printf("Illegal move: %s\n", move.toString().c_str());
         monte_carlo(game);
     }
