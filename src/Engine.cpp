@@ -5,7 +5,9 @@
 #include "ctpl_stl.h"
 #include <climits>
 
-#define MAXDEPTH 7
+#define MAXDEPTH 5
+
+
 
 int heuristic(Game &game) {
 	int material = 0;
@@ -53,7 +55,7 @@ int minimax(Game &game, int depth, int bestChoice) {
 		i++; // Data collection
 		// Make a move
 		Game copy = game;
-		move_info log = copy.try_move(copy.board[move.from.y][move.from.x], move.to);
+		move_info log = copy.move(copy.board[move.from.y][move.from.x], move.to);
 		copy.moveLog.push_back(log);
 
 		int material = 0;
@@ -86,7 +88,7 @@ int minimax(Game &game, int depth, int bestChoice) {
 	return bestMat;
 }
 
-void take_move(Game &game) {
+void call_minimax(Game &game) {
 	move_info log;
 	move_info choice;
 	int bestMat = game.turn ? INT_MIN : INT_MAX;
@@ -99,7 +101,7 @@ void take_move(Game &game) {
 	for (auto move : moves) {
 		// Take move
 		Game copy = game;
-		log = copy.try_move(copy.board[move.from.y][move.from.x], move.to);
+		log = copy.move(copy.board[move.from.y][move.from.x], move.to);
 		copy.moveLog.push_back(log);
 		copy.turn = !copy.turn;
 
@@ -123,12 +125,12 @@ void take_move(Game &game) {
 	printf("}\n");
 }
 
-void run_minimax(int, Game &game, move_info move, std::mutex* writeLock, int* bestMat, move_info* choice) {
+void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock, int* bestMat, move_info* choice) {
 	visited[1]++;
 
 	Game copy = game;
 	// Try move - pointer to piece no longer valide, must use positions
-	move_info log = copy.try_move(copy.board[move.from.y][move.from.x], move.to);
+	move_info log = copy.move(copy.board[move.from.y][move.from.x], move.to);
 	copy.moveLog.push_back(log);
 
 	int material;
@@ -158,7 +160,7 @@ void run_minimax(int, Game &game, move_info move, std::mutex* writeLock, int* be
 }
 
 
-void take_move_fast(Game& game) {
+void call_minimax_fast(Game& game) {
 	// DATA COLLECTION
 
 	std::vector<move_info> moves = game.get_all_moves(game.turn);
@@ -170,7 +172,7 @@ void take_move_fast(Game& game) {
 	std::vector<std::future<void>> results(moves.size());
 
 	for (unsigned int i = 0; i < moves.size(); ++i){
-		results[i] = p.push(run_minimax, game, moves[i], &writeLock, &bestMat, &choice);
+		results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &bestMat, &choice);
 	}
 
 	for (unsigned int i = 0; i < moves.size(); ++i) {

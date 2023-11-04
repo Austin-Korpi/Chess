@@ -2,7 +2,7 @@
 #include <string>
 
 #define DATABASE "OpeningDatabase.txt"
-#define MAXDEPTH 36
+#define MAXLENGTH 36
 
 struct OpeningNode{
     std::string name;

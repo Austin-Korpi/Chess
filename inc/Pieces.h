@@ -35,7 +35,7 @@ struct move_info {
 	}
 
 	std::string toString() {
-		return std::to_string(from.x) + std::to_string(from.y)+" "+std::to_string(to.x) +std::to_string(to.y);
+		return std::string(1, (char) from.x+97) + std::to_string(8-from.y)+std::string(1, (char) to.x+97) +std::to_string(8-to.y);
 	}
 };
 

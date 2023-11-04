@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <iostream>
+#include <string>
 
 Game::Game()
 {
@@ -286,7 +287,7 @@ bool Game::check_for_check(bool color, Position location)
     return false;
 }
 
-move_info Game::try_move(Piece *piece, Position location)
+move_info Game::move(Piece *piece, Position location)
 {
     move_info log = {{piece->x, piece->y}, location}; //, piece, NULL, false };
     
@@ -309,11 +310,11 @@ move_info Game::try_move(Piece *piece, Position location)
     {
         if (location.x < piece->x)
         {
-            move(board[piece->y][0], {3, piece->y});
+            movePiece(board[piece->y][0], {3, piece->y});
         }
         else
         {
-            move(board[piece->y][7], {5, piece->y});
+            movePiece(board[piece->y][7], {5, piece->y});
         }
     }
 
@@ -323,7 +324,7 @@ move_info Game::try_move(Piece *piece, Position location)
         piece->type = queen;
     }
 
-    move(piece, location);
+    movePiece(piece, location);
 
     if (piece->type == pawn)
         sinceCapture = 0;
@@ -356,7 +357,7 @@ move_info Game::try_move(Piece *piece, Position location)
     return log;
 }
 
-void Game::move(Piece *piece, Position location)
+void Game::movePiece(Piece *piece, Position location)
 {
     board[piece->y][piece->x] = NULL;
     board[location.y][location.x] = piece;
@@ -373,7 +374,7 @@ void Game::capture(Piece *piece)
 bool Game::leap_then_look(Piece *piece, Position move)
 {
     Game test(*this);
-    test.try_move(test.board[piece->y][piece->x], move);
+    test.move(test.board[piece->y][piece->x], move);
     Position king = piece->white ? test.whiteKing : test.blackKing;
     return test.check_for_check(test.board[king.y][king.x]->white, king);
 }
@@ -381,12 +382,10 @@ bool Game::leap_then_look(Piece *piece, Position move)
 bool Game::log_move(move_info move)
 {
     Position moves[27];
-    // Get piece
+    // Check if move is valid
     Piece *piece = board[move.from.y][move.from.x];
-    // Get piece's moves
     int n = piece->find_valid_moves(*this, moves);
     bool invalid = true;
-    // Check if move is valid
     for (int i = 0; i < n; i++)
     {
         if (move.to == moves[i])
@@ -401,7 +400,7 @@ bool Game::log_move(move_info move)
     }
 
     // Move piece
-    move_info log = try_move(piece, move.to);
+    move_info log = move(piece, move.to);
 
     // Add move to log
     moveLog.push_back(log);

@@ -280,7 +280,7 @@ int main(int, char**)
             }
             else if(winner == ""){
                 // take_move(game);
-                take_move_fast(game);
+                call_minimax_fast(game);
                 // monte_carlo(game);
                 winner = game.switch_turns();
                 moveLog.push_back(game);

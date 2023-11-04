@@ -29,8 +29,8 @@ public:
 	std::string switch_turns();
 	int check_for_winner(bool color);
 	bool check_for_check(bool color, Position type = {-1, -1});
-	move_info try_move(Piece* piece, Position location);
-	void move(Piece* piece, Position location);
+	move_info move(Piece* piece, Position location);
+	void movePiece(Piece* piece, Position location);
 	void capture(Piece* piece);
 	bool leap_then_look(Piece* piece, Position move);
 	bool log_move(move_info move);
