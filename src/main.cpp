@@ -115,19 +115,19 @@ int main(int, char**)
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     //Load images
-    const char* paths[] = { "Images/Chess_plt60.png",
-                            "Images/Chess_nlt60.png",
-                            "Images/Chess_blt60.png",
-                            "Images/Chess_rlt60.png",
-                            "Images/Chess_qlt60.png",
-                            "Images/Chess_klt60.png",
-                            "Images/Chess_pdt60.png",
-                            "Images/Chess_ndt60.png",
-                            "Images/Chess_bdt60.png",
-                            "Images/Chess_rdt60.png",
-                            "Images/Chess_qdt60.png",
-                            "Images/Chess_kdt60.png",
-                            "Images/blank.png",};
+    const char* paths[] = { "resources/Chess_plt60.png",
+                            "resources/Chess_nlt60.png",
+                            "resources/Chess_blt60.png",
+                            "resources/Chess_rlt60.png",
+                            "resources/Chess_qlt60.png",
+                            "resources/Chess_klt60.png",
+                            "resources/Chess_pdt60.png",
+                            "resources/Chess_ndt60.png",
+                            "resources/Chess_bdt60.png",
+                            "resources/Chess_rdt60.png",
+                            "resources/Chess_qdt60.png",
+                            "resources/Chess_kdt60.png",
+                            "resources/blank.png",};
 
     GLuint pieceTextures[13]{};
     int my_image_width = 0;
@@ -279,8 +279,10 @@ int main(int, char**)
                 takeTurn--;
             }
             else if(winner == ""){
+                // move_with_opening(game, &call_minimax_fast);
+                move_with_opening(game, &monte_carlo);
                 // take_move(game);
-                call_minimax_fast(game);
+                // call_minimax_fast(game);
                 // monte_carlo(game);
                 winner = game.switch_turns();
                 moveLog.push_back(game);

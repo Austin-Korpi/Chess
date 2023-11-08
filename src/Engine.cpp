@@ -4,10 +4,29 @@
 #include <iostream>
 #include "ctpl_stl.h"
 #include <climits>
+#include "Opening.h"
 
 #define MAXDEPTH 5
 
-
+void move_with_opening(Game& game, void (*func)(Game&)) {
+	std::string bookMove;
+	std::string moveHistory = "";
+	for (auto i : game.moveLog) {
+		moveHistory += i.toString()+" ";
+	}
+	if (game.moveLog.size() < MAXLENGTH &&
+		lookupMove(moveHistory, bookMove)) {
+			move_info move;
+			move.from.x = bookMove.c_str()[0]-97;
+			move.from.y = int(7 - (bookMove.c_str()[1] - 49));
+			move.to.x = bookMove.c_str()[2]-97;
+			move.to.y = int(7 - (bookMove.c_str()[3] - 49));
+			
+			game.log_move(move);
+			return;
+	}
+	func(game);
+}
 
 int heuristic(Game &game) {
 	int material = 0;

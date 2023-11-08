@@ -3,7 +3,7 @@
 
 #include "Opening.h"
 
-#define DATABASE "OpeningDatabase.txt"
+#define DATABASE "resources/OpeningDatabase.txt"
 
 OpeningNode* OpeningNode::next(char* token) {
     auto it = std::find_if(children.begin(),
@@ -30,25 +30,24 @@ int buildOpeningTree() {
     while (fgets(line, sizeof(line), file) != NULL) {
         char *token = strtok(line, " \t\n"); // Tokenize the line into words
 
+        // Initialize the tree
+        if (openingTree == NULL){
+            openingTree = new OpeningNode("");
+        }
         OpeningNode* current = openingTree;
         while (token != NULL) {
-            // Initialize the tree
-            if (current == NULL) {
-                openingTree = new OpeningNode(token);
-                current = openingTree;
-            } else {
-                // Search for the token
-                OpeningNode* next = current->next(token);
-                 // Move to the next node if present already
-                if (next == NULL) {
-                    current->children.push_back(new OpeningNode(token));
-                    current = current->children.back();
-                } 
-                // Add the node and move to it
-                else {
-                    current = next;
-                }
+            // Search for the token
+            OpeningNode* next = current->next(token);
+                // Move to the next node if present already
+            if (next == NULL) {
+                current->children.push_back(new OpeningNode(token));
+                current = current->children.back();
+            } 
+            // Add the node and move to it
+            else {
+                current = next;
             }
+            // Get the next token
             token = strtok(NULL, " \t\n");
         }
     }
@@ -58,10 +57,13 @@ int buildOpeningTree() {
     return 0;
 }
 
-bool lookupMove(char* moves, std::string& move) {
+bool lookupMove(std::string moveHistory, std::string& move) {
     if (!openingTree) {
         buildOpeningTree();
     }
+
+    char *moves = new char[moveHistory.length() + 1];
+    strcpy(moves, moveHistory.c_str());
     
     char *token = strtok(moves, " \t\n"); // Tokenize the line into words
     OpeningNode* current = openingTree;
@@ -70,11 +72,14 @@ bool lookupMove(char* moves, std::string& move) {
         if (next == NULL) {
             return false;
         }
-        char *token = strtok(moves, " \t\n"); // Tokenize the line into words
+        current = next;
+        token = strtok(NULL, " \t\n"); // Tokenize the line into words
     }
     if (current->children.size() == 0) {
         return false;
     }
+
+    delete moves;
 
     move = current->children[0]->name;
     return true;

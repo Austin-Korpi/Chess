@@ -14,4 +14,4 @@ struct OpeningNode{
 
 int buildOpeningTree();
 
-bool lookupMove(char* moves, std::string& move);
+bool lookupMove(std::string moveHistory, std::string& move);

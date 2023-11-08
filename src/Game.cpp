@@ -400,7 +400,7 @@ bool Game::log_move(move_info move)
     }
 
     // Move piece
-    move_info log = move(piece, move.to);
+    move_info log = this->move(piece, move.to);
 
     // Add move to log
     moveLog.push_back(log);
