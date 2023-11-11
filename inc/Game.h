@@ -13,10 +13,10 @@ public:
 	Position whiteKing;
 	Position blackKing;
 	bool turn;
-	bool castleWK;
-	bool castleWQ;
-	bool castleBK;
-	bool castleBQ;
+	bool castleK;
+	bool castleQ;
+	bool castlek;
+	bool castleq;
 	int sinceCapture;
 	std::vector<move_info> moveLog;
 
@@ -38,5 +38,6 @@ public:
 	move_info get_random_move(bool color);
 	std::vector<move_info> get_all_moves(bool color);
 	void print_board();
+	std::string toString();
 };
 

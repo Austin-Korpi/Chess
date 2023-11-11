@@ -153,12 +153,13 @@ move_info monte_carlo_tree_search(Game &game)
     return move;
 }
 
-void monte_carlo(Game &game)
+move_info monte_carlo(Game &game)
 {
     move_info move = monte_carlo_tree_search(game);
-    if (!game.log_move(move))
+    if (!Game(game).log_move(move))
     {
         printf("Illegal move: %s\n", move.toString().c_str());
-        monte_carlo(game);
+        return monte_carlo(game);
     }
+    return move;
 }

@@ -191,7 +191,7 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 		if (!game.check_for_check(white, { x, y })) {
 			// King side
 			if (game.board[y][7] != NULL && game.board[y][7]->type == rook && 
-				((white && game.castleWK) || (!white && game.castleBK)) &&
+				((white && game.castleK) || (!white && game.castlek)) &&
 				game.board[y][5] == NULL && game.board[y][6] == NULL && 
 				!game.leap_then_look(this, {5,y}) && !game.leap_then_look(this, {6, y})) {
 				moves[numMoves] = {  6, y };
@@ -199,7 +199,7 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 			}
 			// Queen side
 			if (game.board[y][0] != NULL && game.board[y][0]->type == rook && 
-				((white && game.castleWQ) || (!white && game.castleBQ)) &&
+				((white && game.castleQ) || (!white && game.castleq)) &&
 				game.board[y][1] == NULL && game.board[y][2] == NULL && game.board[y][3] == NULL 
 				&& !game.leap_then_look(this, {3,y}) && !game.leap_then_look(this, {2, y})) {
 				moves[numMoves] = { 2, y };

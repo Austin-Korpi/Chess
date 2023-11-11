@@ -2,7 +2,8 @@
 #include "Pieces.h"
 #include "Game.h"
 
-void move_with_opening(Game& game, void (*func)(Game&));
-int minimax(Game &game, int depth, bool color, int bestChoice);
-void call_minimax(Game &game);
-void call_minimax_fast(Game& game);
+move_info move_with_opening(Game& game, move_info (*func)(Game&));
+move_info call_minimax(Game &game);
+move_info call_minimax_fast(Game& game);
+move_info call_minimax_IDS(Game &game);
+move_info call_minimax_IDS_fast(Game &game);

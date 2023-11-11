@@ -6,10 +6,10 @@ Game::Game()
 {
     moveLog = std::vector<move_info>();
     turn = true;
-    castleWK = true;
-	castleWQ = true;
-	castleBK = true;
-	castleBQ = true;
+    castleK = true;
+	castleQ = true;
+	castlek = true;
+	castleq = true;
 	sinceCapture = 0;
 
     // Initialize pieces
@@ -60,10 +60,10 @@ Game::Game(const Game &game) : whitePieces(game.whitePieces),
                                whiteKing(game.whiteKing),
                                blackKing(game.blackKing),
                                turn(game.turn),
-                               castleWK(game.castleWK),
-                               castleWQ(game.castleWQ),
-                               castleBK(game.castleBK),
-                               castleBQ(game.castleBQ),
+                               castleK(game.castleK),
+                               castleQ(game.castleQ),
+                               castlek(game.castlek),
+                               castleq(game.castleq),
                                sinceCapture(game.sinceCapture),
                                moveLog(game.moveLog)
 {
@@ -79,10 +79,10 @@ Game& Game::operator=(const Game& original) {
         blackKing = original.blackKing;
         moveLog = original.moveLog;
         turn = original.turn;
-        castleWK = original.castleWK;
-        castleWQ = original.castleWQ;
-        castleBK = original.castleBK;
-        castleBQ = original.castleBQ;
+        castleK = original.castleK;
+        castleQ = original.castleQ;
+        castlek = original.castlek;
+        castleq = original.castleq;
         sinceCapture = original.sinceCapture;
         
         initialize_board();
@@ -332,27 +332,27 @@ move_info Game::move(Piece *piece, Position location)
     if (piece->type == king && piece->white)
     {
         whiteKing = {piece->x, piece->y};
-        castleWK = false;
-        castleWQ = false;
+        castleK = false;
+        castleQ = false;
     }
     if (piece->type == king && !piece->white)
     {
         blackKing = {piece->x, piece->y};
-        castleBK = false;
-        castleBQ = false;
+        castlek = false;
+        castleq = false;
     }
 
     if (piece->type == rook && piece->white && log.from.x == 0)
-        castleWQ = false;
+        castleQ = false;
 
     if (piece->type == rook && piece->white && log.from.x == 7)
-        castleWK = false;
+        castleK = false;
 
     if (piece->type == rook && !piece->white && log.from.x == 0)
-        castleBQ = false;
+        castleq = false;
 
     if (piece->type == rook && !piece->white && log.from.x == 7)
-        castleBK = false;
+        castlek = false;
 
     return log;
 }
@@ -445,6 +445,37 @@ std::vector<move_info> Game::get_all_moves(bool color)
         }
     }
     return moves;
+}
+
+std::string Game::toString() {
+    std::string repr = "";
+    char white[6] = {'P', 'N', 'B', 'R', 'Q', 'K'};
+    char black[6] = {'p', 'n', 'b', 'r', 'q', 'k'};
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            Piece* piece = board[i][j];
+            if (piece != NULL)
+                repr += piece->white ? white[piece->type] : black[piece->type];
+            else
+                 repr += "/";
+        }
+    }
+    // Add extra state variables: castling rights, moves since capture, enPassant
+    repr += turn ? "W" : "B";
+    repr += "C";
+    repr += castleK ? "K" : "";
+    repr += castleQ ? "Q" : "";
+    repr += castlek ? "k" : "";
+    repr += castleq ? "q" : "";
+    if (moveLog.size()) {
+        move_info lastMove = moveLog.back();
+        if(board[lastMove.to.y][lastMove.to.x]->type == pawn && abs(lastMove.from.y - lastMove.to.y) > 1) {
+            repr += lastMove.toString();
+        }
+    }
+    return repr;
 }
 
 void Game::print_board()

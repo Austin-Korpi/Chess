@@ -37,6 +37,14 @@ struct move_info {
 	std::string toString() {
 		return std::string(1, (char) from.x+97) + std::to_string(8-from.y)+std::string(1, (char) to.x+97) +std::to_string(8-to.y);
 	}
+	
+	move_info translate(std::string repr) {
+		from.x = repr.c_str()[0]-97;
+		from.y = int(7 - (repr.c_str()[1] - 49));
+		to.x = repr.c_str()[2]-97;
+		to.y = int(7 - (repr.c_str()[3] - 49));		
+		return *this;
+	}
 };
 
 

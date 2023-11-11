@@ -1,32 +1,24 @@
-#include "Engine.h"
 #include <thread>
 #include <mutex>
 #include <iostream>
-#include "ctpl_stl.h"
 #include <climits>
+#include <cstring>
+#include <unordered_map>
+#include <algorithm>
+#include "ctpl_stl.h"
+
+#include "Engine.h"
 #include "Opening.h"
 
 #define MAXDEPTH 5
+int maxdepth = MAXDEPTH;
 
-void move_with_opening(Game& game, void (*func)(Game&)) {
-	std::string bookMove;
-	std::string moveHistory = "";
-	for (auto i : game.moveLog) {
-		moveHistory += i.toString()+" ";
-	}
-	if (game.moveLog.size() < MAXLENGTH &&
-		lookupMove(moveHistory, bookMove)) {
-			move_info move;
-			move.from.x = bookMove.c_str()[0]-97;
-			move.from.y = int(7 - (bookMove.c_str()[1] - 49));
-			move.to.x = bookMove.c_str()[2]-97;
-			move.to.y = int(7 - (bookMove.c_str()[3] - 49));
-			
-			game.log_move(move);
-			return;
-	}
-	func(game);
-}
+// Global Data collection variables
+int visited[MAXDEPTH+1] = {0};
+
+std::unordered_map<std::string, std::array<int, 3>> transpositionTable;
+std::mutex tableLock;
+bool useTransposition = false;
 
 int heuristic(Game &game) {
 	int material = 0;
@@ -59,89 +51,131 @@ int utility(int status, bool color, int depth){
 	return  (color ? 1000 : -1000) / depth;
 }
 
-// Global Data collection variables
-int pruned[10] = {0,0,0,0,0,0,0,0,0,0};
-int visited[10] = {0,0,0,0,0,0,0,0,0,0};
-int minimax(Game &game, int depth, int bestChoice) {
-	std::vector<move_info> moves = game.get_all_moves(game.turn);
+int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
+	move_info log;
 	int bestMat = game.turn ? INT_MIN : INT_MAX;
 
-	int total = moves.size();// Data collection
-	int i = 0;// Data collection
-	visited[depth] += total; // Data collection
-	// Iterate through possible moves
-	for (auto move : moves) {
-		i++; // Data collection
-		// Make a move
-		Game copy = game;
-		move_info log = copy.move(copy.board[move.from.y][move.from.x], move.to);
-		copy.moveLog.push_back(log);
+	// Get all possible moves 
+	std::vector<move_info> moves = game.get_all_moves(game.turn);
 
-		int material = 0;
-		// Check for termination
-		int terminated = copy.check_for_winner(copy.turn);
-		if (terminated) {
-			material = utility(terminated, copy.turn, depth);
+	// Data collection
+	int i = 0;
+
+	// Initialize games with the next move
+	std::vector<std::tuple<int, Game*>> sortedGames;
+	for (auto move : moves) {
+		Game* copy = new Game(game);
+		log = copy->move(copy->board[move.from.y][move.from.x], move.to);
+		copy->moveLog.push_back(log);
+
+		int rating = 0;
+		// Rank move from table
+		if (useTransposition) {
+			std::string gameString = copy->toString();
+			tableLock.lock();
+			if (transpositionTable.count(gameString)) {
+				rating = transpositionTable[gameString][2];
+			}
+			tableLock.unlock();
 		}
-		// Check for depth limit
-		else if (depth == MAXDEPTH) {
-			material = heuristic(copy);
+		sortedGames.push_back({rating, copy});
+	}
+
+	if (useTransposition) {
+		// Sort them according to transposition table
+		std::sort(sortedGames.begin(), sortedGames.end(), [](const std::tuple<int, Game*> &a, const std::tuple<int, Game*> &b) {
+			bool turn = std::get<1>(a)->turn;
+			if (turn) {
+				return std::get<0>(a) > std::get<0>(b);
+			} else {
+				return std::get<0>(a) < std::get<0>(b);
+			}
+		});
+	}
+
+	// Iterate through game
+	for(auto currentGame : sortedGames) {
+		i++; // Data collection
+		
+		int material = INT_MAX;
+
+		Game copy = *std::get<1>(currentGame);
+		std::string gameString = copy.toString();
+
+		// Table lookup
+		if (useTransposition) {
+			std::array<int, 3> entry;
+			tableLock.lock();
+			if (transpositionTable.count(gameString) && ((entry = transpositionTable[gameString])[0] == depth)
+			&& entry[1] == maxdepth) {
+				tableLock.unlock();
+				material = entry[2];
+			}
 		}
-		// Recurse
-		else {
-			copy.turn = !copy.turn;
-			material = minimax(copy, depth + 1, bestMat);
+		
+		// Evaluate node
+		if(material == INT_MAX) {
+			tableLock.unlock();
+			// Check for termination
+			int terminated = copy.check_for_winner(copy.turn);
+			if (terminated) {
+				material = utility(terminated, copy.turn, depth);
+			}
+			// Check for depth limit
+			else if (depth == maxdepth) {
+				material = heuristic(copy);
+			}
+			// Search or lookup in table
+			else {
+				copy.turn = !copy.turn;
+				material = minimax(copy, depth + 1, bestMat, NULL);
+			}
+			// Store result
+			if (useTransposition) {
+				tableLock.lock();
+				transpositionTable[gameString] = {depth, maxdepth, material};
+				tableLock.unlock();
+			}
 		}
 
 		// Set best material variable for pruning
 		if ((game.turn && material > bestMat) || (!game.turn && material < bestMat)) {
 			bestMat = material;
+			if (depth == 1) {
+				*choice = copy.moveLog.back();
+			}
 		}
 
 		// Prune
 		if ((game.turn && material >= bestChoice) || (!game.turn && material <= bestChoice)) {
-			pruned[depth] += total - i;// Data collection
 			break;
 		}
 	}
+
+	// Free memory
+	for (unsigned long i = 0; i < sortedGames.size(); i++) {
+		delete std::get<1>(sortedGames[i]);
+	}
+ 	
+	// Data collection
+	visited[depth] += i;
+	if (depth == 1) {
+		printf("{");
+		for (int i = 1; i <= MAXDEPTH; i++) {
+			printf("%d  ", visited[i]);
+		}
+		printf("}\n");
+		int visitedN[MAXDEPTH+1] = {0};
+		memcpy(visited, visitedN, sizeof(int) * (MAXDEPTH+1));
+	}
+
 	return bestMat;
 }
 
-void call_minimax(Game &game) {
-	move_info log;
+move_info call_minimax(Game &game) {
 	move_info choice;
-	int bestMat = game.turn ? INT_MIN : INT_MAX;
-
-	// Get all possible moves 
-	// There should be at least one, or the game would have been over
-	std::vector<move_info> moves = game.get_all_moves(game.turn);
-	
-	visited[1] += moves.size();
-	for (auto move : moves) {
-		// Take move
-		Game copy = game;
-		log = copy.move(copy.board[move.from.y][move.from.x], move.to);
-		copy.moveLog.push_back(log);
-		copy.turn = !copy.turn;
-
-		// Call minimax
-		int material = minimax(copy, 2, bestMat);
-
-		// Keep best move for decision
-		if ((game.turn && material > bestMat) || (!game.turn && material < bestMat)) {
-			bestMat = material;
-			choice = move;
-		}
-	}
-	// Take the chosen move
-	game.log_move(choice);
-
-	// Data collection
-	printf("{");
-	for (int i = 0; i < 10; i++) {
-		printf("%d/%d  ", pruned[i], visited[i]);
-	}
-	printf("}\n");
+	minimax(game, 1, game.turn ? INT_MAX : INT_MIN, &choice);
+	return choice;
 }
 
 void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock, int* bestMat, move_info* choice) {
@@ -158,14 +192,20 @@ void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock,
 	if (terminated) {
 		material = utility(terminated, copy.turn, 1);
 	}
-	else {
-		// Update cutoff to reflect current search progress
+	// Check for depth limit
+	else if (maxdepth == 1) {
+		material = heuristic(copy);
+	} else {
+		// Get updated cutoff to reflect current search progress
 		writeLock->lock();
 		int cutOff = *bestMat;
 		writeLock->unlock();
-		// Recurse
+		// Search
 		copy.turn = !copy.turn;
-		material = minimax(copy, 2, cutOff);
+		material = minimax(copy, 2, cutOff, NULL);
+	}
+	if (useTransposition) {
+		transpositionTable[game.toString()] = {1, maxdepth, material};
 	}
 
 	// Update choice if we have a better move
@@ -175,16 +215,12 @@ void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock,
 		*choice = log;
 	}
 	writeLock->unlock();
-	// std::cout << material << std::endl;
 }
 
-
-void call_minimax_fast(Game& game) {
-	// DATA COLLECTION
-
+move_info call_minimax_fast(Game& game) {
 	std::vector<move_info> moves = game.get_all_moves(game.turn);
 	int bestMat = game.turn ? INT_MIN : INT_MAX;
-	move_info choice = move_info{ {-1, -1}, {-1, -1}};//, NULL, NULL, false };
+	move_info choice;
 
 	std::mutex writeLock;
 	ctpl::thread_pool p(16); /* sixteen threads in the pool */
@@ -198,12 +234,68 @@ void call_minimax_fast(Game& game) {
 		results[i].get();
 	}
 
-	// std::cout << "Max: " << bestMat << std::endl;
-	// std::cout << "[" << choice.from.x << ", " << choice.from.y << "] [" << choice.to.x << ", " << choice.to.y << "]" << choice.piece->piece << std::endl;
+	// Data collection
 	printf("{");
-	for (int i = 0; i < 10; i++) {
-		printf("%d/%d  ", pruned[i], visited[i]);
+	for (int i = 1; i < MAXDEPTH + 1; i++) {
+		printf("%d  ", visited[i]);
 	}
 	printf("}\n");
-	game.log_move(choice);
+	int visitedN[MAXDEPTH+1] = {0};
+	memcpy(visited, visitedN, sizeof(int) * (MAXDEPTH+1));
+
+	return choice;
+}
+
+move_info call_minimax_IDS(Game &game) {
+	//Enable transposition and empty the transpostion table
+	useTransposition = true;
+	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
+
+	move_info move;
+	for (int i = 1; i <= MAXDEPTH; i++) {
+		maxdepth = i;
+		move = call_minimax(game);
+	}
+
+	// Disable transposition and empty the transpostion table
+	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
+	useTransposition = false;
+
+	return move;
+}
+
+move_info call_minimax_IDS_fast(Game &game) {
+	//Enable transposition and empty the transpostion table
+	useTransposition = true;
+	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
+
+	move_info move;
+	for (int i = 1; i <= MAXDEPTH-1; i++) {
+		maxdepth = i;
+		move = call_minimax(game);
+	}
+	maxdepth = MAXDEPTH;
+	call_minimax_fast(game);
+	
+	// Disable transposition and empty the transpostion table
+	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
+	useTransposition = false;
+
+	return move;
+}
+
+move_info move_with_opening(Game& game, move_info (*func)(Game&)) {
+	std::string bookMove;
+	std::string moveHistory = "";
+	// Build move history string
+	for (auto i : game.moveLog) {
+		moveHistory += i.toString()+" ";
+	}
+	// Search for a response in the opening database
+	if (game.moveLog.size() < MAXLENGTH &&
+		lookupMove(moveHistory, bookMove)) {
+			return move_info().translate(bookMove);
+	}
+	// If the game is out of book, call the continuation function
+	return func(game);
 }

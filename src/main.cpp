@@ -16,6 +16,7 @@
 #define GL_SILENCE_DEPRECATION
 #include <glfw3.h> // Will drag system OpenGL headers
 #include <vector>
+#include <chrono>
 
 #include "MCTS.h"
 #include "Pieces.h"
@@ -274,22 +275,43 @@ int main(int, char**)
         if (ImGui::IsMouseReleased(0)) {
             takeTurn = 5;
         }
-        if (game.turn == false) {
+        // if (game.turn == false) {
             if (takeTurn > 0) {
                 takeTurn--;
             }
             else if(winner == ""){
-                // move_with_opening(game, &call_minimax_fast);
-                move_with_opening(game, &monte_carlo);
-                // take_move(game);
-                // call_minimax_fast(game);
-                // monte_carlo(game);
+                if (game.turn == false) {
+                    printf("\n--Black Move--\n");
+                    auto start = std::chrono::high_resolution_clock::now();
+
+                    move_with_opening(game, &call_minimax_fast);
+
+                    auto end = std::chrono::high_resolution_clock::now();
+                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+                    std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
+                    start = std::chrono::high_resolution_clock::now();
+
+                    game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
+
+                    end = std::chrono::high_resolution_clock::now();
+                    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+                    std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
+                } else {
+                    printf("\n--White Move--\n");
+                    auto start = std::chrono::high_resolution_clock::now();
+
+                    game.log_move(move_with_opening(game, &call_minimax_fast));
+
+                    auto end = std::chrono::high_resolution_clock::now();
+                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+                    std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
+                }
                 winner = game.switch_turns();
                 moveLog.push_back(game);
-                takeTurn = false;
+                takeTurn = false;   
                 // usleep(200000);
             }
-        }
+        // }
 
         // Rendering
         ImGui::Render();

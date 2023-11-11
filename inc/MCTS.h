@@ -26,4 +26,4 @@ public:
 };
 
 move_info monte_carlo_tree_search(Game &game);
-void monte_carlo(Game &game);
+move_info monte_carlo(Game &game);
