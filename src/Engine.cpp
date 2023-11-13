@@ -83,14 +83,15 @@ int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
 
 	if (useTransposition) {
 		// Sort them according to transposition table
-		std::sort(sortedGames.begin(), sortedGames.end(), [](const std::tuple<int, Game*> &a, const std::tuple<int, Game*> &b) {
-			bool turn = std::get<1>(a)->turn;
-			if (turn) {
+		if (game.turn) {
+			std::sort(sortedGames.begin(), sortedGames.end(), [](const std::tuple<int, Game*> &a, const std::tuple<int, Game*> &b) {
 				return std::get<0>(a) > std::get<0>(b);
-			} else {
-				return std::get<0>(a) < std::get<0>(b);
-			}
-		});
+			});
+		} else {
+			std::sort(sortedGames.begin(), sortedGames.end(), [](const std::tuple<int, Game*> &a, const std::tuple<int, Game*> &b) {
+				return std::get<0>(a) < std::get<0>(b);			
+			});
+		}
 	}
 
 	// Iterate through game
@@ -108,14 +109,13 @@ int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
 			tableLock.lock();
 			if (transpositionTable.count(gameString) && ((entry = transpositionTable[gameString])[0] == depth)
 			&& entry[1] == maxdepth) {
-				tableLock.unlock();
 				material = entry[2];
 			}
+			tableLock.unlock();
 		}
 		
 		// Evaluate node
 		if(material == INT_MAX) {
-			tableLock.unlock();
 			// Check for termination
 			int terminated = copy.check_for_winner(copy.turn);
 			if (terminated) {
@@ -125,7 +125,7 @@ int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
 			else if (depth == maxdepth) {
 				material = heuristic(copy);
 			}
-			// Search or lookup in table
+			// Search
 			else {
 				copy.turn = !copy.turn;
 				material = minimax(copy, depth + 1, bestMat, NULL);
@@ -159,15 +159,6 @@ int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
  	
 	// Data collection
 	visited[depth] += i;
-	if (depth == 1) {
-		printf("{");
-		for (int i = 1; i <= MAXDEPTH; i++) {
-			printf("%d  ", visited[i]);
-		}
-		printf("}\n");
-		int visitedN[MAXDEPTH+1] = {0};
-		memcpy(visited, visitedN, sizeof(int) * (MAXDEPTH+1));
-	}
 
 	return bestMat;
 }
@@ -175,6 +166,16 @@ int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
 move_info call_minimax(Game &game) {
 	move_info choice;
 	minimax(game, 1, game.turn ? INT_MAX : INT_MIN, &choice);
+
+	// Data collection
+	printf("{");
+	for (int i = 1; i <= MAXDEPTH; i++) {
+		printf("%d  ", visited[i]);
+	}
+	printf("}\n");
+	int visitedN[MAXDEPTH+1] = {0};
+	memcpy(visited, visitedN, sizeof(int) * (MAXDEPTH+1));
+
 	return choice;
 }
 
@@ -252,7 +253,7 @@ move_info call_minimax_IDS(Game &game) {
 	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
 
 	move_info move;
-	for (int i = 1; i <= MAXDEPTH; i++) {
+	for (int i = 1; i <= MAXDEPTH; i += 1) {
 		maxdepth = i;
 		move = call_minimax(game);
 	}
@@ -270,9 +271,9 @@ move_info call_minimax_IDS_fast(Game &game) {
 	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
 
 	move_info move;
-	for (int i = 1; i <= MAXDEPTH-1; i++) {
+	for (int i = 1; i <= MAXDEPTH-1; i += 1) {
 		maxdepth = i;
-		move = call_minimax(game);
+		move = call_minimax_fast(game);
 	}
 	maxdepth = MAXDEPTH;
 	call_minimax_fast(game);

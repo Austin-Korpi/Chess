@@ -448,34 +448,63 @@ std::vector<move_info> Game::get_all_moves(bool color)
 }
 
 std::string Game::toString() {
-    std::string repr = "";
-    char white[6] = {'P', 'N', 'B', 'R', 'Q', 'K'};
-    char black[6] = {'p', 'n', 'b', 'r', 'q', 'k'};
+    char repr[35] = {-1};
+    char white[6] = {0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110};
+    char black[6] = {0b1001, 0b1010, 0b1011, 0b1100, 0b1101, 0b1110};
     for (int i = 0; i < 8; i++)
     {
-        for (int j = 0; j < 8; j++)
+        for (int j = 0; j < 8; j+=2)
         {
-            Piece* piece = board[i][j];
-            if (piece != NULL)
-                repr += piece->white ? white[piece->type] : black[piece->type];
-            else
-                 repr += "/";
+            Piece* piece1 = board[i][j];
+            Piece* piece2 = board[i][j+1];
+            if (piece2 != NULL)
+                repr[(i*8+j)/2] = (piece2->white ? white[piece2->type] : black[piece2->type]);
+            repr[(i*8+j)/2] |= ((piece1 != NULL) ? (piece1->white ? white[piece1->type] : black[piece1->type]) : 0b1111) << 4;
         }
     }
-    // Add extra state variables: castling rights, moves since capture, enPassant
-    repr += turn ? "W" : "B";
-    repr += "C";
-    repr += castleK ? "K" : "";
-    repr += castleQ ? "Q" : "";
-    repr += castlek ? "k" : "";
-    repr += castleq ? "q" : "";
+
+    repr[32] &= turn;
+    repr[32] &= castleK << 1;
+    repr[32] &= castleQ << 2;
+    repr[32] &= castlek << 3;
+    repr[32] &= castleq << 4;
     if (moveLog.size()) {
         move_info lastMove = moveLog.back();
         if(board[lastMove.to.y][lastMove.to.x]->type == pawn && abs(lastMove.from.y - lastMove.to.y) > 1) {
-            repr += lastMove.toString();
+            repr[32] &= 1 << 5;
+            repr[33] &= lastMove.to.x;
+            repr[33] &= (lastMove.to.y == 4) << 3;
         }
     }
-    return repr;
+    repr[34] = 0;
+
+    // std::string repr = "";
+    // char white[6] = {'P', 'N', 'B', 'R', 'Q', 'K'};
+    // char black[6] = {'p', 'n', 'b', 'r', 'q', 'k'};
+    // for (int i = 0; i < 8; i++)
+    // {
+    //     for (int j = 0; j < 8; j++)
+    //     {
+    //         Piece* piece = board[i][j];
+    //         if (piece != NULL)
+    //             repr += piece->white ? white[piece->type] : black[piece->type];
+    //         else
+    //              repr += "/";
+    //     }
+    // }
+    // // Add extra state variables: castling rights, moves since capture, enPassant
+    // repr += turn ? "W" : "B";
+    // repr += castleK ? "K" : "";
+    // repr += castleQ ? "Q" : "";
+    // repr += castlek ? "k" : "";
+    // repr += castleq ? "q" : "";
+    // if (moveLog.size()) {
+    //     move_info lastMove = moveLog.back();
+    //     if(board[lastMove.to.y][lastMove.to.x]->type == pawn && abs(lastMove.from.y - lastMove.to.y) > 1) {
+    //         repr += lastMove.toString();
+    //     }
+    // }
+    return std::string(repr);
 }
 
 void Game::print_board()

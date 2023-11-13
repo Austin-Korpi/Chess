@@ -26,12 +26,9 @@ typedef enum {
 struct move_info {
 	Position from;
 	Position to;
-	// Piece* piece;
-	// Piece* captured;
-	// bool check;
 
 	bool operator==(const move_info & other) {
-		return(from == other.from && to == other.to/* && piece == other.piece && captured = other.captured*/);
+		return(from == other.from && to == other.to);
 	}
 
 	std::string toString() {
