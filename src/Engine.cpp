@@ -51,9 +51,8 @@ int utility(int status, bool color, int depth){
 	return  (color ? 1000 : -1000) / depth;
 }
 
-int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
+int minimax(Game &game, int depth, int alpha, int beta, move_info* choice) {
 	move_info log;
-	int bestMat = game.turn ? INT_MIN : INT_MAX;
 
 	// Get all possible moves 
 	std::vector<move_info> moves = game.get_all_moves(game.turn);
@@ -128,7 +127,7 @@ int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
 			// Search
 			else {
 				copy.turn = !copy.turn;
-				material = minimax(copy, depth + 1, bestMat, NULL);
+				material = minimax(copy, depth + 1, alpha, beta, NULL);
 			}
 			// Store result
 			if (useTransposition) {
@@ -138,16 +137,18 @@ int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
 			}
 		}
 
+		int* alphaOrBeta;
 		// Set best material variable for pruning
-		if ((game.turn && material > bestMat) || (!game.turn && material < bestMat)) {
-			bestMat = material;
+		if ((game.turn && material > *(alphaOrBeta = &alpha)) || 
+			(!game.turn && material < *(alphaOrBeta = &beta))) {
+			*alphaOrBeta = material;
 			if (depth == 1) {
 				*choice = copy.moveLog.back();
 			}
 		}
 
 		// Prune
-		if ((game.turn && material >= bestChoice) || (!game.turn && material <= bestChoice)) {
+		if (beta <= alpha) {
 			break;
 		}
 	}
@@ -160,12 +161,12 @@ int minimax(Game &game, int depth, int bestChoice, move_info* choice) {
 	// Data collection
 	visited[depth] += i;
 
-	return bestMat;
+	return game.turn ? alpha : beta;
 }
 
 move_info call_minimax(Game &game) {
 	move_info choice;
-	minimax(game, 1, game.turn ? INT_MAX : INT_MIN, &choice);
+	minimax(game, 1, INT_MIN, INT_MAX, &choice);
 
 	// Data collection
 	printf("{");
@@ -179,7 +180,7 @@ move_info call_minimax(Game &game) {
 	return choice;
 }
 
-void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock, int* bestMat, move_info* choice) {
+void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock, int* alpha, int* beta, move_info* choice) {
 	visited[1]++;
 
 	Game copy = game;
@@ -199,11 +200,12 @@ void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock,
 	} else {
 		// Get updated cutoff to reflect current search progress
 		writeLock->lock();
-		int cutOff = *bestMat;
+		int a = *alpha;
+		int b = *beta;
 		writeLock->unlock();
 		// Search
 		copy.turn = !copy.turn;
-		material = minimax(copy, 2, cutOff, NULL);
+		material = minimax(copy, 2, a, b, NULL);
 	}
 	if (useTransposition) {
 		transpositionTable[game.toString()] = {1, maxdepth, material};
@@ -211,8 +213,11 @@ void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock,
 
 	// Update choice if we have a better move
 	writeLock->lock();
-	if ((game.turn && material > *bestMat) || (!game.turn && material < *bestMat)) {
-		*bestMat = material;
+	int* alphaOrBeta;
+	// Set best material variable for pruning
+	if ((game.turn && material > *(alphaOrBeta = alpha)) || 
+		(!game.turn && material < *(alphaOrBeta = beta))) {
+		*alphaOrBeta = material;
 		*choice = log;
 	}
 	writeLock->unlock();
@@ -220,7 +225,8 @@ void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock,
 
 move_info call_minimax_fast(Game& game) {
 	std::vector<move_info> moves = game.get_all_moves(game.turn);
-	int bestMat = game.turn ? INT_MIN : INT_MAX;
+	int alpha = INT_MIN;
+	int beta = INT_MAX;
 	move_info choice;
 
 	std::mutex writeLock;
@@ -228,7 +234,7 @@ move_info call_minimax_fast(Game& game) {
 	std::vector<std::future<void>> results(moves.size());
 
 	for (unsigned int i = 0; i < moves.size(); ++i){
-		results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &bestMat, &choice);
+		results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &alpha, &beta, &choice);
 	}
 
 	for (unsigned int i = 0; i < moves.size(); ++i) {
