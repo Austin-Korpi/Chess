@@ -16,19 +16,20 @@
 
 EXE = chess.app
 IMGUI_DIR = imgui
+TBB_DIR = /tmp/my_installed_onetbb/include/
 SRC_DIR = src
 INCLUDE_DIR = inc
 LIB_DIR = lib
-SOURCES = $(SRC_DIR)/main.cpp $(SRC_DIR)/Game.cpp $(SRC_DIR)/Pieces.cpp $(SRC_DIR)/Engine.cpp $(SRC_DIR)/MCTS.cpp $(SRC_DIR)/Opening.cpp
+SOURCES = $(SRC_DIR)/main.cpp $(SRC_DIR)/Game.cpp $(SRC_DIR)/Pieces.cpp $(SRC_DIR)/Engine.cpp $(SRC_DIR)/MCTS.cpp $(SRC_DIR)/Opening.cpp $(SRC_DIR)/MTD.cpp
 SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
 OBJS = $(addprefix bin/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
-CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(INCLUDE_DIR) -I$(LIB_DIR)
-CXXFLAGS += -g -Wall -Wformat
-LIBS = -pthread
+CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(INCLUDE_DIR) -I$(LIB_DIR) -I$(TBB_DIR)
+CXXFLAGS += -g -Wall -Wformat #-pg
+LIBS = -pthread -L/tmp/my_installed_onetbb/lib -ltbb #-pg
 
 ##---------------------------------------------------------------------
 ## OPENGL ES

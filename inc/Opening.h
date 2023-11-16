@@ -1,7 +1,6 @@
 #include <vector>
 #include <string>
 
-#define DATABASE "OpeningDatabase.txt"
 #define MAXLENGTH 36
 
 struct OpeningNode{

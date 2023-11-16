@@ -61,4 +61,16 @@ public:
 
 	bool can_capture(Piece* other);
 	int find_valid_moves(Game &game, Position (&moves)[27]);
+	char toString() {
+    	char codes[12] = {0b1001, 0b1010, 0b1011, 0b1100, 0b1101, 0b1110, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110};
+		char buff = -1;
+		if (!captured) {
+			if (x & 1) {
+				buff ^= codes[type + (white * 6)];
+			} else {
+				buff ^= codes[type + (white * 6)] << 4;
+			}
+		}
+		return buff;
+	}
 };

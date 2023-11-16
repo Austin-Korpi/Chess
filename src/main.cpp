@@ -17,13 +17,13 @@
 #include <glfw3.h> // Will drag system OpenGL headers
 #include <vector>
 #include <chrono>
+#include <csignal>
 
 #include "MCTS.h"
 #include "Pieces.h"
 #include "Game.h"
 #include "Engine.h"
-
-#include <valgrind/callgrind.h>
+#include "MTD.h"
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -74,6 +74,12 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+}
+
+// Sigint cleanup
+bool keepGoing = true;
+void signalHandler(int signum) {
+    keepGoing = false;
 }
 
 // Main code
@@ -146,9 +152,9 @@ int main(int, char**)
     Position moves[27];
     std::string winner = "";
     int takeTurn = 5;
-
+    signal(SIGINT, signalHandler);
     // Main loop
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window) && keepGoing)
     {
         // Poll and handle events (inputs, window resize, etc.)
         // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
@@ -284,14 +290,14 @@ int main(int, char**)
                     printf("\n--Black Move--\n");
                     auto start = std::chrono::high_resolution_clock::now();
 
-                    (move_with_opening(game, &call_minimax_fast));
+                    move_with_opening(game, &call_MTD);
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
                     std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
                     start = std::chrono::high_resolution_clock::now();
 
-                    game.log_move(move_with_opening(game, &call_minimax_IDS));
+                    game.log_move(move_with_opening(game, &call_MTD_IDS));
 
                     end = std::chrono::high_resolution_clock::now();
                     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
@@ -299,8 +305,8 @@ int main(int, char**)
                 } else {
                     printf("\n--White Move--\n");
                     auto start = std::chrono::high_resolution_clock::now();
-
-                    game.log_move(move_with_opening(game, &call_minimax));
+                    
+                    game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);

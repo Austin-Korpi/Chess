@@ -9,14 +9,15 @@
 
 #include "Engine.h"
 #include "Opening.h"
+#include "oneapi/tbb/concurrent_hash_map.h"
 
-#define MAXDEPTH 5
 int maxdepth = MAXDEPTH;
 
 // Global Data collection variables
 int visited[MAXDEPTH+1] = {0};
 
-std::unordered_map<std::string, std::array<int, 3>> transpositionTable;
+typedef oneapi::tbb::concurrent_hash_map<std::string, std::array<int, 3>> StringTable;
+StringTable transpositionTable;
 std::mutex tableLock;
 bool useTransposition = false;
 
@@ -71,11 +72,11 @@ int minimax(Game &game, int depth, int alpha, int beta, move_info* choice) {
 		// Rank move from table
 		if (useTransposition) {
 			std::string gameString = copy->toString();
-			tableLock.lock();
-			if (transpositionTable.count(gameString)) {
-				rating = transpositionTable[gameString][2];
+			StringTable::const_accessor a;
+			if (transpositionTable.find(a, gameString)) {
+				rating = a->second[2];
 			}
-			tableLock.unlock();
+			a.release();
 		}
 		sortedGames.push_back({rating, copy});
 	}
@@ -104,13 +105,13 @@ int minimax(Game &game, int depth, int alpha, int beta, move_info* choice) {
 
 		// Table lookup
 		if (useTransposition) {
-			std::array<int, 3> entry;
-			tableLock.lock();
-			if (transpositionTable.count(gameString) && ((entry = transpositionTable[gameString])[0] == depth)
-			&& entry[1] == maxdepth) {
-				material = entry[2];
+			StringTable::const_accessor a;
+			if (transpositionTable.find(a, gameString)) {
+				if (a->second[0] == depth && a->second[1] == maxdepth) {
+					material = a->second[2];
+				}
 			}
-			tableLock.unlock();
+			a.release();
 		}
 		
 		// Evaluate node
@@ -131,9 +132,11 @@ int minimax(Game &game, int depth, int alpha, int beta, move_info* choice) {
 			}
 			// Store result
 			if (useTransposition) {
-				tableLock.lock();
-				transpositionTable[gameString] = {depth, maxdepth, material};
-				tableLock.unlock();
+				StringTable::accessor a;
+				if (transpositionTable.insert(a, gameString)) {
+					a->second = {depth, maxdepth, material};
+				}
+				a.release();
 			}
 		}
 
@@ -166,16 +169,10 @@ int minimax(Game &game, int depth, int alpha, int beta, move_info* choice) {
 
 move_info call_minimax(Game &game) {
 	move_info choice;
-	minimax(game, 1, INT_MIN, INT_MAX, &choice);
-
+	int ret = minimax(game, 1, INT_MIN, INT_MAX, &choice);
+	// printf("Minimax result: %d Move: %s\n", ret, choice.toString().c_str());
 	// Data collection
-	printf("{");
-	for (int i = 1; i <= MAXDEPTH; i++) {
-		printf("%d  ", visited[i]);
-	}
-	printf("}\n");
-	int visitedN[MAXDEPTH+1] = {0};
-	memcpy(visited, visitedN, sizeof(int) * (MAXDEPTH+1));
+	printStats();
 
 	return choice;
 }
@@ -208,7 +205,11 @@ void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock,
 		material = minimax(copy, 2, a, b, NULL);
 	}
 	if (useTransposition) {
-		transpositionTable[game.toString()] = {1, maxdepth, material};
+		StringTable::accessor a;
+		if (transpositionTable.insert(a, game.toString())) {
+			a->second = {1, maxdepth, material};
+		}
+		a.release();
 	}
 
 	// Update choice if we have a better move
@@ -242,13 +243,7 @@ move_info call_minimax_fast(Game& game) {
 	}
 
 	// Data collection
-	printf("{");
-	for (int i = 1; i < MAXDEPTH + 1; i++) {
-		printf("%d  ", visited[i]);
-	}
-	printf("}\n");
-	int visitedN[MAXDEPTH+1] = {0};
-	memcpy(visited, visitedN, sizeof(int) * (MAXDEPTH+1));
+	printStats();
 
 	return choice;
 }
@@ -256,7 +251,7 @@ move_info call_minimax_fast(Game& game) {
 move_info call_minimax_IDS(Game &game) {
 	//Enable transposition and empty the transpostion table
 	useTransposition = true;
-	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
+	clearTable();
 
 	move_info move;
 	for (int i = 1; i <= MAXDEPTH; i += 1) {
@@ -265,7 +260,7 @@ move_info call_minimax_IDS(Game &game) {
 	}
 
 	// Disable transposition and empty the transpostion table
-	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
+	clearTable();
 	useTransposition = false;
 
 	return move;
@@ -274,18 +269,17 @@ move_info call_minimax_IDS(Game &game) {
 move_info call_minimax_IDS_fast(Game &game) {
 	//Enable transposition and empty the transpostion table
 	useTransposition = true;
-	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
+	clearTable();
 
 	move_info move;
-	for (int i = 1; i <= MAXDEPTH-1; i += 1) {
+	for (int i = 1; i <= MAXDEPTH; i += 1) {
 		maxdepth = i;
 		move = call_minimax_fast(game);
 	}
 	maxdepth = MAXDEPTH;
-	call_minimax_fast(game);
 	
 	// Disable transposition and empty the transpostion table
-	transpositionTable = std::unordered_map<std::string, std::array<int, 3>>();
+	clearTable();
 	useTransposition = false;
 
 	return move;
@@ -305,4 +299,18 @@ move_info move_with_opening(Game& game, move_info (*func)(Game&)) {
 	}
 	// If the game is out of book, call the continuation function
 	return func(game);
+}
+
+void printStats() {
+    printf("{");
+    for (int i = 1; i <= MAXDEPTH; i++) {
+        printf("%d  ", visited[i]);
+    }
+    printf("}\n");
+    int visitedN[MAXDEPTH+1] = {0};
+    memcpy(visited, visitedN, sizeof(int) * (MAXDEPTH+1));
+}
+
+void clearTable(){
+	transpositionTable = StringTable();
 }

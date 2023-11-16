@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <iostream>
 #include <string>
+#include <cstring>
 
 Game::Game()
 {
@@ -93,32 +94,28 @@ Game& Game::operator=(const Game& original) {
 void Game::initialize_board()
 {
     // Initialize 8 by 8 board of empty pieces
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            board[i][j] = NULL;
-        }
-    }
+    memset(board, 0, sizeof(void*) * 64);
 
     // Place the white pieces
-    for (unsigned int i = 0; i < whitePieces.size(); i++)
+    for (int i = 0; i < 16; i++)
     {
-        if (!whitePieces[i].captured)
+        Piece* piece = &whitePieces[i];
+        if (!piece->captured)
         {
-            int x = whitePieces[i].x;
-            int y = whitePieces[i].y;
-            board[y][x] = &whitePieces[i];
+            int x = piece->x;
+            int y = piece->y;
+            board[y][x] = piece;
         }
     }
     // Place the black pieces
-    for (unsigned int i = 0; i < blackPieces.size(); i++)
+    for (int i = 0; i < 16; i++)
     {
-        if (!blackPieces[i].captured)
+        Piece* piece = &blackPieces[i];
+        if (!piece->captured)
         {
-            int x = blackPieces[i].x;
-            int y = blackPieces[i].y;
-            board[y][x] = &blackPieces[i];
+            int x = piece->x;
+            int y = piece->y;
+            board[y][x] = piece;
         }
     }
 }
@@ -448,19 +445,17 @@ std::vector<move_info> Game::get_all_moves(bool color)
 }
 
 std::string Game::toString() {
-    char repr[35] = {-1};
-    char white[6] = {0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110};
-    char black[6] = {0b1001, 0b1010, 0b1011, 0b1100, 0b1101, 0b1110};
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j+=2)
-        {
-            Piece* piece1 = board[i][j];
-            Piece* piece2 = board[i][j+1];
-            if (piece2 != NULL)
-                repr[(i*8+j)/2] = (piece2->white ? white[piece2->type] : black[piece2->type]);
-            repr[(i*8+j)/2] |= ((piece1 != NULL) ? (piece1->white ? white[piece1->type] : black[piece1->type]) : 0b1111) << 4;
-        }
+    char repr[35];
+    memset(repr, -1, 35);
+
+    for (auto piece : whitePieces) {
+        int i = (piece.y*8+piece.x) >> 1;
+        repr[i] &= piece.toString();
+    }
+
+     for (auto piece : blackPieces) {
+        int i = (piece.y*8+piece.x) >> 1;
+        repr[i] &= piece.toString();
     }
 
     repr[32] &= turn;
@@ -468,8 +463,9 @@ std::string Game::toString() {
     repr[32] &= castleQ << 2;
     repr[32] &= castlek << 3;
     repr[32] &= castleq << 4;
-    if (moveLog.size()) {
-        move_info lastMove = moveLog.back();
+    int i = moveLog.size();
+    if (i) {
+        move_info lastMove = moveLog[i-1];
         if(board[lastMove.to.y][lastMove.to.x]->type == pawn && abs(lastMove.from.y - lastMove.to.y) > 1) {
             repr[32] &= 1 << 5;
             repr[33] &= lastMove.to.x;
