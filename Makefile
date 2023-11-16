@@ -10,13 +10,14 @@
 # MSYS2:
 #   pacman -S --noconfirm --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-glfw
 #
+# Also needed:
+#	https://github.com/oneapi-src/oneTBB/blob/master/INSTALL.md
 
 #CXX = g++
 #CXX = clang++
 
 EXE = chess.app
 IMGUI_DIR = imgui
-TBB_DIR = /tmp/my_installed_onetbb/include/
 SRC_DIR = src
 INCLUDE_DIR = inc
 LIB_DIR = lib
@@ -27,9 +28,9 @@ OBJS = $(addprefix bin/, $(addsuffix .o, $(basename $(notdir $(SOURCES)))))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
-CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(INCLUDE_DIR) -I$(LIB_DIR) -I$(TBB_DIR)
+CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(INCLUDE_DIR) -I$(LIB_DIR)
 CXXFLAGS += -g -Wall -Wformat #-pg
-LIBS = -pthread -L/tmp/my_installed_onetbb/lib -ltbb #-pg
+LIBS = -pthread -ltbb #-pg
 
 ##---------------------------------------------------------------------
 ## OPENGL ES
