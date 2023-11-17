@@ -23,11 +23,11 @@ typedef enum {
 } pieceOptions;
 
 
-struct move_info {
+struct Move {
 	Position from;
 	Position to;
 
-	bool operator==(const move_info & other) {
+	bool operator==(const Move & other) {
 		return(from == other.from && to == other.to);
 	}
 
@@ -35,7 +35,7 @@ struct move_info {
 		return std::string(1, (char) from.x+97) + std::to_string(8-from.y)+std::string(1, (char) to.x+97) +std::to_string(8-to.y);
 	}
 	
-	move_info translate(std::string repr) {
+	Move translate(std::string repr) {
 		from.x = repr.c_str()[0]-97;
 		from.y = int(7 - (repr.c_str()[1] - 49));
 		to.x = repr.c_str()[2]-97;
@@ -44,6 +44,13 @@ struct move_info {
 	}
 };
 
+struct MoveDetails {
+	Move move;
+	Piece* captured;
+	bool promotion;
+	char sinceCapture;
+	char canCastle;
+};
 
 bool check_ob(Position move);
 

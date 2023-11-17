@@ -75,8 +75,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 				}
 				//En passant
 				else if (can_capture(game.board[y][move.x]) && game.board[y][move.x]->type == pawn) {
-					move_info lastMove = game.moveLog[game.moveLog.size() - 1];
-					if (game.board[lastMove.to.y][lastMove.to.x]->type == pawn && abs(lastMove.from.y - lastMove.to.y) > 1 
+					Move lastMove = game.moveLog[game.moveLog.size() - 1];
+					if (lastMove.to == Position{y, move.x} && game.board[lastMove.to.y][lastMove.to.x]->type == pawn && abs(lastMove.from.y - lastMove.to.y) > 1 
 						&& !game.leap_then_look(this, move)) {
 
 						moves[numMoves] = move;
@@ -191,7 +191,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 		if (!game.check_for_check(white, { x, y })) {
 			// King side
 			if (game.board[y][7] != NULL && game.board[y][7]->type == rook && 
-				((white && game.castleK) || (!white && game.castlek)) &&
+				// ((white && game.castleK) || (!white && game.castlek)) &&
+				((white && game.canCastle & 0b1000) || (!white && game.canCastle & 0b0010)) &&
 				game.board[y][5] == NULL && game.board[y][6] == NULL && 
 				!game.leap_then_look(this, {5,y}) && !game.leap_then_look(this, {6, y})) {
 				moves[numMoves] = {  6, y };
@@ -199,7 +200,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 			}
 			// Queen side
 			if (game.board[y][0] != NULL && game.board[y][0]->type == rook && 
-				((white && game.castleQ) || (!white && game.castleq)) &&
+				// ((white && game.castleQ) || (!white && game.castleq)) &&
+				((white && game.canCastle & 0b0100) || (!white && game.canCastle & 0b0001)) &&
 				game.board[y][1] == NULL && game.board[y][2] == NULL && game.board[y][3] == NULL 
 				&& !game.leap_then_look(this, {3,y}) && !game.leap_then_look(this, {2, y})) {
 				moves[numMoves] = { 2, y };

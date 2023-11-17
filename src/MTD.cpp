@@ -6,7 +6,7 @@
 extern bool useTransposition;
 extern int maxdepth;
 
-int MTD(Game &game, int first, move_info* choice)
+int MTD(Game &game, int first, Move* choice)
 {
     int g;
     int upper = INT_MAX;
@@ -35,8 +35,8 @@ int MTD(Game &game, int first, move_info* choice)
     return upper;
 }
 
-move_info call_MTD(Game& game) {
-    move_info choice;
+Move call_MTD(Game& game) {
+    Move choice;
     useTransposition = true;
     clearTable();
 
@@ -47,8 +47,8 @@ move_info call_MTD(Game& game) {
     return choice;
 }
 
-move_info call_MTD_IDS(Game& game) {
-    move_info choice;
+Move call_MTD_IDS(Game& game) {
+    Move choice;
     useTransposition = true;
     clearTable();
 

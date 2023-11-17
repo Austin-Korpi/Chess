@@ -52,21 +52,21 @@ int utility(int status, bool color, int depth){
 	return  (color ? 1000 : -1000) / depth;
 }
 
-int minimax(Game &game, int depth, int alpha, int beta, move_info* choice) {
-	move_info log;
+int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
+	MoveDetails details;
 
 	// Get all possible moves 
-	std::vector<move_info> moves = game.get_all_moves(game.turn);
+	std::vector<Move> moves = game.get_all_moves(game.turn);
 
 	// Data collection
 	int i = 0;
 
 	// Initialize games with the next move
-	std::vector<std::tuple<int, Game*>> sortedGames;
+	std::vector<std::tuple<int, Move*>> sortedGames;
 	for (auto move : moves) {
 		Game* copy = new Game(game);
-		log = copy->move(copy->board[move.from.y][move.from.x], move.to);
-		copy->moveLog.push_back(log);
+		details = copy->move(copy->board[move.from.y][move.from.x], move.to);
+		copy->moveLog.push_back(details.move);
 
 		int rating = 0;
 		// Rank move from table
@@ -167,8 +167,8 @@ int minimax(Game &game, int depth, int alpha, int beta, move_info* choice) {
 	return game.turn ? alpha : beta;
 }
 
-move_info call_minimax(Game &game) {
-	move_info choice;
+Move call_minimax(Game &game) {
+	Move choice;
 	int ret = minimax(game, 1, INT_MIN, INT_MAX, &choice);
 	// printf("Minimax result: %d Move: %s\n", ret, choice.toString().c_str());
 	// Data collection
@@ -177,13 +177,13 @@ move_info call_minimax(Game &game) {
 	return choice;
 }
 
-void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock, int* alpha, int* beta, move_info* choice) {
+void thread_func_minimax(int, Game &game, Move move, std::mutex* writeLock, int* alpha, int* beta, Move* choice) {
 	visited[1]++;
 
 	Game copy = game;
 	// Try move - pointer to piece no longer valide, must use positions
-	move_info log = copy.move(copy.board[move.from.y][move.from.x], move.to);
-	copy.moveLog.push_back(log);
+	MoveDetails details = copy.move(copy.board[move.from.y][move.from.x], move.to);
+	copy.moveLog.push_back(details.move);
 
 	int material;
 	// Check for termination
@@ -219,21 +219,22 @@ void thread_func_minimax(int, Game &game, move_info move, std::mutex* writeLock,
 	if ((game.turn && material > *(alphaOrBeta = alpha)) || 
 		(!game.turn && material < *(alphaOrBeta = beta))) {
 		*alphaOrBeta = material;
-		*choice = log;
+		*choice = details.move;
 	}
 	writeLock->unlock();
 }
 
-move_info call_minimax_fast(Game& game) {
-	std::vector<move_info> moves = game.get_all_moves(game.turn);
+Move call_minimax_fast(Game& game) {
+	std::vector<Move> moves = game.get_all_moves(game.turn);
 	int alpha = INT_MIN;
 	int beta = INT_MAX;
-	move_info choice;
+	Move choice;
 
 	std::mutex writeLock;
 	ctpl::thread_pool p(16); /* sixteen threads in the pool */
 	std::vector<std::future<void>> results(moves.size());
 
+	// TODO: Order moves
 	for (unsigned int i = 0; i < moves.size(); ++i){
 		results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &alpha, &beta, &choice);
 	}
@@ -244,16 +245,17 @@ move_info call_minimax_fast(Game& game) {
 
 	// Data collection
 	printStats();
+	// printf("Depth %d: %d Move: %s\n", maxdepth, game.turn ? alpha : beta, choice.toString().c_str());
 
 	return choice;
 }
 
-move_info call_minimax_IDS(Game &game) {
+Move call_minimax_IDS(Game &game) {
 	//Enable transposition and empty the transpostion table
 	useTransposition = true;
 	clearTable();
 
-	move_info move;
+	Move move;
 	for (int i = 1; i <= MAXDEPTH; i += 1) {
 		maxdepth = i;
 		move = call_minimax(game);
@@ -266,12 +268,12 @@ move_info call_minimax_IDS(Game &game) {
 	return move;
 }
 
-move_info call_minimax_IDS_fast(Game &game) {
+Move call_minimax_IDS_fast(Game &game) {
 	//Enable transposition and empty the transpostion table
 	useTransposition = true;
 	clearTable();
 
-	move_info move;
+	Move move;
 	for (int i = 1; i <= MAXDEPTH; i += 1) {
 		maxdepth = i;
 		move = call_minimax_fast(game);
@@ -285,7 +287,7 @@ move_info call_minimax_IDS_fast(Game &game) {
 	return move;
 }
 
-move_info move_with_opening(Game& game, move_info (*func)(Game&)) {
+Move move_with_opening(Game& game, Move (*func)(Game&)) {
 	std::string bookMove;
 	std::string moveHistory = "";
 	// Build move history string
@@ -295,7 +297,7 @@ move_info move_with_opening(Game& game, move_info (*func)(Game&)) {
 	// Search for a response in the opening database
 	if (game.moveLog.size() < MAXLENGTH &&
 		lookupMove(moveHistory, bookMove)) {
-			return move_info().translate(bookMove);
+			return Move().translate(bookMove);
 	}
 	// If the game is out of book, call the continuation function
 	return func(game);

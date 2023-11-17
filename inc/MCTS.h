@@ -5,7 +5,7 @@
 class MCNode
 {
     Game state;
-    std::vector<move_info> moves;
+    std::vector<Move> moves;
     MCNode *parent = NULL;
     std::vector<MCNode *> children;
     int visited = 0;
@@ -13,7 +13,7 @@ class MCNode
     bool terminal = false;
 
 public:
-    move_info getBestMove();
+    Move getBestMove();
     MCNode *select();
     void expand();
     int simulate();
@@ -21,9 +21,9 @@ public:
     // Root contructor
     MCNode(Game game);
     // Child constructor
-    MCNode(Game game, move_info &move, MCNode *parent);
+    MCNode(Game game, Move &move, MCNode *parent);
     ~MCNode();
 };
 
-move_info monte_carlo_tree_search(Game &game);
-move_info monte_carlo(Game &game);
+Move monte_carlo_tree_search(Game &game);
+Move monte_carlo(Game &game);

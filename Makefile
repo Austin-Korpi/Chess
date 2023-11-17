@@ -29,7 +29,7 @@ UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
 CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(INCLUDE_DIR) -I$(LIB_DIR)
-CXXFLAGS += -g -Wall -Wformat #-pg
+CXXFLAGS += -g -O0 -Wall -Wformat #-pg
 LIBS = -pthread -ltbb #-pg
 
 ##---------------------------------------------------------------------

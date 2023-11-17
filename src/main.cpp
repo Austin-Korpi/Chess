@@ -290,14 +290,14 @@ int main(int, char**)
                     printf("\n--Black Move--\n");
                     auto start = std::chrono::high_resolution_clock::now();
 
-                    move_with_opening(game, &call_MTD);
+                    move_with_opening(game, &call_minimax_IDS);
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
                     std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
                     start = std::chrono::high_resolution_clock::now();
 
-                    game.log_move(move_with_opening(game, &call_MTD_IDS));
+                    game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
 
                     end = std::chrono::high_resolution_clock::now();
                     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);

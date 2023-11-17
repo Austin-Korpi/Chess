@@ -3,13 +3,13 @@
 
 #define REPETITIONS 1000
 
-move_info MCNode::getBestMove()
+Move MCNode::getBestMove()
 {
     int max = -1;
-    move_info bestMove;
+    Move bestMove;
     for (auto child : children)
     {
-        move_info move = child->state.moveLog.back();
+        Move move = child->state.moveLog.back();
         printf("%s %f/%d\n", move.toString().c_str(), child->wins, child->visited);
         if (child->visited > max)
         {
@@ -56,7 +56,7 @@ int MCNode::simulate()
 {
     while (true)
     {
-        move_info move = state.get_random_move(state.turn);
+        Move move = state.get_random_move(state.turn);
         state.log_move(move);
         std::string result = state.switch_turns();
         if (result != "")
@@ -115,7 +115,7 @@ MCNode::~MCNode()
 }
 
 // Child constructor
-MCNode::MCNode(Game game, move_info &move, MCNode *parent) : state(game)
+MCNode::MCNode(Game game, Move &move, MCNode *parent) : state(game)
 {
     this->parent = parent;
     state.log_move(move);
@@ -126,11 +126,11 @@ MCNode::MCNode(Game game, move_info &move, MCNode *parent) : state(game)
     }
 }
 
-move_info monte_carlo_tree_search(Game &game)
+Move monte_carlo_tree_search(Game &game)
 {
     unvisitedNodes = 0;
     visitedNodes = 0;
-    move_info move;
+    Move move;
     {
         // Put the current game state into the tree
         MCNode root = MCNode(game);
@@ -153,9 +153,9 @@ move_info monte_carlo_tree_search(Game &game)
     return move;
 }
 
-move_info monte_carlo(Game &game)
+Move monte_carlo(Game &game)
 {
-    move_info move = monte_carlo_tree_search(game);
+    Move move = monte_carlo_tree_search(game);
     if (!Game(game).log_move(move))
     {
         printf("Illegal move: %s\n", move.toString().c_str());
