@@ -1,0 +1,1463 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 43.52     22.46    22.46       55     0.41     0.91  minimax(Game&, int, int, int, Move*)
+ 16.03     30.74     8.28 21256851     0.00     0.00  Game::check_for_check(bool, Position)
+ 11.57     36.71     5.97 14017974     0.00     0.00  Game::toString[abi:cxx11]()
+  5.56     39.58     2.87  1676116     0.00     0.00  tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::rehash_bucket(tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket*, unsigned long)
+  5.08     42.20     2.62  6801318     0.00     0.00  Piece::find_valid_moves(Game&, Position (&) [27])
+  4.01     44.27     2.07  2441535     0.00     0.00  bool tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::lookup<false, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*)>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::const_accessor*, bool, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*), tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node*)
+  3.33     45.99     1.72 18708904     0.00     0.00  Game::leap_then_look(Piece*, Position)
+  2.23     47.14     1.15        1     1.15     1.17  call_minimax_IDS_fast(Game&)
+  1.88     48.11     0.97 188955279     0.00     0.00  check_ob(Position)
+  1.71     48.99     0.88 15447887     0.00     0.00  Game::move(Piece*, Position)
+  1.26     49.64     0.65   364119     0.00     0.00  Game::get_all_moves(bool)
+  1.20     50.26     0.62  1905382     0.00     0.00  Game::check_for_winner(bool)
+  0.73     50.63     0.38 12771842     0.00     0.00  Game::moveBack(MoveDetails)
+  0.70     50.99     0.36  1762107     0.00     0.00  void std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > >::_M_realloc_insert<std::tuple<int, Move> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, std::tuple<int, Move>&&)
+  0.66     51.33     0.34   266613     0.00     0.00  void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>)
+  0.29     51.48     0.15       86     0.00     0.00  void std::vector<Move, std::allocator<Move> >::_M_realloc_insert<Move const&>(__gnu_cxx::__normal_iterator<Move*, std::vector<Move, std::allocator<Move> > >, Move const&)
+  0.08     51.52     0.04    51208     0.00     0.00  void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>)
+  0.04     51.54     0.02        7     0.00     0.00  std::vector<std::shared_ptr<std::atomic<bool> >, std::allocator<std::shared_ptr<std::atomic<bool> > > >::_M_default_append(unsigned long)
+  0.04     51.56     0.02                             Piece::can_capture(Piece*)
+  0.02     51.57     0.01      125     0.00     0.00  ImGui::ColorConvertFloat4ToU32(ImVec4 const&)
+  0.02     51.58     0.01        1     0.01     0.01  ImFontAtlasBuildWithStbTruetype(ImFontAtlas*)
+  0.02     51.59     0.01                             Game::switch_turns[abi:cxx11]()
+  0.02     51.60     0.01                             ImGui::BeginTable(char const*, int, int, ImVec2 const&, float)
+  0.01     51.61     0.01                             Game::initialize_board()
+  0.01     51.61     0.01                             Game::capture(Piece*)
+  0.00     51.61     0.00    20646     0.00     0.00  stbrp_pack_rects
+  0.00     51.61     0.00    15590     0.00     0.00  stbtt__close_shape(stbtt_vertex*, int, int, int, int, int, int, int, int, int)
+  0.00     51.61     0.00    13303     0.00     0.00  OpeningNode::next(char*)
+  0.00     51.61     0.00     6079     0.00     0.00  ImDrawList::PrimReserve(int, int)
+  0.00     51.61     0.00     4061     0.00     0.00  ImDrawList::AddRectFilled(ImVec2 const&, ImVec2 const&, unsigned int, float, int)
+  0.00     51.61     0.00     3999     0.00     0.00  ImDrawList::AddDrawCmd()
+  0.00     51.61     0.00     3968     0.00     0.00  ImDrawList::_OnChangedTextureID()
+  0.00     51.61     0.00     3968     0.00     0.00  ImGui::GetColorU32(ImVec4 const&)
+  0.00     51.61     0.00     3816     0.00     0.00  void std::vector<OpeningNode*, std::allocator<OpeningNode*> >::_M_realloc_insert<OpeningNode*>(__gnu_cxx::__normal_iterator<OpeningNode**, std::vector<OpeningNode*, std::allocator<OpeningNode*> > >, OpeningNode*&&)
+  0.00     51.61     0.00     2046     0.00     0.00  ImGui::GetColorU32(int, float)
+  0.00     51.61     0.00     2020     0.00     0.00  ImHashStr(char const*, unsigned long, unsigned int)
+  0.00     51.61     0.00     2015     0.00     0.00  ImGui::ItemHoverable(ImRect const&, unsigned int, int)
+  0.00     51.61     0.00     2015     0.00     0.00  ImGui::ButtonBehavior(ImRect const&, unsigned int, bool*, bool*, int)
+  0.00     51.61     0.00     2015     0.00     0.00  ImGui::ItemAdd(ImRect const&, unsigned int, ImRect const*, int)
+  0.00     51.61     0.00     1984     0.00     0.00  ImDrawList::AddImage(void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec2 const&, unsigned int)
+  0.00     51.61     0.00     1984     0.00     0.00  ImGuiWindow::GetID(char const*, char const*)
+  0.00     51.61     0.00     1984     0.00     0.00  ImGui::RenderFrame(ImVec2, ImVec2, unsigned int, bool, float)
+  0.00     51.61     0.00     1984     0.00     0.00  ImGui::RenderNavHighlight(ImRect const&, unsigned int, int)
+  0.00     51.61     0.00     1984     0.00     0.00  ImGui::ItemSize(ImVec2 const&, float)
+  0.00     51.61     0.00     1614     0.00     0.00  stbtt__fill_active_edges_new(float*, float*, int, stbtt__active_edge*, float)
+  0.00     51.61     0.00     1188     0.00     0.00  FreeWrapper(void*, void*)
+  0.00     51.61     0.00     1182     0.00     0.00  MallocWrapper(unsigned long, void*)
+  0.00     51.61     0.00     1180     0.00     0.00  ImGui::MemAlloc(unsigned long)
+  0.00     51.61     0.00     1179     0.00     0.00  ImGui::MemFree(void*)
+  0.00     51.61     0.00      892     0.00     0.00  stbtt__GetGlyfOffset(stbtt_fontinfo const*, int)
+  0.00     51.61     0.00      669     0.00     0.00  stbtt_GetGlyphBitmapBoxSubpixel.constprop.0
+  0.00     51.61     0.00      424     0.00     0.00  stbi__get16be(stbi__context*)
+  0.00     51.61     0.00      414     0.00     0.00  Game::Game(Game const&)
+  0.00     51.61     0.00      335     0.00     0.00  ImGui::GetIO()
+  0.00     51.61     0.00      272     0.00     0.00  ImGui::IsKeyPressed(ImGuiKey, unsigned int, int)
+  0.00     51.61     0.00      250     0.00     0.00  std::__future_base::_State_baseV2::_M_complete_async()
+  0.00     51.61     0.00      250     0.00     0.00  std::_Sp_counted_ptr_inplace<std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>, std::allocator<int>, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+  0.00     51.61     0.00      248     0.00     0.00  std::_Sp_counted_ptr_inplace<std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>, std::allocator<int>, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+  0.00     51.61     0.00      246     0.00     0.00  std::__future_base::_Result<void>::~_Result()
+  0.00     51.61     0.00      223     0.00     0.00  stbtt__GetGlyphShapeTT(stbtt_fontinfo const*, int, stbtt_vertex**)
+  0.00     51.61     0.00      223     0.00     0.00  ImFont::AddGlyph(ImFontConfig const*, unsigned short, float, float, float, float, float, float, float, float, float)
+  0.00     51.61     0.00      214     0.00     0.00  stbtt__sort_edges_quicksort(stbtt__edge*, int)
+  0.00     51.61     0.00      201     0.00     0.00  ImGui::GetCurrentContext()
+  0.00     51.61     0.00      129     0.00     0.00  std::future<decltype ({parm#1}(0, {parm#2}...))> ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)
+  0.00     51.61     0.00      124     0.00     0.00  CalcWindowSizeAfterConstraint(ImGuiWindow*, ImVec2 const&)
+  0.00     51.61     0.00      124     0.00     0.00  ImDrawList::PushClipRect(ImVec2 const&, ImVec2 const&, bool)
+  0.00     51.61     0.00      124     0.00     0.00  ImDrawList::_OnChangedClipRect()
+  0.00     51.61     0.00      112     0.00     0.00  std::_Sp_counted_ptr_inplace<std::atomic<bool>, std::allocator<std::atomic<bool> >, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+  0.00     51.61     0.00      112     0.00     0.00  std::_Sp_counted_ptr_inplace<std::atomic<bool>, std::allocator<std::atomic<bool> >, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+  0.00     51.61     0.00       93     0.00     0.00  SetCurrentWindow(ImGuiWindow*)
+  0.00     51.61     0.00       90     0.00     0.56  thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*)
+  0.00     51.61     0.00       83     0.00     0.61  std::_Function_handler<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> (), std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> >::_M_invoke(std::_Any_data const&)
+  0.00     51.61     0.00       77     0.00     0.00  std::_Function_base::_Base_manager<std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> >::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> > const&, std::_Manager_operation)
+  0.00     51.61     0.00       77     0.00     0.00  std::_Function_handler<void (int), ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}>::_M_invoke(std::_Any_data const&, int&&)
+  0.00     51.61     0.00       77     0.00     0.00  std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+  0.00     51.61     0.00       73     0.00     0.00  std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}> const&, std::_Manager_operation)
+  0.00     51.61     0.00       73     0.00     0.00  std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+  0.00     51.61     0.00       62     0.00     0.00  AddWindowToSortBuffer(ImVector<ImGuiWindow*>*, ImGuiWindow*)
+  0.00     51.61     0.00       62     0.00     0.00  CalcNextScrollFromScrollTargetAndClamp(ImGuiWindow*)
+  0.00     51.61     0.00       62     0.00     0.00  ImDrawList::PopClipRect()
+  0.00     51.61     0.00       62     0.00     0.00  ImDrawList::PushTextureID(void*)
+  0.00     51.61     0.00       62     0.00     0.00  ImDrawList::_ResetForNewFrame()
+  0.00     51.61     0.00       62     0.00     0.00  ImGuiStackSizes::CompareWithContextState(ImGuiContext*)
+  0.00     51.61     0.00       62     0.00     0.00  ImGuiMenuColumns::Update(float, bool)
+  0.00     51.61     0.00       62     0.00     0.00  ImGui::FindWindowByName(char const*)
+  0.00     51.61     0.00       62     0.00     0.00  ImGui::UpdateWindowParentAndRootLinks(ImGuiWindow*, int, ImGuiWindow*)
+  0.00     51.61     0.00       62     0.00     0.00  ImGui::Shortcut(int, unsigned int, int)
+  0.00     51.61     0.00       62     0.00     0.00  ImGui::LogFinish()
+  0.00     51.61     0.00       62     0.00     0.00  ImGui::RenderWindowDecorations(ImGuiWindow*, ImRect const&, bool, bool, int, unsigned int const*, float) [clone .constprop.0]
+  0.00     51.61     0.00       62     0.00     0.00  ImGui::UpdateWindowManualResize(ImGuiWindow*, ImVec2 const&, int*, int, unsigned int*, ImRect const&)
+  0.00     51.61     0.00       52     0.00     0.00  stbi__get8(stbi__context*)
+  0.00     51.61     0.00       39     0.00     0.00  stbi__get32be(stbi__context*)
+  0.00     51.61     0.00       39     0.00     0.00  stbi__stdio_read(void*, char*, int)
+  0.00     51.61     0.00       36     0.00     0.00  glfw_error_callback(int, char const*)
+  0.00     51.61     0.00       32     0.00     0.00  Piece::Piece(unsigned char, bool, unsigned char, unsigned char)
+  0.00     51.61     0.00       32     0.00     0.00  Piece::Piece()
+  0.00     51.61     0.00       31     0.00     0.00  ImGui_ImplOpenGL3_SetupRenderState(ImDrawData*, int, int, unsigned int)
+  0.00     51.61     0.00       31     0.00     0.00  ImDrawList::AddText(ImFont const*, float, ImVec2 const&, unsigned int, char const*, char const*, float, ImVec4 const*)
+  0.00     51.61     0.00       31     0.00     0.00  ImDrawListSharedData::SetCircleTessellationMaxError(float)
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::RenderArrow(ImDrawList*, ImVec2, unsigned int, int, float)
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::IsItemActive()
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::GetIDWithSeed(int, unsigned int)
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::SetWindowSize(ImGuiWindow*, ImVec2 const&, int)
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::CollapseButton(unsigned int, ImVec2 const&)
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::GetMouseCursor()
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::SetCurrentFont(ImFont*)
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::UpdateInputEvents(bool)
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::RenderTextClippedEx(ImDrawList*, ImVec2 const&, ImVec2 const&, char const*, char const*, ImVec2 const*, ImVec2 const&, ImRect const*)
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::UpdateMouseMovingWindowEndFrame()
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::UpdateMouseMovingWindowNewFrame()
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::UpdateHoveredWindowAndCaptureFlags()
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::End()
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::Begin(char const*, bool*, int)
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::EndFrame()
+  0.00     51.61     0.00       31     0.00     0.00  ImGui::NavUpdate()
+  0.00     51.61     0.00       31     0.00     0.00  ImFont::RenderText(ImDrawList*, float, ImVec2 const&, unsigned int, ImVec4 const&, char const*, char const*, float, bool) const
+  0.00     51.61     0.00       31     0.00     0.00  ImFont::CalcTextSizeA(float, float, float, char const*, char const*, char const**) const
+  0.00     51.61     0.00       30     0.00     0.00  AddWindowToDrawData(ImGuiWindow*, int)
+  0.00     51.61     0.00       30     0.00     0.00  ImDrawList::_PopUnusedDrawCmd()
+  0.00     51.61     0.00       30     0.00     0.00  ImGui::AddDrawListToDrawDataEx(ImDrawData*, ImVector<ImDrawList*>*, ImDrawList*)
+  0.00     51.61     0.00       29     0.00     0.00  ImGui::IsMouseClicked(int, unsigned int, int)
+  0.00     51.61     0.00       29     0.00     0.00  ImGui::IsMouseReleased(int, unsigned int)
+  0.00     51.61     0.00       26     0.00     0.00  lookupMove(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&)
+  0.00     51.61     0.00       26     0.00     0.00  stbi__zbuild_huffman(stbi__zhuffman*, unsigned char const*, int)
+  0.00     51.61     0.00       13     0.00     0.00  stbi__getn(stbi__context*, unsigned char*, int)
+  0.00     51.61     0.00       13     0.00     0.00  stbi__load_main(stbi__context*, int*, int*, int*, int, stbi__result_info*, int)
+  0.00     51.61     0.00       13     0.00     0.00  stbi__parse_zlib(stbi__zbuf*, int)
+  0.00     51.61     0.00       13     0.00     0.00  stbi__parse_png_file(stbi__png*, int, int)
+  0.00     51.61     0.00       13     0.00     0.00  stbi__compute_huffman_codes(stbi__zbuf*)
+  0.00     51.61     0.00       13     0.00     0.00  stbi__load_and_postprocess_8bit(stbi__context*, int*, int*, int*, int)
+  0.00     51.61     0.00        9     0.00     0.00  stbtt__find_table(unsigned char*, unsigned int, char const*)
+  0.00     51.61     0.00        8     0.00     0.00  ImGuiTextBuffer::appendf(char const*, ...)
+  0.00     51.61     0.00        8     0.00     0.00  ImGuiTextBuffer::appendfv(char const*, __va_list_tag*)
+  0.00     51.61     0.00        7     0.00     0.00  call_minimax_fast(Game&)
+  0.00     51.61     0.00        7     0.00     0.00  WindowSettingsHandler_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void*, char const*)
+  0.00     51.61     0.00        7     0.00     0.00  std::vector<std::unique_ptr<std::thread, std::default_delete<std::thread> >, std::allocator<std::unique_ptr<std::thread, std::default_delete<std::thread> > > >::_M_default_append(unsigned long)
+  0.00     51.61     0.00        4     0.00     0.00  ImDrawListSplitter::ClearFreeMemory()
+  0.00     51.61     0.00        4     0.00     0.00  ImGui::FindWindowSettingsByID(unsigned int)
+  0.00     51.61     0.00        2     0.00     0.00  CheckShader(unsigned int, char const*)
+  0.00     51.61     0.00        2     0.00     0.00  WindowSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, char const*)
+  0.00     51.61     0.00        2     0.00     0.00  ImDrawList::_ClearFreeMemory()
+  0.00     51.61     0.00        2     0.00     0.00  ImFontAtlas::AddCustomRectRegular(int, int)
+  0.00     51.61     0.00        2     0.00     0.00  ImGuiWindow::ImGuiWindow(ImGuiContext*, char const*)
+  0.00     51.61     0.00        2     0.00     0.00  ImGuiWindow::~ImGuiWindow()
+  0.00     51.61     0.00        2     0.00     0.00  ImGuiStorage::SetVoidPtr(unsigned int, void*)
+  0.00     51.61     0.00        2     0.00     0.00  ImGuiTextBuffer::append(char const*, char const*)
+  0.00     51.61     0.00        2     0.00     0.00  ImGui::FocusWindow(ImGuiWindow*, int)
+  0.00     51.61     0.00        2     0.00     0.00  ImGui::SetNavWindow(ImGuiWindow*)
+  0.00     51.61     0.00        2     0.00     0.00  ImGui::NavInitWindow(ImGuiWindow*, bool)
+  0.00     51.61     0.00        2     0.00     0.00  ImGui::FindBlockingModal(ImGuiWindow*)
+  0.00     51.61     0.00        2     0.00     0.00  ImGui::AddSettingsHandler(ImGuiSettingsHandler const*)
+  0.00     51.61     0.00        2     0.00     0.00  ImGui::ClosePopupsOverWindow(ImGuiWindow*, bool)
+  0.00     51.61     0.00        2     0.00     0.00  ImGui::BringWindowToFocusFront(ImGuiWindow*)
+  0.00     51.61     0.00        2     0.00     0.00  ImGui::CreateNewWindowSettings(char const*)
+  0.00     51.61     0.00        2     0.00     0.00  ImGui::BringWindowToDisplayFront(ImGuiWindow*)
+  0.00     51.61     0.00        2     0.00     0.00  ImGuiIO::AddMousePosEvent(float, float)
+  0.00     51.61     0.00        1     0.00     0.00  _GLOBAL__sub_I__ZN4GameC2Ev
+  0.00     51.61     0.00        1     0.00     0.00  _GLOBAL__sub_I_maxdepth
+  0.00     51.61     0.00        1     0.00     0.00  _GLOBAL__sub_I_stbi_failure_reason
+  0.00     51.61     0.00        1     0.00     0.00  ImFormatString(char*, unsigned long, char const*, ...)
+  0.00     51.61     0.00        1     0.00     0.00  buildOpeningTree()
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlasBuildInit(ImFontAtlas*)
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlasBuildFinish(ImFontAtlas*)
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlasBuildPackCustomRects(ImFontAtlas*, void*)
+  0.00     51.61     0.00        1     0.00     0.00  ImGui_ImplGlfw_InstallCallbacks(GLFWwindow*)
+  0.00     51.61     0.00        1     0.00     0.00  ImGui_ImplGlfw_RestoreCallbacks(GLFWwindow*)
+  0.00     51.61     0.00        1     0.00     0.01  ImGui_ImplOpenGL3_CreateFontsTexture()
+  0.00     51.61     0.00        1     0.00     0.00  ImGui_ImplOpenGL3_DestroyDeviceObjects()
+  0.00     51.61     0.00        1     0.00     0.00  stbtt_InitFont_internal(stbtt_fontinfo*, unsigned char*, int)
+  0.00     51.61     0.00        1     0.00     0.00  TableSettingsHandler_ApplyAll(ImGuiContext*, ImGuiSettingsHandler*)
+  0.00     51.61     0.00        1     0.00     0.00  TableSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*)
+  0.00     51.61     0.00        1     0.00     0.00  WindowSettingsHandler_ApplyAll(ImGuiContext*, ImGuiSettingsHandler*)
+  0.00     51.61     0.00        1     0.00     0.00  WindowSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*)
+  0.00     51.61     0.00        1     0.00     0.00  ImDrawData::Clear()
+  0.00     51.61     0.00        1     0.00     0.00  ImDrawList::AddRect(ImVec2 const&, ImVec2 const&, unsigned int, float, int, float)
+  0.00     51.61     0.00        1     0.00     0.00  ImDrawList::PathRect(ImVec2 const&, ImVec2 const&, float, int)
+  0.00     51.61     0.00        1     0.00     0.00  ImGuiStyle::ImGuiStyle()
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlas::AddFontDefault(ImFontConfig const*)
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlas::ClearInputData()
+  0.00     51.61     0.00        1     0.00     0.01  ImFontAtlas::GetTexDataAsRGBA32(unsigned char**, int*, int*, int*)
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlas::AddFontFromMemoryCompressedTTF(void const*, int, float, ImFontConfig const*, unsigned short const*)
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlas::AddFontFromMemoryCompressedBase85TTF(char const*, float, ImFontConfig const*, unsigned short const*)
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlas::Clear()
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlas::AddFont(ImFontConfig const*)
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlas::ImFontAtlas()
+  0.00     51.61     0.00        1     0.00     0.00  ImFontAtlas::~ImFontAtlas()
+  0.00     51.61     0.00        1     0.00     0.00  ImGuiContext::~ImGuiContext()
+  0.00     51.61     0.00        1     0.00     0.00  ImDrawListSharedData::ImDrawListSharedData()
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::Initialize()
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::GetMainViewport()
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::StyleColorsDark(ImGuiStyle*)
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::LoadIniSettingsFromDisk(char const*)
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::SaveIniSettingsToMemory(unsigned long*)
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::LoadIniSettingsFromMemory(char const*, unsigned long)
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::NavInitRequestApplyResult()
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::TableSettingsAddSettingsHandler()
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::GetStyle()
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::Shutdown()
+  0.00     51.61     0.00        1     0.00     0.00  ImGui::NavApplyItemToResult(ImGuiNavItemData*)
+  0.00     51.61     0.00        1     0.00     0.00  ImFont::BuildLookupTable()
+  0.00     51.61     0.00        1     0.00     0.00  ImFont::GrowIndex(int)
+  0.00     51.61     0.00        1     0.00     0.00  ImFont::ImFont()
+  0.00     51.61     0.00        1     0.00     0.00  ImFont::~ImFont()
+  0.00     51.61     0.00        1     0.00     0.00  ImGuiIO::ImGuiIO()
+  0.00     51.61     0.00        1     0.00     0.00  parse_version
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.02% of 51.61 seconds
+
+index % time    self  children    called     name
+                0.00   50.36      90/90          std::_Function_handler<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> (), std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> >::_M_invoke(std::_Any_data const&) [2]
+[1]     97.6    0.00   50.36      90         thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [1]
+               22.46   27.76      55/55          minimax(Game&, int, int, int, Move*) [4]
+                0.14    0.00      80/86          void std::vector<Move, std::allocator<Move> >::_M_realloc_insert<Move const&>(__gnu_cxx::__normal_iterator<Move*, std::vector<Move, std::allocator<Move> > >, Move const&) [20]
+                0.00    0.00      68/1905382     Game::check_for_winner(bool) [9]
+                0.00    0.00      78/14017974     Game::toString[abi:cxx11]() [10]
+                0.00    0.00      77/15447887     Game::move(Piece*, Position) [16]
+                0.00    0.00       1/1676116     tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::rehash_bucket(tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket*, unsigned long) [11]
+                0.00    0.00      89/414         Game::Game(Game const&) [121]
+-----------------------------------------------
+                0.00   50.36      83/83          std::__future_base::_State_baseV2::_M_do_set(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*) [3]
+[2]     97.6    0.00   50.36      83         std::_Function_handler<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> (), std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> >::_M_invoke(std::_Any_data const&) [2]
+                0.00   50.36      90/90          thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [1]
+-----------------------------------------------
+                                                 <spontaneous>
+[3]     97.6    0.00   50.36                 std::__future_base::_State_baseV2::_M_do_set(std::function<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> ()>*, bool*) [3]
+                0.00   50.36      83/83          std::_Function_handler<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> (), std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> >::_M_invoke(std::_Any_data const&) [2]
+-----------------------------------------------
+                              327095             minimax(Game&, int, int, int, Move*) [4]
+               22.46   27.76      55/55          thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [1]
+[4]     97.3   22.46   27.76      55+327095  minimax(Game&, int, int, int, Move*) [4]
+                0.65    7.55  364112/364119      Game::get_all_moves(bool) [8]
+                0.62    5.41 1905288/1905382     Game::check_for_winner(bool) [9]
+                5.97    0.00 14017896/14017974     Game::toString[abi:cxx11]() [10]
+                2.87    0.00 1675836/1676116     tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::rehash_bucket(tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket*, unsigned long) [11]
+                2.07    0.00 2441535/2441535     bool tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::lookup<false, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*)>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::const_accessor*, bool, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*), tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node*) [12]
+                0.88    0.00 15447810/15447887     Game::move(Piece*, Position) [16]
+                0.13    0.50  332579/6801318     Piece::find_valid_moves(Game&, Position (&) [27]) [5]
+                0.38    0.00 12771842/12771842     Game::moveBack(MoveDetails) [17]
+                0.36    0.00 1762107/1762107     void std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > >::_M_realloc_insert<std::tuple<int, Move> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, std::tuple<int, Move>&&) [18]
+                0.34    0.00  265963/266613      void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>) [19]
+                0.04    0.00   51208/51208       void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>) [21]
+                              327095             minimax(Game&, int, int, int, Move*) [4]
+-----------------------------------------------
+                0.00    0.00      26/6801318     Game::log_move(Move) [25]
+                0.13    0.50  332579/6801318     minimax(Game&, int, int, int, Move*) [4]
+                0.94    3.66 2451320/6801318     Game::check_for_winner(bool) [9]
+                1.55    6.00 4017393/6801318     Game::get_all_moves(bool) [8]
+[5]     24.8    2.62   10.16 6801318         Piece::find_valid_moves(Game&, Position (&) [27]) [5]
+                1.72    8.30 18708904/18708904     Game::leap_then_look(Piece*, Position) [6]
+                0.13    0.01  326614/21256851     Game::check_for_check(bool, Position) [7]
+-----------------------------------------------
+                1.72    8.30 18708904/18708904     Piece::find_valid_moves(Game&, Position (&) [27]) [5]
+[6]     19.4    1.72    8.30 18708904         Game::leap_then_look(Piece*, Position) [6]
+                7.43    0.87 19087635/21256851     Game::check_for_check(bool, Position) [7]
+-----------------------------------------------
+                0.13    0.01  326614/21256851     Piece::find_valid_moves(Game&, Position (&) [27]) [5]
+                0.72    0.08 1842602/21256851     Game::check_for_winner(bool) [9]
+                7.43    0.87 19087635/21256851     Game::leap_then_look(Piece*, Position) [6]
+[7]     17.9    8.28    0.97 21256851         Game::check_for_check(bool, Position) [7]
+                0.97    0.00 188955279/188955279     check_ob(Position) [15]
+-----------------------------------------------
+                0.00    0.00       7/364119      call_minimax_fast(Game&) [22]
+                0.65    7.55  364112/364119      minimax(Game&, int, int, int, Move*) [4]
+[8]     15.9    0.65    7.55  364119         Game::get_all_moves(bool) [8]
+                1.55    6.00 4017393/6801318     Piece::find_valid_moves(Game&, Position (&) [27]) [5]
+-----------------------------------------------
+                0.00    0.00      26/1905382     Game::switch_turns[abi:cxx11]() [26]
+                0.00    0.00      68/1905382     thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [1]
+                0.62    5.41 1905288/1905382     minimax(Game&, int, int, int, Move*) [4]
+[9]     11.7    0.62    5.41 1905382         Game::check_for_winner(bool) [9]
+                0.94    3.66 2451320/6801318     Piece::find_valid_moves(Game&, Position (&) [27]) [5]
+                0.72    0.08 1842602/21256851     Game::check_for_check(bool, Position) [7]
+-----------------------------------------------
+                0.00    0.00      78/14017974     thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [1]
+                5.97    0.00 14017896/14017974     minimax(Game&, int, int, int, Move*) [4]
+[10]    11.6    5.97    0.00 14017974         Game::toString[abi:cxx11]() [10]
+-----------------------------------------------
+                               74647             tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::rehash_bucket(tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket*, unsigned long) [11]
+                0.00    0.00       1/1676116     thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [1]
+                0.00    0.00     279/1676116     bool tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::lookup<false, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*)>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::const_accessor*, bool, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*), tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node*) [12]
+                2.87    0.00 1675836/1676116     minimax(Game&, int, int, int, Move*) [4]
+[11]     5.6    2.87    0.00 1676116+74647   tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::rehash_bucket(tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket*, unsigned long) [11]
+                               74647             tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::rehash_bucket(tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket*, unsigned long) [11]
+-----------------------------------------------
+                2.07    0.00 2441535/2441535     minimax(Game&, int, int, int, Move*) [4]
+[12]     4.0    2.07    0.00 2441535         bool tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::lookup<false, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*)>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::const_accessor*, bool, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*), tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node*) [12]
+                0.00    0.00     279/1676116     tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::rehash_bucket(tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket*, unsigned long) [11]
+-----------------------------------------------
+                                                 <spontaneous>
+[13]     2.3    0.00    1.17                 move_with_opening(Game&, Move (*)(Game&)) [13]
+                1.15    0.02       1/1           call_minimax_IDS_fast(Game&) [14]
+                0.00    0.00     650/266613      void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>) [19]
+                0.00    0.00      26/26          lookupMove(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [186]
+-----------------------------------------------
+                1.15    0.02       1/1           move_with_opening(Game&, Move (*)(Game&)) [13]
+[14]     2.3    1.15    0.02       1         call_minimax_IDS_fast(Game&) [14]
+                0.00    0.02       7/7           call_minimax_fast(Game&) [22]
+-----------------------------------------------
+                0.97    0.00 188955279/188955279     Game::check_for_check(bool, Position) [7]
+[15]     1.9    0.97    0.00 188955279         check_ob(Position) [15]
+-----------------------------------------------
+                0.00    0.00      77/15447887     thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [1]
+                0.88    0.00 15447810/15447887     minimax(Game&, int, int, int, Move*) [4]
+[16]     1.7    0.88    0.00 15447887         Game::move(Piece*, Position) [16]
+-----------------------------------------------
+                0.38    0.00 12771842/12771842     minimax(Game&, int, int, int, Move*) [4]
+[17]     0.7    0.38    0.00 12771842         Game::moveBack(MoveDetails) [17]
+-----------------------------------------------
+                0.36    0.00 1762107/1762107     minimax(Game&, int, int, int, Move*) [4]
+[18]     0.7    0.36    0.00 1762107         void std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > >::_M_realloc_insert<std::tuple<int, Move> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, std::tuple<int, Move>&&) [18]
+-----------------------------------------------
+                              665893             void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>) [19]
+                0.00    0.00     650/266613      move_with_opening(Game&, Move (*)(Game&)) [13]
+                0.34    0.00  265963/266613      minimax(Game&, int, int, int, Move*) [4]
+[19]     0.7    0.34    0.00  266613+665893  void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>) [19]
+                              665893             void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>) [19]
+-----------------------------------------------
+                0.01    0.00       6/86          Game::log_move(Move) [25]
+                0.14    0.00      80/86          thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [1]
+[20]     0.3    0.15    0.00      86         void std::vector<Move, std::allocator<Move> >::_M_realloc_insert<Move const&>(__gnu_cxx::__normal_iterator<Move*, std::vector<Move, std::allocator<Move> > >, Move const&) [20]
+-----------------------------------------------
+                               94394             void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>) [21]
+                0.04    0.00   51208/51208       minimax(Game&, int, int, int, Move*) [4]
+[21]     0.1    0.04    0.00   51208+94394   void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>) [21]
+                               94394             void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>) [21]
+-----------------------------------------------
+                0.00    0.02       7/7           call_minimax_IDS_fast(Game&) [14]
+[22]     0.0    0.00    0.02       7         call_minimax_fast(Game&) [22]
+                0.02    0.00       7/7           std::vector<std::shared_ptr<std::atomic<bool> >, std::allocator<std::shared_ptr<std::atomic<bool> > > >::_M_default_append(unsigned long) [23]
+                0.00    0.00       7/364119      Game::get_all_moves(bool) [8]
+                0.00    0.00     250/250         std::__future_base::_State_baseV2::_M_complete_async() [124]
+                0.00    0.00     250/250         std::_Sp_counted_ptr_inplace<std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>, std::allocator<int>, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [125]
+                0.00    0.00     248/248         std::_Sp_counted_ptr_inplace<std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>, std::allocator<int>, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [126]
+                0.00    0.00     246/246         std::__future_base::_Result<void>::~_Result() [127]
+                0.00    0.00     129/129         std::future<decltype ({parm#1}(0, {parm#2}...))> ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&) [132]
+                0.00    0.00     112/112         std::_Sp_counted_ptr_inplace<std::atomic<bool>, std::allocator<std::atomic<bool> >, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [137]
+                0.00    0.00     112/112         std::_Sp_counted_ptr_inplace<std::atomic<bool>, std::allocator<std::atomic<bool> >, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [136]
+                0.00    0.00       7/7           std::vector<std::unique_ptr<std::thread, std::default_delete<std::thread> >, std::allocator<std::unique_ptr<std::thread, std::default_delete<std::thread> > > >::_M_default_append(unsigned long) [198]
+-----------------------------------------------
+                0.02    0.00       7/7           call_minimax_fast(Game&) [22]
+[23]     0.0    0.02    0.00       7         std::vector<std::shared_ptr<std::atomic<bool> >, std::allocator<std::shared_ptr<std::atomic<bool> > > >::_M_default_append(unsigned long) [23]
+-----------------------------------------------
+                                                 <spontaneous>
+[24]     0.0    0.02    0.00                 Piece::can_capture(Piece*) [24]
+-----------------------------------------------
+                                                 <spontaneous>
+[25]     0.0    0.00    0.01                 Game::log_move(Move) [25]
+                0.01    0.00       6/86          void std::vector<Move, std::allocator<Move> >::_M_realloc_insert<Move const&>(__gnu_cxx::__normal_iterator<Move*, std::vector<Move, std::allocator<Move> > >, Move const&) [20]
+                0.00    0.00      26/6801318     Piece::find_valid_moves(Game&, Position (&) [27]) [5]
+-----------------------------------------------
+                                                 <spontaneous>
+[26]     0.0    0.01    0.00                 Game::switch_turns[abi:cxx11]() [26]
+                0.00    0.00      26/1905382     Game::check_for_winner(bool) [9]
+-----------------------------------------------
+                0.00    0.00      31/125         ImGui::RenderTextClippedEx(ImDrawList*, ImVec2 const&, ImVec2 const&, char const*, char const*, ImVec2 const*, ImVec2 const&, ImRect const*) [38]
+                0.01    0.00      94/125         ImGui::RenderWindowDecorations(ImGuiWindow*, ImRect const&, bool, bool, int, unsigned int const*, float) [clone .constprop.0] [35]
+[27]     0.0    0.01    0.00     125         ImGui::ColorConvertFloat4ToU32(ImVec4 const&) [27]
+-----------------------------------------------
+                0.00    0.01      31/31          ImGui::NewFrame() [34]
+[28]     0.0    0.00    0.01      31         ImGui::Begin(char const*, bool*, int) [28]
+                0.00    0.01      62/62          ImGui::RenderWindowDecorations(ImGuiWindow*, ImRect const&, bool, bool, int, unsigned int const*, float) [clone .constprop.0] [35]
+                0.00    0.00      31/31          ImGui::RenderTextClippedEx(ImDrawList*, ImVec2 const&, ImVec2 const&, char const*, char const*, ImVec2 const*, ImVec2 const&, ImRect const*) [38]
+                0.00    0.00     124/124         CalcWindowSizeAfterConstraint(ImGuiWindow*, ImVec2 const&) [133]
+                0.00    0.00     124/124         ImDrawList::_OnChangedClipRect() [135]
+                0.00    0.00     124/124         ImDrawList::PushClipRect(ImVec2 const&, ImVec2 const&, bool) [134]
+                0.00    0.00      62/62          ImGui::FindWindowByName(char const*) [151]
+                0.00    0.00      62/62          ImGui::UpdateWindowParentAndRootLinks(ImGuiWindow*, int, ImGuiWindow*) [152]
+                0.00    0.00      62/62          ImDrawList::_ResetForNewFrame() [148]
+                0.00    0.00      62/93          SetCurrentWindow(ImGuiWindow*) [138]
+                0.00    0.00      62/62          CalcNextScrollFromScrollTargetAndClamp(ImGuiWindow*) [145]
+                0.00    0.00      62/62          ImDrawList::PushTextureID(void*) [147]
+                0.00    0.00      62/62          ImGuiMenuColumns::Update(float, bool) [150]
+                0.00    0.00      62/62          ImGui::UpdateWindowManualResize(ImGuiWindow*, ImVec2 const&, int*, int, unsigned int*, ImRect const&) [155]
+                0.00    0.00      31/31          ImGui::SetWindowSize(ImGuiWindow*, ImVec2 const&, int) [168]
+                0.00    0.00      31/3999        ImDrawList::AddDrawCmd() [100]
+                0.00    0.00      31/31          ImGui::GetIDWithSeed(int, unsigned int) [167]
+                0.00    0.00      31/31          ImGui::CollapseButton(unsigned int, ImVec2 const&) [169]
+                0.00    0.00      31/31          ImFont::CalcTextSizeA(float, float, float, char const*, char const*, char const**) const [180]
+                0.00    0.00       6/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       2/2           ImGui::BringWindowToDisplayFront(ImGuiWindow*) [217]
+                0.00    0.00       2/2           ImGui::FocusWindow(ImGuiWindow*, int) [209]
+                0.00    0.00       2/2           ImGui::NavInitWindow(ImGuiWindow*, bool) [211]
+                0.00    0.00       2/2           ImGuiWindow::ImGuiWindow(ImGuiContext*, char const*) [205]
+                0.00    0.00       2/2           ImGuiStorage::SetVoidPtr(unsigned int, void*) [207]
+                0.00    0.00       2/4           ImGui::FindWindowSettingsByID(unsigned int) [200]
+-----------------------------------------------
+                0.00    0.01       1/1           ImGui_ImplOpenGL3_CreateDeviceObjects() [32]
+[29]     0.0    0.00    0.01       1         ImGui_ImplOpenGL3_CreateFontsTexture() [29]
+                0.00    0.01       1/1           ImFontAtlas::GetTexDataAsRGBA32(unsigned char**, int*, int*, int*) [31]
+                0.00    0.00       2/335         ImGui::GetIO() [122]
+                0.00    0.00       1/201         ImGui::GetCurrentContext() [131]
+-----------------------------------------------
+                0.01    0.00       1/1           ImFontAtlas::GetTexDataAsRGBA32(unsigned char**, int*, int*, int*) [31]
+[30]     0.0    0.01    0.00       1         ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+                0.00    0.00    1614/1614        stbtt__fill_active_edges_new(float*, float*, int, stbtt__active_edge*, float) [114]
+                0.00    0.00    1088/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00    1088/1179        ImGui::MemFree(void*) [118]
+                0.00    0.00     866/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00     670/15590       stbtt__close_shape(stbtt_vertex*, int, int, int, int, int, int, int, int, int) [96]
+                0.00    0.00     669/669         stbtt_GetGlyphBitmapBoxSubpixel.constprop.0 [40]
+                0.00    0.00     223/223         stbtt__GetGlyphShapeTT(stbtt_fontinfo const*, int, stbtt_vertex**) [128]
+                0.00    0.00     223/223         ImFont::AddGlyph(ImFontConfig const*, unsigned short, float, float, float, float, float, float, float, float, float) [129]
+                0.00    0.00     214/214         stbtt__sort_edges_quicksort(stbtt__edge*, int) [130]
+                0.00    0.00       1/1           ImFontAtlasBuildInit(ImFontAtlas*) [224]
+                0.00    0.00       1/1           stbtt_InitFont_internal(stbtt_fontinfo*, unsigned char*, int) [230]
+                0.00    0.00       1/1           ImFontAtlasBuildPackCustomRects(ImFontAtlas*, void*) [226]
+                0.00    0.00       1/20646       stbrp_pack_rects [39]
+                0.00    0.00       1/1           ImFontAtlasBuildFinish(ImFontAtlas*) [225]
+-----------------------------------------------
+                0.00    0.01       1/1           ImGui_ImplOpenGL3_CreateFontsTexture() [29]
+[31]     0.0    0.00    0.01       1         ImFontAtlas::GetTexDataAsRGBA32(unsigned char**, int*, int*, int*) [31]
+                0.01    0.00       1/1           ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       1/1           ImFontAtlas::AddFontDefault(ImFontConfig const*) [239]
+-----------------------------------------------
+                                                 <spontaneous>
+[32]     0.0    0.00    0.01                 ImGui_ImplOpenGL3_CreateDeviceObjects() [32]
+                0.00    0.01       1/1           ImGui_ImplOpenGL3_CreateFontsTexture() [29]
+                0.00    0.00       2/201         ImGui::GetCurrentContext() [131]
+                0.00    0.00       2/335         ImGui::GetIO() [122]
+                0.00    0.00       2/2           CheckShader(unsigned int, char const*) [201]
+-----------------------------------------------
+                                                 <spontaneous>
+[33]     0.0    0.01    0.00                 ImGui::BeginTable(char const*, int, int, ImVec2 const&, float) [33]
+-----------------------------------------------
+                                                 <spontaneous>
+[34]     0.0    0.00    0.01                 ImGui::NewFrame() [34]
+                0.00    0.01      31/31          ImGui::Begin(char const*, bool*, int) [28]
+                0.00    0.00      31/31          ImGui::UpdateInputEvents(bool) [172]
+                0.00    0.00      31/31          ImGui::SetCurrentFont(ImFont*) [171]
+                0.00    0.00      31/31          ImDrawListSharedData::SetCircleTessellationMaxError(float) [164]
+                0.00    0.00      31/31          ImGui::NavUpdate() [178]
+                0.00    0.00      31/31          ImGui::UpdateHoveredWindowAndCaptureFlags() [175]
+                0.00    0.00      31/31          ImGui::UpdateMouseMovingWindowNewFrame() [174]
+                0.00    0.00       1/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       1/1           ImGui::LoadIniSettingsFromDisk(char const*) [252]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.01      62/62          ImGui::Begin(char const*, bool*, int) [28]
+[35]     0.0    0.00    0.01      62         ImGui::RenderWindowDecorations(ImGuiWindow*, ImRect const&, bool, bool, int, unsigned int const*, float) [clone .constprop.0] [35]
+                0.01    0.00      94/125         ImGui::ColorConvertFloat4ToU32(ImVec4 const&) [27]
+                0.00    0.00      93/4061        ImDrawList::AddRectFilled(ImVec2 const&, ImVec2 const&, unsigned int, float, int) [99]
+                0.00    0.00       1/1           ImDrawList::AddRect(ImVec2 const&, ImVec2 const&, unsigned int, float, int, float) [236]
+-----------------------------------------------
+                                                 <spontaneous>
+[36]     0.0    0.01    0.00                 Game::initialize_board() [36]
+-----------------------------------------------
+                                                 <spontaneous>
+[37]     0.0    0.01    0.00                 Game::capture(Piece*) [37]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::Begin(char const*, bool*, int) [28]
+[38]     0.0    0.00    0.00      31         ImGui::RenderTextClippedEx(ImDrawList*, ImVec2 const&, ImVec2 const&, char const*, char const*, ImVec2 const*, ImVec2 const&, ImRect const*) [38]
+                0.00    0.00      31/125         ImGui::ColorConvertFloat4ToU32(ImVec4 const&) [27]
+                0.00    0.00      31/31          ImDrawList::AddText(ImFont const*, float, ImVec2 const&, unsigned int, char const*, char const*, float, ImVec4 const*) [163]
+-----------------------------------------------
+                0.00    0.00       1/20646       ImFontAtlasBuildPackCustomRects(ImFontAtlas*, void*) [226]
+                0.00    0.00       1/20646       ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+                0.00    0.00   20644/20646       stbtt__fill_active_edges_new(float*, float*, int, stbtt__active_edge*, float) [114]
+[39]     0.0    0.00    0.00   20646         stbrp_pack_rects [39]
+                0.00    0.00   11759/15590       stbtt__close_shape(stbtt_vertex*, int, int, int, int, int, int, int, int, int) [96]
+-----------------------------------------------
+                0.00    0.00     669/669         ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[40]     0.0    0.00    0.00     669         stbtt_GetGlyphBitmapBoxSubpixel.constprop.0 [40]
+                0.00    0.00     669/892         stbtt__GetGlyfOffset(stbtt_fontinfo const*, int) [119]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui_ImplOpenGL3_Init(char const*) [296]
+[41]     0.0    0.00    0.00       1         parse_version [41]
+-----------------------------------------------
+                0.00    0.00     670/15590       ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+                0.00    0.00    3161/15590       stbtt__GetGlyphShapeTT(stbtt_fontinfo const*, int, stbtt_vertex**) [128]
+                0.00    0.00   11759/15590       stbrp_pack_rects [39]
+[96]     0.0    0.00    0.00   15590         stbtt__close_shape(stbtt_vertex*, int, int, int, int, int, int, int, int, int) [96]
+-----------------------------------------------
+                0.00    0.00     325/13303       lookupMove(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [186]
+                0.00    0.00   12978/13303       buildOpeningTree() [223]
+[97]     0.0    0.00    0.00   13303         OpeningNode::next(char*) [97]
+-----------------------------------------------
+                                  32             ImDrawList::PrimReserve(int, int) [98]
+                0.00    0.00       1/6079        ImDrawList::AddRect(ImVec2 const&, ImVec2 const&, unsigned int, float, int, float) [236]
+                0.00    0.00      31/6079        ImFont::RenderText(ImDrawList*, float, ImVec2 const&, unsigned int, ImVec4 const&, char const*, char const*, float, bool) const [179]
+                0.00    0.00      31/6079        ImGui::RenderArrow(ImDrawList*, ImVec2, unsigned int, int, float) [165]
+                0.00    0.00    1984/6079        ImDrawList::AddImage(void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec2 const&, unsigned int) [109]
+                0.00    0.00    4032/6079        ImDrawList::AddRectFilled(ImVec2 const&, ImVec2 const&, unsigned int, float, int) [99]
+[98]     0.0    0.00    0.00    6079+32      ImDrawList::PrimReserve(int, int) [98]
+                0.00    0.00      37/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00      32/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00      32/1179        ImGui::MemFree(void*) [118]
+                                  32             ImDrawList::PrimReserve(int, int) [98]
+-----------------------------------------------
+                0.00    0.00      93/4061        ImGui::RenderWindowDecorations(ImGuiWindow*, ImRect const&, bool, bool, int, unsigned int const*, float) [clone .constprop.0] [35]
+                0.00    0.00    1984/4061        ImGui::RenderFrame(ImVec2, ImVec2, unsigned int, bool, float) [111]
+                0.00    0.00    1984/4061        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[99]     0.0    0.00    0.00    4061         ImDrawList::AddRectFilled(ImVec2 const&, ImVec2 const&, unsigned int, float, int) [99]
+                0.00    0.00    4032/6079        ImDrawList::PrimReserve(int, int) [98]
+-----------------------------------------------
+                0.00    0.00      31/3999        ImGui::Begin(char const*, bool*, int) [28]
+                0.00    0.00    1984/3999        ImDrawList::AddImage(void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec2 const&, unsigned int) [109]
+                0.00    0.00    1984/3999        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[100]    0.0    0.00    0.00    3999         ImDrawList::AddDrawCmd() [100]
+                0.00    0.00       7/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       7/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       7/1179        ImGui::MemFree(void*) [118]
+-----------------------------------------------
+                0.00    0.00    1984/3968        ImDrawList::AddImage(void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec2 const&, unsigned int) [109]
+                0.00    0.00    1984/3968        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[101]    0.0    0.00    0.00    3968         ImDrawList::_OnChangedTextureID() [101]
+-----------------------------------------------
+                0.00    0.00    3968/3968        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[102]    0.0    0.00    0.00    3968         ImGui::GetColorU32(ImVec4 const&) [102]
+-----------------------------------------------
+                0.00    0.00    3816/3816        buildOpeningTree() [223]
+[103]    0.0    0.00    0.00    3816         void std::vector<OpeningNode*, std::allocator<OpeningNode*> >::_M_realloc_insert<OpeningNode*>(__gnu_cxx::__normal_iterator<OpeningNode**, std::vector<OpeningNode*, std::allocator<OpeningNode*> > >, OpeningNode*&&) [103]
+-----------------------------------------------
+                0.00    0.00      62/2046        ImGui::CollapseButton(unsigned int, ImVec2 const&) [169]
+                0.00    0.00    1984/2046        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[104]    0.0    0.00    0.00    2046         ImGui::GetColorU32(int, float) [104]
+-----------------------------------------------
+                0.00    0.00       1/2020        ImGui::TableSettingsAddSettingsHandler() [256]
+                0.00    0.00       2/2020        ImGui::CreateNewWindowSettings(char const*) [216]
+                0.00    0.00       2/2020        ImGuiWindow::ImGuiWindow(ImGuiContext*, char const*) [205]
+                0.00    0.00      31/2020        ImGui::GetIDWithSeed(int, unsigned int) [167]
+                0.00    0.00    1984/2020        ImGuiWindow::GetID(char const*, char const*) [110]
+[105]    0.0    0.00    0.00    2020         ImHashStr(char const*, unsigned long, unsigned int) [105]
+-----------------------------------------------
+                0.00    0.00    2015/2015        ImGui::ButtonBehavior(ImRect const&, unsigned int, bool*, bool*, int) [107]
+[106]    0.0    0.00    0.00    2015         ImGui::ItemHoverable(ImRect const&, unsigned int, int) [106]
+-----------------------------------------------
+                0.00    0.00      31/2015        ImGui::CollapseButton(unsigned int, ImVec2 const&) [169]
+                0.00    0.00    1984/2015        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[107]    0.0    0.00    0.00    2015         ImGui::ButtonBehavior(ImRect const&, unsigned int, bool*, bool*, int) [107]
+                0.00    0.00    2015/2015        ImGui::ItemHoverable(ImRect const&, unsigned int, int) [106]
+                0.00    0.00      29/29          ImGui::IsMouseClicked(int, unsigned int, int) [184]
+                0.00    0.00      29/29          ImGui::IsMouseReleased(int, unsigned int) [185]
+-----------------------------------------------
+                0.00    0.00      31/2015        ImGui::CollapseButton(unsigned int, ImVec2 const&) [169]
+                0.00    0.00    1984/2015        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[108]    0.0    0.00    0.00    2015         ImGui::ItemAdd(ImRect const&, unsigned int, ImRect const*, int) [108]
+                0.00    0.00       1/1           ImGui::NavApplyItemToResult(ImGuiNavItemData*) [259]
+-----------------------------------------------
+                0.00    0.00    1984/1984        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[109]    0.0    0.00    0.00    1984         ImDrawList::AddImage(void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec2 const&, unsigned int) [109]
+                0.00    0.00    1984/3999        ImDrawList::AddDrawCmd() [100]
+                0.00    0.00    1984/3968        ImDrawList::_OnChangedTextureID() [101]
+                0.00    0.00    1984/6079        ImDrawList::PrimReserve(int, int) [98]
+-----------------------------------------------
+                0.00    0.00    1984/1984        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[110]    0.0    0.00    0.00    1984         ImGuiWindow::GetID(char const*, char const*) [110]
+                0.00    0.00    1984/2020        ImHashStr(char const*, unsigned long, unsigned int) [105]
+-----------------------------------------------
+                0.00    0.00    1984/1984        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[111]    0.0    0.00    0.00    1984         ImGui::RenderFrame(ImVec2, ImVec2, unsigned int, bool, float) [111]
+                0.00    0.00    1984/4061        ImDrawList::AddRectFilled(ImVec2 const&, ImVec2 const&, unsigned int, float, int) [99]
+-----------------------------------------------
+                0.00    0.00    1984/1984        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[112]    0.0    0.00    0.00    1984         ImGui::RenderNavHighlight(ImRect const&, unsigned int, int) [112]
+-----------------------------------------------
+                0.00    0.00    1984/1984        ImGui::ImageButton(char const*, void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec4 const&, ImVec4 const&) [600]
+[113]    0.0    0.00    0.00    1984         ImGui::ItemSize(ImVec2 const&, float) [113]
+-----------------------------------------------
+                0.00    0.00    1614/1614        ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[114]    0.0    0.00    0.00    1614         stbtt__fill_active_edges_new(float*, float*, int, stbtt__active_edge*, float) [114]
+                0.00    0.00   20644/20646       stbrp_pack_rects [39]
+-----------------------------------------------
+                0.00    0.00       1/1188        ImGui::CreateNewWindowSettings(char const*) [216]
+                0.00    0.00       1/1188        WindowSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) [234]
+                0.00    0.00       1/1188        ImGui::NewFrame() [34]
+                0.00    0.00       1/1188        ImFontAtlas::AddFontFromMemoryCompressedBase85TTF(char const*, float, ImFontConfig const*, unsigned short const*) [242]
+                0.00    0.00       1/1188        ImFontAtlasBuildPackCustomRects(ImFontAtlas*, void*) [226]
+                0.00    0.00       3/1188        ImFontAtlas::ClearInputData() [240]
+                0.00    0.00       4/1188        ImGuiWindow::~ImGuiWindow() [206]
+                0.00    0.00       6/1188        ImGuiContext::~ImGuiContext() [247]
+                0.00    0.00       7/1188        ImDrawList::AddDrawCmd() [100]
+                0.00    0.00       7/1188        ImFontAtlas::Clear() [243]
+                0.00    0.00       9/1188        ImFont::AddGlyph(ImFontConfig const*, unsigned short, float, float, float, float, float, float, float, float, float) [129]
+                0.00    0.00      11/1188        ImDrawList::_ClearFreeMemory() [203]
+                0.00    0.00      16/1188        ImGui::Shutdown() [258]
+                0.00    0.00      32/1188        ImDrawList::PrimReserve(int, int) [98]
+                0.00    0.00    1088/1188        ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[115]    0.0    0.00    0.00    1188         FreeWrapper(void*, void*) [115]
+-----------------------------------------------
+                0.00    0.00       1/1182        ImGui::Initialize() [249]
+                0.00    0.00       1/1182        ImGui::CreateContext(ImFontAtlas*) [697]
+                0.00    0.00    1180/1182        ImGui::MemAlloc(unsigned long) [117]
+[116]    0.0    0.00    0.00    1182         MallocWrapper(unsigned long, void*) [116]
+-----------------------------------------------
+                0.00    0.00       1/1180        ImGui::PushStyleVar(int, float) [666]
+                0.00    0.00       1/1180        ImGui::PushStyleColor(int, ImVec4 const&) [763]
+                0.00    0.00       1/1180        ImGuiIO::AddMousePosEvent(float, float) [218]
+                0.00    0.00       1/1180        ImGuiStorage::SetVoidPtr(unsigned int, void*) [207]
+                0.00    0.00       1/1180        ImGui::AddSettingsHandler(ImGuiSettingsHandler const*) [213]
+                0.00    0.00       1/1180        ImGui::LoadIniSettingsFromMemory(char const*, unsigned long) [254]
+                0.00    0.00       1/1180        ImGui::LoadIniSettingsFromDisk(char const*) [252]
+                0.00    0.00       1/1180        WindowSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) [234]
+                0.00    0.00       1/1180        ImGui::UpdateInputEvents(bool) [172]
+                0.00    0.00       1/1180        ImGui::NewFrame() [34]
+                0.00    0.00       1/1180        ImGui::EndFrame() [177]
+                0.00    0.00       1/1180        ImGui::CreateContext(ImFontAtlas*) [697]
+                0.00    0.00       1/1180        ImDrawList::PathRect(ImVec2 const&, ImVec2 const&, float, int) [237]
+                0.00    0.00       1/1180        ImGui::AddDrawListToDrawDataEx(ImDrawData*, ImVector<ImDrawList*>*, ImDrawList*) [183]
+                0.00    0.00       1/1180        ImFontAtlas::AddFontFromMemoryCompressedTTF(void const*, int, float, ImFontConfig const*, unsigned short const*) [241]
+                0.00    0.00       1/1180        ImFontAtlas::AddFontFromMemoryCompressedBase85TTF(char const*, float, ImFontConfig const*, unsigned short const*) [242]
+                0.00    0.00       1/1180        ImFontAtlas::GetTexDataAsRGBA32(unsigned char**, int*, int*, int*) [31]
+                0.00    0.00       1/1180        ImFontAtlas::AddCustomRectRegular(int, int) [204]
+                0.00    0.00       1/1180        ImFontAtlasBuildPackCustomRects(ImFontAtlas*, void*) [226]
+                0.00    0.00       1/1180        ImGui_ImplGlfw_Init(GLFWwindow*, bool, GlfwClientApi) [379]
+                0.00    0.00       1/1180        ImGui_ImplOpenGL3_Init(char const*) [296]
+                0.00    0.00       2/1180        ImGui::Initialize() [249]
+                0.00    0.00       2/1180        ImGui::CreateNewWindowSettings(char const*) [216]
+                0.00    0.00       2/1180        ImDrawList::PushClipRect(ImVec2 const&, ImVec2 const&, bool) [134]
+                0.00    0.00       2/1180        ImDrawList::PushTextureID(void*) [147]
+                0.00    0.00       2/1180        ImDrawList::_ResetForNewFrame() [148]
+                0.00    0.00       2/1180        ImFont::GrowIndex(int) [261]
+                0.00    0.00       3/1180        ImFontAtlas::AddFont(ImFontConfig const*) [244]
+                0.00    0.00       4/1180        ImGuiWindow::ImGuiWindow(ImGuiContext*, char const*) [205]
+                0.00    0.00       6/1180        ImGui::Begin(char const*, bool*, int) [28]
+                0.00    0.00       7/1180        ImDrawList::AddDrawCmd() [100]
+                0.00    0.00      10/1180        ImFont::AddGlyph(ImFontConfig const*, unsigned short, float, float, float, float, float, float, float, float, float) [129]
+                0.00    0.00      37/1180        ImDrawList::PrimReserve(int, int) [98]
+                0.00    0.00     214/1180        stbtt__GetGlyphShapeTT(stbtt_fontinfo const*, int, stbtt_vertex**) [128]
+                0.00    0.00     866/1180        ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[117]    0.0    0.00    0.00    1180         ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00    1180/1182        MallocWrapper(unsigned long, void*) [116]
+-----------------------------------------------
+                0.00    0.00       1/1179        ImGui::CreateNewWindowSettings(char const*) [216]
+                0.00    0.00       1/1179        WindowSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) [234]
+                0.00    0.00       1/1179        ImFontAtlas::AddFontFromMemoryCompressedBase85TTF(char const*, float, ImFontConfig const*, unsigned short const*) [242]
+                0.00    0.00       1/1179        ImFontAtlasBuildPackCustomRects(ImFontAtlas*, void*) [226]
+                0.00    0.00       3/1179        ImFontAtlas::ClearInputData() [240]
+                0.00    0.00       6/1179        ImGuiContext::~ImGuiContext() [247]
+                0.00    0.00       7/1179        ImDrawList::AddDrawCmd() [100]
+                0.00    0.00       7/1179        ImFontAtlas::Clear() [243]
+                0.00    0.00       9/1179        ImFont::AddGlyph(ImFontConfig const*, unsigned short, float, float, float, float, float, float, float, float, float) [129]
+                0.00    0.00      11/1179        ImDrawList::_ClearFreeMemory() [203]
+                0.00    0.00      12/1179        ImGui::Shutdown() [258]
+                0.00    0.00      32/1179        ImDrawList::PrimReserve(int, int) [98]
+                0.00    0.00    1088/1179        ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[118]    0.0    0.00    0.00    1179         ImGui::MemFree(void*) [118]
+-----------------------------------------------
+                0.00    0.00     223/892         stbtt__GetGlyphShapeTT(stbtt_fontinfo const*, int, stbtt_vertex**) [128]
+                0.00    0.00     669/892         stbtt_GetGlyphBitmapBoxSubpixel.constprop.0 [40]
+[119]    0.0    0.00    0.00     892         stbtt__GetGlyfOffset(stbtt_fontinfo const*, int) [119]
+-----------------------------------------------
+                0.00    0.00     424/424         stbi__parse_png_file(stbi__png*, int, int) [191]
+[120]    0.0    0.00    0.00     424         stbi__get16be(stbi__context*) [120]
+                0.00    0.00      13/39          stbi__stdio_read(void*, char*, int) [158]
+-----------------------------------------------
+                0.00    0.00      21/414         std::vector<Game, std::allocator<Game> >::push_back(Game const&) [1308]
+                0.00    0.00      37/414         void std::vector<Game, std::allocator<Game> >::_M_realloc_insert<Game const&>(__gnu_cxx::__normal_iterator<Game*, std::vector<Game, std::allocator<Game> > >, Game const&) [1307]
+                0.00    0.00      89/414         thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [1]
+                0.00    0.00     267/414         std::future<decltype ({parm#1}(0, {parm#2}...))> ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&) [132]
+[121]    0.0    0.00    0.00     414         Game::Game(Game const&) [121]
+-----------------------------------------------
+                0.00    0.00       1/335         ImGui_ImplGlfw_InstallCallbacks(GLFWwindow*) [227]
+                0.00    0.00       1/335         ImGui_ImplGlfw_Init(GLFWwindow*, bool, GlfwClientApi) [379]
+                0.00    0.00       1/335         ImGui_ImplGlfw_RestoreCallbacks(GLFWwindow*) [228]
+                0.00    0.00       1/335         ImGui_ImplOpenGL3_Init(char const*) [296]
+                0.00    0.00       2/335         ImGui_ImplGlfw_CursorEnterCallback(GLFWwindow*, int) [329]
+                0.00    0.00       2/335         ImGui_ImplGlfw_WindowFocusCallback(GLFWwindow*, int) [331]
+                0.00    0.00       2/335         ImGui_ImplGlfw_Shutdown() [301]
+                0.00    0.00       2/335         CheckShader(unsigned int, char const*) [201]
+                0.00    0.00       2/335         ImGui_ImplOpenGL3_CreateFontsTexture() [29]
+                0.00    0.00       2/335         ImGui_ImplOpenGL3_CreateDeviceObjects() [32]
+                0.00    0.00       2/335         ImGui_ImplOpenGL3_Shutdown() [310]
+                0.00    0.00       3/335         ImGui_ImplOpenGL3_DestroyDeviceObjects() [229]
+                0.00    0.00       4/335         ImGui_ImplGlfw_CursorPosCallback(GLFWwindow*, double, double) [323]
+                0.00    0.00      31/335         ImGui_ImplOpenGL3_SetupRenderState(ImDrawData*, int, int, unsigned int) [162]
+                0.00    0.00      31/335         ImGui_ImplOpenGL3_RenderDrawData(ImDrawData*) [324]
+                0.00    0.00      31/335         ImGui_ImplOpenGL3_NewFrame() [309]
+                0.00    0.00     217/335         ImGui_ImplGlfw_NewFrame() [300]
+[122]    0.0    0.00    0.00     335         ImGui::GetIO() [122]
+-----------------------------------------------
+                0.00    0.00     272/272         ImGui::NavUpdate() [178]
+[123]    0.0    0.00    0.00     272         ImGui::IsKeyPressed(ImGuiKey, unsigned int, int) [123]
+-----------------------------------------------
+                0.00    0.00     250/250         call_minimax_fast(Game&) [22]
+[124]    0.0    0.00    0.00     250         std::__future_base::_State_baseV2::_M_complete_async() [124]
+-----------------------------------------------
+                0.00    0.00     250/250         call_minimax_fast(Game&) [22]
+[125]    0.0    0.00    0.00     250         std::_Sp_counted_ptr_inplace<std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>, std::allocator<int>, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [125]
+-----------------------------------------------
+                0.00    0.00     248/248         call_minimax_fast(Game&) [22]
+[126]    0.0    0.00    0.00     248         std::_Sp_counted_ptr_inplace<std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>, std::allocator<int>, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [126]
+-----------------------------------------------
+                0.00    0.00     246/246         call_minimax_fast(Game&) [22]
+[127]    0.0    0.00    0.00     246         std::__future_base::_Result<void>::~_Result() [127]
+-----------------------------------------------
+                0.00    0.00     223/223         ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[128]    0.0    0.00    0.00     223         stbtt__GetGlyphShapeTT(stbtt_fontinfo const*, int, stbtt_vertex**) [128]
+                0.00    0.00    3161/15590       stbtt__close_shape(stbtt_vertex*, int, int, int, int, int, int, int, int, int) [96]
+                0.00    0.00     223/892         stbtt__GetGlyfOffset(stbtt_fontinfo const*, int) [119]
+                0.00    0.00     214/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00     223/223         ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[129]    0.0    0.00    0.00     223         ImFont::AddGlyph(ImFontConfig const*, unsigned short, float, float, float, float, float, float, float, float, float) [129]
+                0.00    0.00      10/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       9/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       9/1179        ImGui::MemFree(void*) [118]
+-----------------------------------------------
+                                 648             stbtt__sort_edges_quicksort(stbtt__edge*, int) [130]
+                0.00    0.00     214/214         ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[130]    0.0    0.00    0.00     214+648     stbtt__sort_edges_quicksort(stbtt__edge*, int) [130]
+                                 648             stbtt__sort_edges_quicksort(stbtt__edge*, int) [130]
+-----------------------------------------------
+                0.00    0.00       1/201         ImGui_ImplGlfw_CursorEnterCallback(GLFWwindow*, int) [329]
+                0.00    0.00       1/201         ImGui_ImplGlfw_WindowFocusCallback(GLFWwindow*, int) [331]
+                0.00    0.00       1/201         ImGui_ImplGlfw_InstallCallbacks(GLFWwindow*) [227]
+                0.00    0.00       1/201         ImGui_ImplGlfw_RestoreCallbacks(GLFWwindow*) [228]
+                0.00    0.00       1/201         ImGui_ImplGlfw_Shutdown() [301]
+                0.00    0.00       1/201         ImGui_ImplOpenGL3_CreateFontsTexture() [29]
+                0.00    0.00       1/201         ImGui_ImplOpenGL3_Shutdown() [310]
+                0.00    0.00       2/201         ImGui_ImplGlfw_CursorPosCallback(GLFWwindow*, double, double) [323]
+                0.00    0.00       2/201         CheckShader(unsigned int, char const*) [201]
+                0.00    0.00       2/201         ImGui_ImplOpenGL3_CreateDeviceObjects() [32]
+                0.00    0.00       2/201         ImGui_ImplOpenGL3_DestroyDeviceObjects() [229]
+                0.00    0.00      31/201         ImGui_ImplOpenGL3_SetupRenderState(ImDrawData*, int, int, unsigned int) [162]
+                0.00    0.00      31/201         ImGui_ImplOpenGL3_RenderDrawData(ImDrawData*) [324]
+                0.00    0.00      31/201         ImGui_ImplOpenGL3_NewFrame() [309]
+                0.00    0.00      93/201         ImGui_ImplGlfw_NewFrame() [300]
+[131]    0.0    0.00    0.00     201         ImGui::GetCurrentContext() [131]
+-----------------------------------------------
+                0.00    0.00     129/129         call_minimax_fast(Game&) [22]
+[132]    0.0    0.00    0.00     129         std::future<decltype ({parm#1}(0, {parm#2}...))> ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&) [132]
+                0.00    0.00     267/414         Game::Game(Game const&) [121]
+                0.00    0.00       6/77          std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [141]
+                0.00    0.00       6/73          std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [143]
+-----------------------------------------------
+                0.00    0.00     124/124         ImGui::Begin(char const*, bool*, int) [28]
+[133]    0.0    0.00    0.00     124         CalcWindowSizeAfterConstraint(ImGuiWindow*, ImVec2 const&) [133]
+-----------------------------------------------
+                0.00    0.00     124/124         ImGui::Begin(char const*, bool*, int) [28]
+[134]    0.0    0.00    0.00     124         ImDrawList::PushClipRect(ImVec2 const&, ImVec2 const&, bool) [134]
+                0.00    0.00       2/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00     124/124         ImGui::Begin(char const*, bool*, int) [28]
+[135]    0.0    0.00    0.00     124         ImDrawList::_OnChangedClipRect() [135]
+-----------------------------------------------
+                0.00    0.00     112/112         call_minimax_fast(Game&) [22]
+[136]    0.0    0.00    0.00     112         std::_Sp_counted_ptr_inplace<std::atomic<bool>, std::allocator<std::atomic<bool> >, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [136]
+-----------------------------------------------
+                0.00    0.00     112/112         call_minimax_fast(Game&) [22]
+[137]    0.0    0.00    0.00     112         std::_Sp_counted_ptr_inplace<std::atomic<bool>, std::allocator<std::atomic<bool> >, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [137]
+-----------------------------------------------
+                0.00    0.00      31/93          ImGui::EndFrame() [177]
+                0.00    0.00      62/93          ImGui::Begin(char const*, bool*, int) [28]
+[138]    0.0    0.00    0.00      93         SetCurrentWindow(ImGuiWindow*) [138]
+-----------------------------------------------
+                0.00    0.00      77/77          std::_Function_handler<void (int), ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}>::_M_invoke(std::_Any_data const&, int&&) [140]
+[139]    0.0    0.00    0.00      77         std::_Function_base::_Base_manager<std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> >::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> > const&, std::_Manager_operation) [139]
+-----------------------------------------------
+                0.00    0.00      77/77          ctpl::thread_pool::set_thread(int)::{lambda()#1}::operator()() const [1314]
+[140]    0.0    0.00    0.00      77         std::_Function_handler<void (int), ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}>::_M_invoke(std::_Any_data const&, int&&) [140]
+                0.00    0.00      77/77          std::_Function_base::_Base_manager<std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> >::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> > const&, std::_Manager_operation) [139]
+-----------------------------------------------
+                0.00    0.00       6/77          std::future<decltype ({parm#1}(0, {parm#2}...))> ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&) [132]
+                0.00    0.00      71/77          std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}> const&, std::_Manager_operation) [142]
+[141]    0.0    0.00    0.00      77         std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [141]
+-----------------------------------------------
+                0.00    0.00      73/73          ctpl::thread_pool::set_thread(int)::{lambda()#1}::operator()() const [1314]
+[142]    0.0    0.00    0.00      73         std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}> const&, std::_Manager_operation) [142]
+                0.00    0.00      71/77          std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_dispose() [141]
+                0.00    0.00      67/73          std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [143]
+-----------------------------------------------
+                0.00    0.00       6/73          std::future<decltype ({parm#1}(0, {parm#2}...))> ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&) [132]
+                0.00    0.00      67/73          std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}> const&, std::_Manager_operation) [142]
+[143]    0.0    0.00    0.00      73         std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_destroy() [143]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::EndFrame() [177]
+[144]    0.0    0.00    0.00      62         AddWindowToSortBuffer(ImVector<ImGuiWindow*>*, ImGuiWindow*) [144]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::Begin(char const*, bool*, int) [28]
+[145]    0.0    0.00    0.00      62         CalcNextScrollFromScrollTargetAndClamp(ImGuiWindow*) [145]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::End() [176]
+[146]    0.0    0.00    0.00      62         ImDrawList::PopClipRect() [146]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::Begin(char const*, bool*, int) [28]
+[147]    0.0    0.00    0.00      62         ImDrawList::PushTextureID(void*) [147]
+                0.00    0.00       2/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::Begin(char const*, bool*, int) [28]
+[148]    0.0    0.00    0.00      62         ImDrawList::_ResetForNewFrame() [148]
+                0.00    0.00       2/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::End() [176]
+[149]    0.0    0.00    0.00      62         ImGuiStackSizes::CompareWithContextState(ImGuiContext*) [149]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::Begin(char const*, bool*, int) [28]
+[150]    0.0    0.00    0.00      62         ImGuiMenuColumns::Update(float, bool) [150]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::Begin(char const*, bool*, int) [28]
+[151]    0.0    0.00    0.00      62         ImGui::FindWindowByName(char const*) [151]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::Begin(char const*, bool*, int) [28]
+[152]    0.0    0.00    0.00      62         ImGui::UpdateWindowParentAndRootLinks(ImGuiWindow*, int, ImGuiWindow*) [152]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::NavUpdate() [178]
+[153]    0.0    0.00    0.00      62         ImGui::Shortcut(int, unsigned int, int) [153]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::End() [176]
+[154]    0.0    0.00    0.00      62         ImGui::LogFinish() [154]
+-----------------------------------------------
+                0.00    0.00      62/62          ImGui::Begin(char const*, bool*, int) [28]
+[155]    0.0    0.00    0.00      62         ImGui::UpdateWindowManualResize(ImGuiWindow*, ImVec2 const&, int*, int, unsigned int*, ImRect const&) [155]
+-----------------------------------------------
+                0.00    0.00      52/52          stbi__parse_png_file(stbi__png*, int, int) [191]
+[156]    0.0    0.00    0.00      52         stbi__get8(stbi__context*) [156]
+-----------------------------------------------
+                0.00    0.00      39/39          stbi__parse_png_file(stbi__png*, int, int) [191]
+[157]    0.0    0.00    0.00      39         stbi__get32be(stbi__context*) [157]
+-----------------------------------------------
+                0.00    0.00      13/39          stbi__getn(stbi__context*, unsigned char*, int) [188]
+                0.00    0.00      13/39          stbi__get16be(stbi__context*) [120]
+                0.00    0.00      13/39          LoadTextureFromFile(char const*, unsigned int*, int*, int*) [293]
+[158]    0.0    0.00    0.00      39         stbi__stdio_read(void*, char*, int) [158]
+-----------------------------------------------
+                0.00    0.00      36/36          stbi__parse_png_file(stbi__png*, int, int) [191]
+[159]    0.0    0.00    0.00      36         glfw_error_callback(int, char const*) [159]
+-----------------------------------------------
+                0.00    0.00      32/32          Game::Game() [537]
+[160]    0.0    0.00    0.00      32         Piece::Piece(unsigned char, bool, unsigned char, unsigned char) [160]
+-----------------------------------------------
+                0.00    0.00      32/32          Game::Game() [537]
+[161]    0.0    0.00    0.00      32         Piece::Piece() [161]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui_ImplOpenGL3_RenderDrawData(ImDrawData*) [324]
+[162]    0.0    0.00    0.00      31         ImGui_ImplOpenGL3_SetupRenderState(ImDrawData*, int, int, unsigned int) [162]
+                0.00    0.00      31/201         ImGui::GetCurrentContext() [131]
+                0.00    0.00      31/335         ImGui::GetIO() [122]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::RenderTextClippedEx(ImDrawList*, ImVec2 const&, ImVec2 const&, char const*, char const*, ImVec2 const*, ImVec2 const&, ImRect const*) [38]
+[163]    0.0    0.00    0.00      31         ImDrawList::AddText(ImFont const*, float, ImVec2 const&, unsigned int, char const*, char const*, float, ImVec4 const*) [163]
+                0.00    0.00      31/31          ImFont::RenderText(ImDrawList*, float, ImVec2 const&, unsigned int, ImVec4 const&, char const*, char const*, float, bool) const [179]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::NewFrame() [34]
+[164]    0.0    0.00    0.00      31         ImDrawListSharedData::SetCircleTessellationMaxError(float) [164]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::CollapseButton(unsigned int, ImVec2 const&) [169]
+[165]    0.0    0.00    0.00      31         ImGui::RenderArrow(ImDrawList*, ImVec2, unsigned int, int, float) [165]
+                0.00    0.00      31/6079        ImDrawList::PrimReserve(int, int) [98]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::CollapseButton(unsigned int, ImVec2 const&) [169]
+[166]    0.0    0.00    0.00      31         ImGui::IsItemActive() [166]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::Begin(char const*, bool*, int) [28]
+[167]    0.0    0.00    0.00      31         ImGui::GetIDWithSeed(int, unsigned int) [167]
+                0.00    0.00      31/2020        ImHashStr(char const*, unsigned long, unsigned int) [105]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::Begin(char const*, bool*, int) [28]
+[168]    0.0    0.00    0.00      31         ImGui::SetWindowSize(ImGuiWindow*, ImVec2 const&, int) [168]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::Begin(char const*, bool*, int) [28]
+[169]    0.0    0.00    0.00      31         ImGui::CollapseButton(unsigned int, ImVec2 const&) [169]
+                0.00    0.00      62/2046        ImGui::GetColorU32(int, float) [104]
+                0.00    0.00      31/2015        ImGui::ItemAdd(ImRect const&, unsigned int, ImRect const*, int) [108]
+                0.00    0.00      31/2015        ImGui::ButtonBehavior(ImRect const&, unsigned int, bool*, bool*, int) [107]
+                0.00    0.00      31/31          ImGui::RenderArrow(ImDrawList*, ImVec2, unsigned int, int, float) [165]
+                0.00    0.00      31/31          ImGui::IsItemActive() [166]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui_ImplGlfw_NewFrame() [300]
+[170]    0.0    0.00    0.00      31         ImGui::GetMouseCursor() [170]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::NewFrame() [34]
+[171]    0.0    0.00    0.00      31         ImGui::SetCurrentFont(ImFont*) [171]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::NewFrame() [34]
+[172]    0.0    0.00    0.00      31         ImGui::UpdateInputEvents(bool) [172]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::EndFrame() [177]
+[173]    0.0    0.00    0.00      31         ImGui::UpdateMouseMovingWindowEndFrame() [173]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::NewFrame() [34]
+[174]    0.0    0.00    0.00      31         ImGui::UpdateMouseMovingWindowNewFrame() [174]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::NewFrame() [34]
+[175]    0.0    0.00    0.00      31         ImGui::UpdateHoveredWindowAndCaptureFlags() [175]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::EndFrame() [177]
+[176]    0.0    0.00    0.00      31         ImGui::End() [176]
+                0.00    0.00      62/62          ImDrawList::PopClipRect() [146]
+                0.00    0.00      62/62          ImGuiStackSizes::CompareWithContextState(ImGuiContext*) [149]
+                0.00    0.00      62/62          ImGui::LogFinish() [154]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::Render() [1152]
+[177]    0.0    0.00    0.00      31         ImGui::EndFrame() [177]
+                0.00    0.00      62/62          AddWindowToSortBuffer(ImVector<ImGuiWindow*>*, ImGuiWindow*) [144]
+                0.00    0.00      31/31          ImGui::UpdateMouseMovingWindowEndFrame() [173]
+                0.00    0.00      31/93          SetCurrentWindow(ImGuiWindow*) [138]
+                0.00    0.00      31/31          ImGui::End() [176]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::NewFrame() [34]
+[178]    0.0    0.00    0.00      31         ImGui::NavUpdate() [178]
+                0.00    0.00     272/272         ImGui::IsKeyPressed(ImGuiKey, unsigned int, int) [123]
+                0.00    0.00      62/62          ImGui::Shortcut(int, unsigned int, int) [153]
+                0.00    0.00       1/1           ImGui::NavInitRequestApplyResult() [255]
+-----------------------------------------------
+                0.00    0.00      31/31          ImDrawList::AddText(ImFont const*, float, ImVec2 const&, unsigned int, char const*, char const*, float, ImVec4 const*) [163]
+[179]    0.0    0.00    0.00      31         ImFont::RenderText(ImDrawList*, float, ImVec2 const&, unsigned int, ImVec4 const&, char const*, char const*, float, bool) const [179]
+                0.00    0.00      31/6079        ImDrawList::PrimReserve(int, int) [98]
+-----------------------------------------------
+                0.00    0.00      31/31          ImGui::Begin(char const*, bool*, int) [28]
+[180]    0.0    0.00    0.00      31         ImFont::CalcTextSizeA(float, float, float, char const*, char const*, char const**) const [180]
+-----------------------------------------------
+                0.00    0.00      30/30          ImGui::Render() [1152]
+[181]    0.0    0.00    0.00      30         AddWindowToDrawData(ImGuiWindow*, int) [181]
+                0.00    0.00      30/30          ImGui::AddDrawListToDrawDataEx(ImDrawData*, ImVector<ImDrawList*>*, ImDrawList*) [183]
+-----------------------------------------------
+                0.00    0.00      30/30          ImGui::Render() [1152]
+[182]    0.0    0.00    0.00      30         ImDrawList::_PopUnusedDrawCmd() [182]
+-----------------------------------------------
+                0.00    0.00      30/30          AddWindowToDrawData(ImGuiWindow*, int) [181]
+[183]    0.0    0.00    0.00      30         ImGui::AddDrawListToDrawDataEx(ImDrawData*, ImVector<ImDrawList*>*, ImDrawList*) [183]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00      29/29          ImGui::ButtonBehavior(ImRect const&, unsigned int, bool*, bool*, int) [107]
+[184]    0.0    0.00    0.00      29         ImGui::IsMouseClicked(int, unsigned int, int) [184]
+-----------------------------------------------
+                0.00    0.00      29/29          ImGui::ButtonBehavior(ImRect const&, unsigned int, bool*, bool*, int) [107]
+[185]    0.0    0.00    0.00      29         ImGui::IsMouseReleased(int, unsigned int) [185]
+-----------------------------------------------
+                0.00    0.00      26/26          move_with_opening(Game&, Move (*)(Game&)) [13]
+[186]    0.0    0.00    0.00      26         lookupMove(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [186]
+                0.00    0.00     325/13303       OpeningNode::next(char*) [97]
+                0.00    0.00       1/1           buildOpeningTree() [223]
+-----------------------------------------------
+                0.00    0.00      26/26          stbi__compute_huffman_codes(stbi__zbuf*) [192]
+[187]    0.0    0.00    0.00      26         stbi__zbuild_huffman(stbi__zhuffman*, unsigned char const*, int) [187]
+-----------------------------------------------
+                0.00    0.00      13/13          stbi__parse_png_file(stbi__png*, int, int) [191]
+[188]    0.0    0.00    0.00      13         stbi__getn(stbi__context*, unsigned char*, int) [188]
+                0.00    0.00      13/39          stbi__stdio_read(void*, char*, int) [158]
+-----------------------------------------------
+                0.00    0.00      13/13          stbi__load_and_postprocess_8bit(stbi__context*, int*, int*, int*, int) [193]
+[189]    0.0    0.00    0.00      13         stbi__load_main(stbi__context*, int*, int*, int*, int, stbi__result_info*, int) [189]
+                0.00    0.00      13/13          stbi__parse_png_file(stbi__png*, int, int) [191]
+-----------------------------------------------
+                0.00    0.00      13/13          stbi__parse_png_file(stbi__png*, int, int) [191]
+[190]    0.0    0.00    0.00      13         stbi__parse_zlib(stbi__zbuf*, int) [190]
+                0.00    0.00      13/13          stbi__compute_huffman_codes(stbi__zbuf*) [192]
+-----------------------------------------------
+                0.00    0.00      13/13          stbi__load_main(stbi__context*, int*, int*, int*, int, stbi__result_info*, int) [189]
+[191]    0.0    0.00    0.00      13         stbi__parse_png_file(stbi__png*, int, int) [191]
+                0.00    0.00     424/424         stbi__get16be(stbi__context*) [120]
+                0.00    0.00      52/52          stbi__get8(stbi__context*) [156]
+                0.00    0.00      39/39          stbi__get32be(stbi__context*) [157]
+                0.00    0.00      36/36          glfw_error_callback(int, char const*) [159]
+                0.00    0.00      13/13          stbi__parse_zlib(stbi__zbuf*, int) [190]
+                0.00    0.00      13/13          stbi__getn(stbi__context*, unsigned char*, int) [188]
+-----------------------------------------------
+                0.00    0.00      13/13          stbi__parse_zlib(stbi__zbuf*, int) [190]
+[192]    0.0    0.00    0.00      13         stbi__compute_huffman_codes(stbi__zbuf*) [192]
+                0.00    0.00      26/26          stbi__zbuild_huffman(stbi__zhuffman*, unsigned char const*, int) [187]
+-----------------------------------------------
+                0.00    0.00      13/13          LoadTextureFromFile(char const*, unsigned int*, int*, int*) [293]
+[193]    0.0    0.00    0.00      13         stbi__load_and_postprocess_8bit(stbi__context*, int*, int*, int*, int) [193]
+                0.00    0.00      13/13          stbi__load_main(stbi__context*, int*, int*, int*, int, stbi__result_info*, int) [189]
+-----------------------------------------------
+                0.00    0.00       9/9           stbtt_InitFont_internal(stbtt_fontinfo*, unsigned char*, int) [230]
+[194]    0.0    0.00    0.00       9         stbtt__find_table(unsigned char*, unsigned int, char const*) [194]
+-----------------------------------------------
+                0.00    0.00       8/8           WindowSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) [234]
+[195]    0.0    0.00    0.00       8         ImGuiTextBuffer::appendf(char const*, ...) [195]
+                0.00    0.00       8/8           ImGuiTextBuffer::appendfv(char const*, __va_list_tag*) [196]
+-----------------------------------------------
+                0.00    0.00       8/8           ImGuiTextBuffer::appendf(char const*, ...) [195]
+[196]    0.0    0.00    0.00       8         ImGuiTextBuffer::appendfv(char const*, __va_list_tag*) [196]
+-----------------------------------------------
+                0.00    0.00       7/7           ImGui::LoadIniSettingsFromMemory(char const*, unsigned long) [254]
+[197]    0.0    0.00    0.00       7         WindowSettingsHandler_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void*, char const*) [197]
+-----------------------------------------------
+                0.00    0.00       7/7           call_minimax_fast(Game&) [22]
+[198]    0.0    0.00    0.00       7         std::vector<std::unique_ptr<std::thread, std::default_delete<std::thread> >, std::allocator<std::unique_ptr<std::thread, std::default_delete<std::thread> > > >::_M_default_append(unsigned long) [198]
+-----------------------------------------------
+                0.00    0.00       4/4           ImGuiWindow::~ImGuiWindow() [206]
+[199]    0.0    0.00    0.00       4         ImDrawListSplitter::ClearFreeMemory() [199]
+-----------------------------------------------
+                0.00    0.00       2/4           WindowSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, char const*) [202]
+                0.00    0.00       2/4           ImGui::Begin(char const*, bool*, int) [28]
+[200]    0.0    0.00    0.00       4         ImGui::FindWindowSettingsByID(unsigned int) [200]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui_ImplOpenGL3_CreateDeviceObjects() [32]
+[201]    0.0    0.00    0.00       2         CheckShader(unsigned int, char const*) [201]
+                0.00    0.00       2/201         ImGui::GetCurrentContext() [131]
+                0.00    0.00       2/335         ImGui::GetIO() [122]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::LoadIniSettingsFromMemory(char const*, unsigned long) [254]
+[202]    0.0    0.00    0.00       2         WindowSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, char const*) [202]
+                0.00    0.00       2/4           ImGui::FindWindowSettingsByID(unsigned int) [200]
+                0.00    0.00       2/2           ImGui::CreateNewWindowSettings(char const*) [216]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGuiWindow::~ImGuiWindow() [206]
+[203]    0.0    0.00    0.00       2         ImDrawList::_ClearFreeMemory() [203]
+                0.00    0.00      11/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00      11/1179        ImGui::MemFree(void*) [118]
+-----------------------------------------------
+                0.00    0.00       2/2           ImFontAtlasBuildInit(ImFontAtlas*) [224]
+[204]    0.0    0.00    0.00       2         ImFontAtlas::AddCustomRectRegular(int, int) [204]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::Begin(char const*, bool*, int) [28]
+[205]    0.0    0.00    0.00       2         ImGuiWindow::ImGuiWindow(ImGuiContext*, char const*) [205]
+                0.00    0.00       4/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       2/2020        ImHashStr(char const*, unsigned long, unsigned int) [105]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::Shutdown() [258]
+[206]    0.0    0.00    0.00       2         ImGuiWindow::~ImGuiWindow() [206]
+                0.00    0.00       4/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       4/4           ImDrawListSplitter::ClearFreeMemory() [199]
+                0.00    0.00       2/2           ImDrawList::_ClearFreeMemory() [203]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::Begin(char const*, bool*, int) [28]
+[207]    0.0    0.00    0.00       2         ImGuiStorage::SetVoidPtr(unsigned int, void*) [207]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00       2/2           WindowSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) [234]
+[208]    0.0    0.00    0.00       2         ImGuiTextBuffer::append(char const*, char const*) [208]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::Begin(char const*, bool*, int) [28]
+[209]    0.0    0.00    0.00       2         ImGui::FocusWindow(ImGuiWindow*, int) [209]
+                0.00    0.00       2/2           ImGui::FindBlockingModal(ImGuiWindow*) [212]
+                0.00    0.00       2/2           ImGui::BringWindowToFocusFront(ImGuiWindow*) [215]
+                0.00    0.00       2/2           ImGui::SetNavWindow(ImGuiWindow*) [210]
+                0.00    0.00       2/2           ImGui::ClosePopupsOverWindow(ImGuiWindow*, bool) [214]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::FocusWindow(ImGuiWindow*, int) [209]
+[210]    0.0    0.00    0.00       2         ImGui::SetNavWindow(ImGuiWindow*) [210]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::Begin(char const*, bool*, int) [28]
+[211]    0.0    0.00    0.00       2         ImGui::NavInitWindow(ImGuiWindow*, bool) [211]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::FocusWindow(ImGuiWindow*, int) [209]
+[212]    0.0    0.00    0.00       2         ImGui::FindBlockingModal(ImGuiWindow*) [212]
+-----------------------------------------------
+                0.00    0.00       1/2           ImGui::Initialize() [249]
+                0.00    0.00       1/2           ImGui::TableSettingsAddSettingsHandler() [256]
+[213]    0.0    0.00    0.00       2         ImGui::AddSettingsHandler(ImGuiSettingsHandler const*) [213]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::FocusWindow(ImGuiWindow*, int) [209]
+[214]    0.0    0.00    0.00       2         ImGui::ClosePopupsOverWindow(ImGuiWindow*, bool) [214]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::FocusWindow(ImGuiWindow*, int) [209]
+[215]    0.0    0.00    0.00       2         ImGui::BringWindowToFocusFront(ImGuiWindow*) [215]
+-----------------------------------------------
+                0.00    0.00       2/2           WindowSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, char const*) [202]
+[216]    0.0    0.00    0.00       2         ImGui::CreateNewWindowSettings(char const*) [216]
+                0.00    0.00       2/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       2/2020        ImHashStr(char const*, unsigned long, unsigned int) [105]
+                0.00    0.00       1/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       1/1179        ImGui::MemFree(void*) [118]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui::Begin(char const*, bool*, int) [28]
+[217]    0.0    0.00    0.00       2         ImGui::BringWindowToDisplayFront(ImGuiWindow*) [217]
+-----------------------------------------------
+                0.00    0.00       2/2           ImGui_ImplGlfw_CursorPosCallback(GLFWwindow*, double, double) [323]
+[218]    0.0    0.00    0.00       2         ImGuiIO::AddMousePosEvent(float, float) [218]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [1321]
+[219]    0.0    0.00    0.00       1         _GLOBAL__sub_I__ZN4GameC2Ev [219]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [1321]
+[220]    0.0    0.00    0.00       1         _GLOBAL__sub_I_maxdepth [220]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [1321]
+[221]    0.0    0.00    0.00       1         _GLOBAL__sub_I_stbi_failure_reason [221]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlas::AddFontDefault(ImFontConfig const*) [239]
+[222]    0.0    0.00    0.00       1         ImFormatString(char*, unsigned long, char const*, ...) [222]
+-----------------------------------------------
+                0.00    0.00       1/1           lookupMove(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [186]
+[223]    0.0    0.00    0.00       1         buildOpeningTree() [223]
+                0.00    0.00   12978/13303       OpeningNode::next(char*) [97]
+                0.00    0.00    3816/3816        void std::vector<OpeningNode*, std::allocator<OpeningNode*> >::_M_realloc_insert<OpeningNode*>(__gnu_cxx::__normal_iterator<OpeningNode**, std::vector<OpeningNode*, std::allocator<OpeningNode*> > >, OpeningNode*&&) [103]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[224]    0.0    0.00    0.00       1         ImFontAtlasBuildInit(ImFontAtlas*) [224]
+                0.00    0.00       2/2           ImFontAtlas::AddCustomRectRegular(int, int) [204]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[225]    0.0    0.00    0.00       1         ImFontAtlasBuildFinish(ImFontAtlas*) [225]
+                0.00    0.00       1/1           ImFont::BuildLookupTable() [260]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[226]    0.0    0.00    0.00       1         ImFontAtlasBuildPackCustomRects(ImFontAtlas*, void*) [226]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       1/20646       stbrp_pack_rects [39]
+                0.00    0.00       1/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       1/1179        ImGui::MemFree(void*) [118]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui_ImplGlfw_Init(GLFWwindow*, bool, GlfwClientApi) [379]
+[227]    0.0    0.00    0.00       1         ImGui_ImplGlfw_InstallCallbacks(GLFWwindow*) [227]
+                0.00    0.00       1/201         ImGui::GetCurrentContext() [131]
+                0.00    0.00       1/335         ImGui::GetIO() [122]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui_ImplGlfw_Shutdown() [301]
+[228]    0.0    0.00    0.00       1         ImGui_ImplGlfw_RestoreCallbacks(GLFWwindow*) [228]
+                0.00    0.00       1/201         ImGui::GetCurrentContext() [131]
+                0.00    0.00       1/335         ImGui::GetIO() [122]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui_ImplOpenGL3_Shutdown() [310]
+[229]    0.0    0.00    0.00       1         ImGui_ImplOpenGL3_DestroyDeviceObjects() [229]
+                0.00    0.00       3/335         ImGui::GetIO() [122]
+                0.00    0.00       2/201         ImGui::GetCurrentContext() [131]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) [30]
+[230]    0.0    0.00    0.00       1         stbtt_InitFont_internal(stbtt_fontinfo*, unsigned char*, int) [230]
+                0.00    0.00       9/9           stbtt__find_table(unsigned char*, unsigned int, char const*) [194]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::LoadIniSettingsFromMemory(char const*, unsigned long) [254]
+[231]    0.0    0.00    0.00       1         TableSettingsHandler_ApplyAll(ImGuiContext*, ImGuiSettingsHandler*) [231]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::SaveIniSettingsToMemory(unsigned long*) [253]
+[232]    0.0    0.00    0.00       1         TableSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) [232]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::LoadIniSettingsFromMemory(char const*, unsigned long) [254]
+[233]    0.0    0.00    0.00       1         WindowSettingsHandler_ApplyAll(ImGuiContext*, ImGuiSettingsHandler*) [233]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::SaveIniSettingsToMemory(unsigned long*) [253]
+[234]    0.0    0.00    0.00       1         WindowSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) [234]
+                0.00    0.00       8/8           ImGuiTextBuffer::appendf(char const*, ...) [195]
+                0.00    0.00       2/2           ImGuiTextBuffer::append(char const*, char const*) [208]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       1/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       1/1179        ImGui::MemFree(void*) [118]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::Initialize() [249]
+[235]    0.0    0.00    0.00       1         ImDrawData::Clear() [235]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::RenderWindowDecorations(ImGuiWindow*, ImRect const&, bool, bool, int, unsigned int const*, float) [clone .constprop.0] [35]
+[236]    0.0    0.00    0.00       1         ImDrawList::AddRect(ImVec2 const&, ImVec2 const&, unsigned int, float, int, float) [236]
+                0.00    0.00       1/1           ImDrawList::PathRect(ImVec2 const&, ImVec2 const&, float, int) [237]
+                0.00    0.00       1/6079        ImDrawList::PrimReserve(int, int) [98]
+-----------------------------------------------
+                0.00    0.00       1/1           ImDrawList::AddRect(ImVec2 const&, ImVec2 const&, unsigned int, float, int, float) [236]
+[237]    0.0    0.00    0.00       1         ImDrawList::PathRect(ImVec2 const&, ImVec2 const&, float, int) [237]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::CreateContext(ImFontAtlas*) [697]
+[238]    0.0    0.00    0.00       1         ImGuiStyle::ImGuiStyle() [238]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlas::GetTexDataAsRGBA32(unsigned char**, int*, int*, int*) [31]
+[239]    0.0    0.00    0.00       1         ImFontAtlas::AddFontDefault(ImFontConfig const*) [239]
+                0.00    0.00       1/1           ImFontAtlas::AddFontFromMemoryCompressedBase85TTF(char const*, float, ImFontConfig const*, unsigned short const*) [242]
+                0.00    0.00       1/1           ImFormatString(char*, unsigned long, char const*, ...) [222]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlas::Clear() [243]
+[240]    0.0    0.00    0.00       1         ImFontAtlas::ClearInputData() [240]
+                0.00    0.00       3/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       3/1179        ImGui::MemFree(void*) [118]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlas::AddFontFromMemoryCompressedBase85TTF(char const*, float, ImFontConfig const*, unsigned short const*) [242]
+[241]    0.0    0.00    0.00       1         ImFontAtlas::AddFontFromMemoryCompressedTTF(void const*, int, float, ImFontConfig const*, unsigned short const*) [241]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       1/1           ImFontAtlas::AddFont(ImFontConfig const*) [244]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlas::AddFontDefault(ImFontConfig const*) [239]
+[242]    0.0    0.00    0.00       1         ImFontAtlas::AddFontFromMemoryCompressedBase85TTF(char const*, float, ImFontConfig const*, unsigned short const*) [242]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       1/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       1/1179        ImGui::MemFree(void*) [118]
+                0.00    0.00       1/1           ImFontAtlas::AddFontFromMemoryCompressedTTF(void const*, int, float, ImFontConfig const*, unsigned short const*) [241]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlas::~ImFontAtlas() [246]
+[243]    0.0    0.00    0.00       1         ImFontAtlas::Clear() [243]
+                0.00    0.00       7/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       7/1179        ImGui::MemFree(void*) [118]
+                0.00    0.00       1/1           ImFontAtlas::ClearInputData() [240]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlas::AddFontFromMemoryCompressedTTF(void const*, int, float, ImFontConfig const*, unsigned short const*) [241]
+[244]    0.0    0.00    0.00       1         ImFontAtlas::AddFont(ImFontConfig const*) [244]
+                0.00    0.00       3/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::CreateContext(ImFontAtlas*) [697]
+[245]    0.0    0.00    0.00       1         ImFontAtlas::ImFontAtlas() [245]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::Shutdown() [258]
+[246]    0.0    0.00    0.00       1         ImFontAtlas::~ImFontAtlas() [246]
+                0.00    0.00       1/1           ImFontAtlas::Clear() [243]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::DestroyContext(ImGuiContext*) [747]
+[247]    0.0    0.00    0.00       1         ImGuiContext::~ImGuiContext() [247]
+                0.00    0.00       6/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00       6/1179        ImGui::MemFree(void*) [118]
+                0.00    0.00       1/1           ImFont::~ImFont() [263]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::CreateContext(ImFontAtlas*) [697]
+[248]    0.0    0.00    0.00       1         ImDrawListSharedData::ImDrawListSharedData() [248]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::CreateContext(ImFontAtlas*) [697]
+[249]    0.0    0.00    0.00       1         ImGui::Initialize() [249]
+                0.00    0.00       2/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       1/2           ImGui::AddSettingsHandler(ImGuiSettingsHandler const*) [213]
+                0.00    0.00       1/1           ImGui::TableSettingsAddSettingsHandler() [256]
+                0.00    0.00       1/1182        MallocWrapper(unsigned long, void*) [116]
+                0.00    0.00       1/1           ImDrawData::Clear() [235]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui_ImplGlfw_Init(GLFWwindow*, bool, GlfwClientApi) [379]
+[250]    0.0    0.00    0.00       1         ImGui::GetMainViewport() [250]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::CreateContext(ImFontAtlas*) [697]
+[251]    0.0    0.00    0.00       1         ImGui::StyleColorsDark(ImGuiStyle*) [251]
+                0.00    0.00       1/1           ImGui::GetStyle() [257]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::NewFrame() [34]
+[252]    0.0    0.00    0.00       1         ImGui::LoadIniSettingsFromDisk(char const*) [252]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+                0.00    0.00       1/1           ImGui::LoadIniSettingsFromMemory(char const*, unsigned long) [254]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::Shutdown() [258]
+[253]    0.0    0.00    0.00       1         ImGui::SaveIniSettingsToMemory(unsigned long*) [253]
+                0.00    0.00       1/1           TableSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) [232]
+                0.00    0.00       1/1           WindowSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) [234]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::LoadIniSettingsFromDisk(char const*) [252]
+[254]    0.0    0.00    0.00       1         ImGui::LoadIniSettingsFromMemory(char const*, unsigned long) [254]
+                0.00    0.00       7/7           WindowSettingsHandler_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void*, char const*) [197]
+                0.00    0.00       2/2           WindowSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, char const*) [202]
+                0.00    0.00       1/1           TableSettingsHandler_ApplyAll(ImGuiContext*, ImGuiSettingsHandler*) [231]
+                0.00    0.00       1/1           WindowSettingsHandler_ApplyAll(ImGuiContext*, ImGuiSettingsHandler*) [233]
+                0.00    0.00       1/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::NavUpdate() [178]
+[255]    0.0    0.00    0.00       1         ImGui::NavInitRequestApplyResult() [255]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::Initialize() [249]
+[256]    0.0    0.00    0.00       1         ImGui::TableSettingsAddSettingsHandler() [256]
+                0.00    0.00       1/2020        ImHashStr(char const*, unsigned long, unsigned int) [105]
+                0.00    0.00       1/2           ImGui::AddSettingsHandler(ImGuiSettingsHandler const*) [213]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::StyleColorsDark(ImGuiStyle*) [251]
+[257]    0.0    0.00    0.00       1         ImGui::GetStyle() [257]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::DestroyContext(ImGuiContext*) [747]
+[258]    0.0    0.00    0.00       1         ImGui::Shutdown() [258]
+                0.00    0.00      16/1188        FreeWrapper(void*, void*) [115]
+                0.00    0.00      12/1179        ImGui::MemFree(void*) [118]
+                0.00    0.00       2/2           ImGuiWindow::~ImGuiWindow() [206]
+                0.00    0.00       1/1           ImGui::SaveIniSettingsToMemory(unsigned long*) [253]
+                0.00    0.00       1/1           ImFontAtlas::~ImFontAtlas() [246]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::ItemAdd(ImRect const&, unsigned int, ImRect const*, int) [108]
+[259]    0.0    0.00    0.00       1         ImGui::NavApplyItemToResult(ImGuiNavItemData*) [259]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFontAtlasBuildFinish(ImFontAtlas*) [225]
+[260]    0.0    0.00    0.00       1         ImFont::BuildLookupTable() [260]
+                0.00    0.00       1/1           ImFont::GrowIndex(int) [261]
+-----------------------------------------------
+                0.00    0.00       1/1           ImFont::BuildLookupTable() [260]
+[261]    0.0    0.00    0.00       1         ImFont::GrowIndex(int) [261]
+                0.00    0.00       2/1180        ImGui::MemAlloc(unsigned long) [117]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::CreateContext(ImFontAtlas*) [697]
+[262]    0.0    0.00    0.00       1         ImFont::ImFont() [262]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGuiContext::~ImGuiContext() [247]
+[263]    0.0    0.00    0.00       1         ImFont::~ImFont() [263]
+-----------------------------------------------
+                0.00    0.00       1/1           ImGui::CreateContext(ImFontAtlas*) [697]
+[264]    0.0    0.00    0.00       1         ImGuiIO::ImGuiIO() [264]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+ [219] _GLOBAL__sub_I__ZN4GameC2Ev (Game.cpp) [237] ImDrawList::PathRect(ImVec2 const&, ImVec2 const&, float, int) [214] ImGui::ClosePopupsOverWindow(ImGuiWindow*, bool)
+ [220] _GLOBAL__sub_I_maxdepth (Engine.cpp) [238] ImGuiStyle::ImGuiStyle() [200] ImGui::FindWindowSettingsByID(unsigned int)
+ [221] _GLOBAL__sub_I_stbi_failure_reason (main.cpp) [239] ImFontAtlas::AddFontDefault(ImFontConfig const*) [183] ImGui::AddDrawListToDrawDataEx(ImDrawData*, ImVector<ImDrawList*>*, ImDrawList*)
+ [186] lookupMove(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&) [240] ImFontAtlas::ClearInputData() [215] ImGui::BringWindowToFocusFront(ImGuiWindow*)
+ [222] ImFormatString(char*, unsigned long, char const*, ...) [31] ImFontAtlas::GetTexDataAsRGBA32(unsigned char**, int*, int*, int*) [27] ImGui::ColorConvertFloat4ToU32(ImVec4 const&)
+ [223] buildOpeningTree()    [204] ImFontAtlas::AddCustomRectRegular(int, int) [216] ImGui::CreateNewWindowSettings(char const*)
+  [22] call_minimax_fast(Game&) [241] ImFontAtlas::AddFontFromMemoryCompressedTTF(void const*, int, float, ImFontConfig const*, unsigned short const*) [252] ImGui::LoadIniSettingsFromDisk(char const*)
+   [1] thread_func_minimax(int, Game&, Move, std::mutex*, int*, int*, Move*) [242] ImFontAtlas::AddFontFromMemoryCompressedBase85TTF(char const*, float, ImFontConfig const*, unsigned short const*) [253] ImGui::SaveIniSettingsToMemory(unsigned long*)
+ [224] ImFontAtlasBuildInit(ImFontAtlas*) [243] ImFontAtlas::Clear() [217] ImGui::BringWindowToDisplayFront(ImGuiWindow*)
+  [14] call_minimax_IDS_fast(Game&) [244] ImFontAtlas::AddFont(ImFontConfig const*) [254] ImGui::LoadIniSettingsFromMemory(char const*, unsigned long)
+ [225] ImFontAtlasBuildFinish(ImFontAtlas*) [245] ImFontAtlas::ImFontAtlas() [255] ImGui::NavInitRequestApplyResult()
+ [226] ImFontAtlasBuildPackCustomRects(ImFontAtlas*, void*) [246] ImFontAtlas::~ImFontAtlas() [152] ImGui::UpdateWindowParentAndRootLinks(ImGuiWindow*, int, ImGuiWindow*)
+ [227] ImGui_ImplGlfw_InstallCallbacks(GLFWwindow*) [110] ImGuiWindow::GetID(char const*, char const*) [256] ImGui::TableSettingsAddSettingsHandler()
+ [228] ImGui_ImplGlfw_RestoreCallbacks(GLFWwindow*) [205] ImGuiWindow::ImGuiWindow(ImGuiContext*, char const*) [173] ImGui::UpdateMouseMovingWindowEndFrame()
+  [29] ImGui_ImplOpenGL3_CreateFontsTexture() [206] ImGuiWindow::~ImGuiWindow() [174] ImGui::UpdateMouseMovingWindowNewFrame()
+ [229] ImGui_ImplOpenGL3_DestroyDeviceObjects() [97] OpeningNode::next(char*) [175] ImGui::UpdateHoveredWindowAndCaptureFlags()
+   [4] minimax(Game&, int, int, int, Move*) [247] ImGuiContext::~ImGuiContext() [176] ImGui::End()
+  [15] check_ob(Position)    [207] ImGuiStorage::SetVoidPtr(unsigned int, void*) [28] ImGui::Begin(char const*, bool*, int)
+ [105] ImHashStr(char const*, unsigned long, unsigned int) [149] ImGuiStackSizes::CompareWithContextState(ImGuiContext*) [122] ImGui::GetIO()
+ [156] stbi__get8(stbi__context*) (stb_image.h) [208] ImGuiTextBuffer::append(char const*, char const*) [108] ImGui::ItemAdd(ImRect const&, unsigned int, ImRect const*, int)
+ [188] stbi__getn(stbi__context*, unsigned char*, int) (stb_image.h) [195] ImGuiTextBuffer::appendf(char const*, ...) [118] ImGui::MemFree(void*)
+ [201] CheckShader(unsigned int, char const*) (imgui_impl_opengl3.cpp) [196] ImGuiTextBuffer::appendfv(char const*, __va_list_tag*) [177] ImGui::EndFrame()
+ [115] FreeWrapper(void*, void*) (imgui.cpp) [150] ImGuiMenuColumns::Update(float, bool) [257] ImGui::GetStyle()
+ [116] MallocWrapper(unsigned long, void*) (imgui.cpp) [199] ImDrawListSplitter::ClearFreeMemory() [113] ImGui::ItemSize(ImVec2 const&, float)
+ [120] stbi__get16be(stbi__context*) (stb_image.h) [164] ImDrawListSharedData::SetCircleTessellationMaxError(float) [117] ImGui::MemAlloc(unsigned long)
+ [157] stbi__get32be(stbi__context*) (stb_image.h) [248] ImDrawListSharedData::ImDrawListSharedData() [153] ImGui::Shortcut(int, unsigned int, int)
+ [189] stbi__load_main(stbi__context*, int*, int*, int*, int, stbi__result_info*, int) (stb_image.h) [11] tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::rehash_bucket(tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket*, unsigned long) [258] ImGui::Shutdown()
+ [138] SetCurrentWindow(ImGuiWindow*) (imgui.cpp) [12] bool tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::lookup<false, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*)>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::const_accessor*, bool, tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node* (*)(tbb::detail::d1::tbb_allocator<tbb::detail::d2::hash_map_base<tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > >, tbb::detail::d1::spin_rw_mutex>::bucket>&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::array<int, 3ul> const*), tbb::detail::d2::concurrent_hash_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::array<int, 3ul>, tbb::detail::d1::tbb_hash_compare<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, tbb::detail::d1::tbb_allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::array<int, 3ul> > > >::node*) [154] ImGui::LogFinish()
+ [190] stbi__parse_zlib(stbi__zbuf*, int) (stb_image.h) [26] Game::switch_turns[abi:cxx11]() [259] ImGui::NavApplyItemToResult(ImGuiNavItemData*) (imgui.cpp)
+ [158] stbi__stdio_read(void*, char*, int) (stb_image.h) [8] Game::get_all_moves(bool) [35] ImGui::RenderWindowDecorations(ImGuiWindow*, ImRect const&, bool, bool, int, unsigned int const*, float) [clone .constprop.0] (imgui.cpp)
+ [194] stbtt__find_table(unsigned char*, unsigned int, char const*) (imstb_truetype.h) [6] Game::leap_then_look(Piece*, Position) [155] ImGui::UpdateWindowManualResize(ImGuiWindow*, ImVec2 const&, int*, int, unsigned int*, ImRect const&) (imgui.cpp)
+  [96] stbtt__close_shape(stbtt_vertex*, int, int, int, int, int, int, int, int, int) (imstb_truetype.h) [7] Game::check_for_check(bool, Position) [178] ImGui::NavUpdate() (imgui.cpp)
+ [181] AddWindowToDrawData(ImGuiWindow*, int) (imgui.cpp) [9] Game::check_for_winner(bool) [24] Piece::can_capture(Piece*)
+ [159] glfw_error_callback(int, char const*) (main.cpp) [36] Game::initialize_board() [5] Piece::find_valid_moves(Game&, Position (&) [27])
+ [191] stbi__parse_png_file(stbi__png*, int, int) (stb_image.h) [16] Game::move(Piece*, Position) [160] Piece::Piece(unsigned char, bool, unsigned char, unsigned char)
+ [187] stbi__zbuild_huffman(stbi__zhuffman*, unsigned char const*, int) (stb_image.h) [37] Game::capture(Piece*) [161] Piece::Piece()
+ [119] stbtt__GetGlyfOffset(stbtt_fontinfo const*, int) (imstb_truetype.h) [17] Game::moveBack(MoveDetails) [260] ImFont::BuildLookupTable()
+ [144] AddWindowToSortBuffer(ImVector<ImGuiWindow*>*, ImGuiWindow*) (imgui.cpp) [10] Game::toString[abi:cxx11]() [129] ImFont::AddGlyph(ImFontConfig const*, unsigned short, float, float, float, float, float, float, float, float, float)
+ [128] stbtt__GetGlyphShapeTT(stbtt_fontinfo const*, int, stbtt_vertex**) (imstb_truetype.h) [121] Game::Game(Game const&) [261] ImFont::GrowIndex(int)
+ [230] stbtt_InitFont_internal(stbtt_fontinfo*, unsigned char*, int) (imstb_truetype.h) [132] std::future<decltype ({parm#1}(0, {parm#2}...))> ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&) [262] ImFont::ImFont()
+ [192] stbi__compute_huffman_codes(stbi__zbuf*) (stb_image.h) [33] ImGui::BeginTable(char const*, int, int, ImVec2 const&, float) [263] ImFont::~ImFont()
+ [130] stbtt__sort_edges_quicksort(stbtt__edge*, int) (imstb_truetype.h) [249] ImGui::Initialize() [218] ImGuiIO::AddMousePosEvent(float, float)
+ [114] stbtt__fill_active_edges_new(float*, float*, int, stbtt__active_edge*, float) (imstb_truetype.h) [209] ImGui::FocusWindow(ImGuiWindow*, int) [264] ImGuiIO::ImGuiIO()
+ [133] CalcWindowSizeAfterConstraint(ImGuiWindow*, ImVec2 const&) (imgui.cpp) [102] ImGui::GetColorU32(ImVec4 const&) [179] ImFont::RenderText(ImDrawList*, float, ImVec2 const&, unsigned int, ImVec4 const&, char const*, char const*, float, bool) const
+ [231] TableSettingsHandler_ApplyAll(ImGuiContext*, ImGuiSettingsHandler*) (imgui_tables.cpp) [104] ImGui::GetColorU32(int, float) [180] ImFont::CalcTextSizeA(float, float, float, char const*, char const*, char const**) const
+ [232] TableSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) (imgui_tables.cpp) [165] ImGui::RenderArrow(ImDrawList*, ImVec2, unsigned int, int, float) [124] std::__future_base::_State_baseV2::_M_complete_async()
+ [233] WindowSettingsHandler_ApplyAll(ImGuiContext*, ImGuiSettingsHandler*) (imgui.cpp) [111] ImGui::RenderFrame(ImVec2, ImVec2, unsigned int, bool, float) [127] std::__future_base::_Result<void>::~_Result()
+ [197] WindowSettingsHandler_ReadLine(ImGuiContext*, ImGuiSettingsHandler*, void*, char const*) (imgui.cpp) [166] ImGui::IsItemActive() [139] std::_Function_base::_Base_manager<std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> >::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> > const&, std::_Manager_operation)
+ [202] WindowSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, char const*) (imgui.cpp) [123] ImGui::IsKeyPressed(ImGuiKey, unsigned int, int) [142] std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}>::_M_manager(std::_Any_data&, std::_Function_base::_Base_manager<ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}> const&, std::_Manager_operation)
+ [234] WindowSettingsHandler_WriteAll(ImGuiContext*, ImGuiSettingsHandler*, ImGuiTextBuffer*) (imgui.cpp) [210] ImGui::SetNavWindow(ImGuiWindow*) [2] std::_Function_handler<std::unique_ptr<std::__future_base::_Result_base, std::__future_base::_Result_base::_Deleter> (), std::__future_base::_Task_setter<std::unique_ptr<std::__future_base::_Result<void>, std::__future_base::_Result_base::_Deleter>, std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>::_M_run(int&&)::{lambda()#1}, void> >::_M_invoke(std::_Any_data const&)
+  [30] ImFontAtlasBuildWithStbTruetype(ImFontAtlas*) (imgui_draw.cpp) [167] ImGui::GetIDWithSeed(int, unsigned int) [140] std::_Function_handler<void (int), ctpl::thread_pool::push<void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*, int*, int*, Move*>(void (&)(int, Game&, Move, std::mutex*, int*, int*, Move*), Game&, Move&, std::mutex*&&, int*&&, int*&&, Move*&&)::{lambda(int)#1}>::_M_invoke(std::_Any_data const&, int&&)
+ [193] stbi__load_and_postprocess_8bit(stbi__context*, int*, int*, int*, int) (stb_image.h) [106] ImGui::ItemHoverable(ImRect const&, unsigned int, int) [125] std::_Sp_counted_ptr_inplace<std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>, std::allocator<int>, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+ [162] ImGui_ImplOpenGL3_SetupRenderState(ImDrawData*, int, int, unsigned int) (imgui_impl_opengl3.cpp) [211] ImGui::NavInitWindow(ImGuiWindow*, bool) [126] std::_Sp_counted_ptr_inplace<std::__future_base::_Task_state<std::_Bind<void (*(std::_Placeholder<1>, Game, Move, std::mutex*, int*, int*, Move*))(int, Game&, Move, std::mutex*, int*, int*, Move*)>, std::allocator<int>, void (int)>, std::allocator<int>, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+ [145] CalcNextScrollFromScrollTargetAndClamp(ImGuiWindow*) (imgui.cpp) [168] ImGui::SetWindowSize(ImGuiWindow*, ImVec2 const&, int) [143] std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+ [235] ImDrawData::Clear()   [107] ImGui::ButtonBehavior(ImRect const&, unsigned int, bool*, bool*, int) [141] std::_Sp_counted_ptr_inplace<std::packaged_task<void (int)>, std::allocator<std::packaged_task<void (int)> >, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+ [100] ImDrawList::AddDrawCmd() [169] ImGui::CollapseButton(unsigned int, ImVec2 const&) [136] std::_Sp_counted_ptr_inplace<std::atomic<bool>, std::allocator<std::atomic<bool> >, (__gnu_cxx::_Lock_policy)2>::_M_destroy()
+ [146] ImDrawList::PopClipRect() [170] ImGui::GetMouseCursor() [137] std::_Sp_counted_ptr_inplace<std::atomic<bool>, std::allocator<std::atomic<bool> >, (__gnu_cxx::_Lock_policy)2>::_M_dispose()
+  [98] ImDrawList::PrimReserve(int, int) [184] ImGui::IsMouseClicked(int, unsigned int, int) [20] void std::vector<Move, std::allocator<Move> >::_M_realloc_insert<Move const&>(__gnu_cxx::__normal_iterator<Move*, std::vector<Move, std::allocator<Move> > >, Move const&)
+ [134] ImDrawList::PushClipRect(ImVec2 const&, ImVec2 const&, bool) [171] ImGui::SetCurrentFont(ImFont*) [103] void std::vector<OpeningNode*, std::allocator<OpeningNode*> >::_M_realloc_insert<OpeningNode*>(__gnu_cxx::__normal_iterator<OpeningNode**, std::vector<OpeningNode*, std::allocator<OpeningNode*> > >, OpeningNode*&&)
+  [99] ImDrawList::AddRectFilled(ImVec2 const&, ImVec2 const&, unsigned int, float, int) [250] ImGui::GetMainViewport() [23] std::vector<std::shared_ptr<std::atomic<bool> >, std::allocator<std::shared_ptr<std::atomic<bool> > > >::_M_default_append(unsigned long)
+ [147] ImDrawList::PushTextureID(void*) [185] ImGui::IsMouseReleased(int, unsigned int) [198] std::vector<std::unique_ptr<std::thread, std::default_delete<std::thread> >, std::allocator<std::unique_ptr<std::thread, std::default_delete<std::thread> > > >::_M_default_append(unsigned long)
+ [203] ImDrawList::_ClearFreeMemory() [251] ImGui::StyleColorsDark(ImGuiStyle*) [18] void std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > >::_M_realloc_insert<std::tuple<int, Move> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, std::tuple<int, Move>&&)
+ [182] ImDrawList::_PopUnusedDrawCmd() [151] ImGui::FindWindowByName(char const*) [19] void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#2}>) (stl_algo.h)
+ [148] ImDrawList::_ResetForNewFrame() [212] ImGui::FindBlockingModal(ImGuiWindow*) [21] void std::__introsort_loop<__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}> >(__gnu_cxx::__normal_iterator<std::tuple<int, Move>*, std::vector<std::tuple<int, Move>, std::allocator<std::tuple<int, Move> > > >, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>, long, __gnu_cxx::__ops::_Iter_comp_iter<minimax(Game&, int, int, int, Move*)::{lambda(std::tuple<int, Move> const&, std::tuple<int, Move> const&)#1}>) (stl_algo.h)
+ [135] ImDrawList::_OnChangedClipRect() [131] ImGui::GetCurrentContext() [41] parse_version (imgui_impl_opengl3_loader.h)
+ [101] ImDrawList::_OnChangedTextureID() [172] ImGui::UpdateInputEvents(bool) [39] stbrp_pack_rects (imstb_rectpack.h)
+ [236] ImDrawList::AddRect(ImVec2 const&, ImVec2 const&, unsigned int, float, int, float) [213] ImGui::AddSettingsHandler(ImGuiSettingsHandler const*) [40] stbtt_GetGlyphBitmapBoxSubpixel.constprop.0 (imstb_truetype.h)
+ [163] ImDrawList::AddText(ImFont const*, float, ImVec2 const&, unsigned int, char const*, char const*, float, ImVec4 const*) [112] ImGui::RenderNavHighlight(ImRect const&, unsigned int, int)
+ [109] ImDrawList::AddImage(void*, ImVec2 const&, ImVec2 const&, ImVec2 const&, ImVec2 const&, unsigned int) [38] ImGui::RenderTextClippedEx(ImDrawList*, ImVec2 const&, ImVec2 const&, char const*, char const*, ImVec2 const*, ImVec2 const&, ImRect const*)

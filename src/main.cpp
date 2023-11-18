@@ -220,7 +220,8 @@ int main(int, char**)
                 }
                 else {
                     textureIndex = piece->type;
-                    if (!piece->white) {
+                    int color = !piece->white;
+                    if (color) {
                         textureIndex += 6;
                     }
                 }

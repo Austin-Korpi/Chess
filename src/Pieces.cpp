@@ -15,16 +15,16 @@ bool check_ob(Position move) {
 Piece::Piece() {
 	x = y = 0;
 	white = true;
-	type = pawn;
-	captured = false;
+	type = PAWN;
+	// captured = false;
 }
 
-Piece::Piece(pieceOptions tp,bool wht, unsigned char hor, unsigned char ver) {
+Piece::Piece(unsigned char tp,bool wht, unsigned char hor, unsigned char ver) {
 	type = tp;
 	white = wht;
 	x = hor;
 	y = ver;
-	captured = false;
+	// captured = false;
 }
 
 bool Piece::can_capture(Piece* other) {
@@ -34,7 +34,7 @@ bool Piece::can_capture(Piece* other) {
 	if (other->white == white) {
 		return false;
 	}
-	if (other->type == king) {
+	if (other->type == KING) {
 		return false;
 	}
 	return true;
@@ -43,7 +43,7 @@ bool Piece::can_capture(Piece* other) {
 int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 	int numMoves = 0;
 
-	if (type == pawn) {
+	if (type == PAWN) {
 		int direction = white * (-2) + 1;
 		//Basic Move
 		if (!check_ob({ x,y + direction }) && game.board[y + direction][x] == NULL){
@@ -71,9 +71,9 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 					numMoves++;
 				}
 				//En passant
-				else if (can_capture(game.board[y][move.x]) && game.board[y][move.x]->type == pawn) {
+				else if (can_capture(game.board[y][move.x]) && game.board[y][move.x]->type == PAWN) {
 					Move lastMove = game.moveLog[game.moveLog.size() - 1];
-					if (lastMove.to == Position{move.x, y} && game.board[lastMove.to.y][lastMove.to.x]->type == pawn && abs(lastMove.from.y - lastMove.to.y) > 1 
+					if (lastMove.to == Position{move.x, y} && game.board[lastMove.to.y][lastMove.to.x]->type == PAWN && abs(lastMove.from.y - lastMove.to.y) > 1 
 						&& !game.leap_then_look(this, move)) {
 
 						moves[numMoves] = move;
@@ -82,7 +82,7 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 				}
 			}
 		}
-	} else if (type == night) {
+	} else if (type == NIGHT) {
 		Position possibilities[] = { {x + 2, y - 1}, {x + 2, y + 1},
 			{x + 1, y + 2}, {x - 1, y + 2}, {x - 2, y + 1},
 			{x - 2, y - 1}, {x - 1, y - 2}, {x + 1, y - 2} };
@@ -95,7 +95,7 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 				numMoves++;
 			}
 		}
-	} else if (type == bishop) {
+	} else if (type == BISHOP) {
 		Position dir[4] = { {1,1},{-1,1},{-1,-1},{1,-1} };
 		for (int i = 0; i < 4; i++) {
 			int potX = x + dir[i].x;
@@ -120,7 +120,7 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 				}
 			}
 		}
-	} else if (type == rook) {
+	} else if (type == ROOK) {
 		Position dir[4] = { {1,0},{-1,0},{0,1},{0,-1} };
 		for (int i = 0; i < 4; i++) {
 			int potX = x + dir[i].x;
@@ -146,7 +146,7 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 			}
 
 		}
-	} else if (type == queen) {
+	} else if (type == QUEEN) {
 		Position dir[8] = { {1,1},{-1,1},{-1,-1},{1,-1},
 			{1,0},{-1,0},{0,1},{0,-1} };
 		for (int i = 0; i < 8; i++) {
@@ -187,8 +187,7 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 		//Castling
 		if (!game.check_for_check(white, { x, y })) {
 			// King side
-			if (game.board[y][7] != NULL && game.board[y][7]->type == rook && 
-				// ((white && game.castleK) || (!white && game.castlek)) &&
+			if (game.board[y][7] != NULL && game.board[y][7]->type == ROOK && 
 				((white && game.canCastle & 0b1000) || (!white && game.canCastle & 0b0010)) &&
 				game.board[y][5] == NULL && game.board[y][6] == NULL && 
 				!game.leap_then_look(this, {5,y}) && !game.leap_then_look(this, {6, y})) {
@@ -196,8 +195,7 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 				numMoves++;
 			}
 			// Queen side
-			if (game.board[y][0] != NULL && game.board[y][0]->type == rook && 
-				// ((white && game.castleQ) || (!white && game.castleq)) &&
+			if (game.board[y][0] != NULL && game.board[y][0]->type == ROOK && 
 				((white && game.canCastle & 0b0100) || (!white && game.canCastle & 0b0001)) &&
 				game.board[y][1] == NULL && game.board[y][2] == NULL && game.board[y][3] == NULL 
 				&& !game.leap_then_look(this, {3,y}) && !game.leap_then_look(this, {2, y})) {

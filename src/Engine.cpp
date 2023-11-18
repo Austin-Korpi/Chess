@@ -28,13 +28,13 @@ int heuristic(Game &game) {
 
 	// White pieces
 	for (auto piece : game.whitePieces) {
-		if (!piece.captured) {
+		if (piece.white >= 0) {
 			material += worth[piece.type];
 		}
 	}
 	// Black pieces
 	for (auto piece : game.blackPieces) {
-		if (!piece.captured) {
+		if (piece.white >= 0) {
 			material -= worth[piece.type];
 		}
 	}

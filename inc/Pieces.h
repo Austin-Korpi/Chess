@@ -13,21 +13,21 @@ struct Position{
 	}
 };
 
-#define PAWN 1
-#define NIGHT 2
-#define BISHOP 3
-#define ROOK 4
-#define QUEEN 5
-#define KING 6
+#define PAWN 0
+#define NIGHT 1
+#define BISHOP 2
+#define ROOK 3
+#define QUEEN 4
+#define KING 5
 
-typedef enum {
-	pawn = 0,
-	night = 1,
-	bishop = 2,
-	rook = 3,
-	queen = 4,
-	king = 5
-} pieceOptions;
+// typedef enum {
+// 	PAWN = 0,
+// 	NIGHT = 1,
+// 	BISHOP = 2,
+// 	ROOK = 3,
+// 	QUEEN = 4,
+// 	KING = 5
+// } pieceOptions;
 
 
 struct Move {
@@ -63,20 +63,20 @@ bool check_ob(Position move);
 
 class Piece {
 public:
-	pieceOptions type;
+	unsigned char type;
 	unsigned char x, y;
-	bool white;
-	bool captured;
+	char white;
+	// char captured;
 
 	Piece();
-	Piece(pieceOptions pc, bool wht, unsigned char hor, unsigned char ver);
+	Piece(unsigned char pc, bool wht, unsigned char hor, unsigned char ver);
 
 	bool can_capture(Piece* other);
 	int find_valid_moves(Game &game, Position (&moves)[27]);
 	char toString() {
     	char codes[12] = {0b1001, 0b1010, 0b1011, 0b1100, 0b1101, 0b1110, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110};
 		char buff = -1;
-		if (!captured) {
+		if (white >= 0) {
 			if (x & 1) {
 				buff ^= codes[type + (white * 6)];
 			} else {
