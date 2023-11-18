@@ -7,47 +7,43 @@ Game::Game()
 {
     moveLog = std::vector<Move>();
     turn = true;
-    // castleK = true;
-	// castleQ = true;
-	// castlek = true;
-	// castleq = true;
     canCastle = 0b1111;
 	sinceCapture = 0;
 
     // Initialize pieces
-    whitePieces[8] = Piece(8, rook, true, 0, 7);
-    whitePieces[9] = Piece(9, night, true, 1, 7);
-    whitePieces[10] = Piece(10, bishop, true, 2, 7);
-    whitePieces[11] = Piece(11, queen, true, 3, 7);
-    whitePieces[12] = Piece(12, king, true, 4, 7);
-    whitePieces[13] = Piece(13, bishop, true, 5, 7);
-    whitePieces[14] = Piece(14, night, true, 6, 7);
-    whitePieces[15] = Piece(15, rook, true, 7, 7);
-    whitePieces[0] = Piece(0, pawn, true, 0, 6);
-    whitePieces[1] = Piece(1, pawn, true, 1, 6);
-    whitePieces[2] = Piece(2, pawn, true, 2, 6);
-    whitePieces[3] = Piece(3, pawn, true, 3, 6);
-    whitePieces[4] = Piece(4, pawn, true, 4, 6);
-    whitePieces[5] = Piece(5, pawn, true, 5, 6);
-    whitePieces[6] = Piece(6, pawn, true, 6, 6);
-    whitePieces[7] = Piece(7, pawn, true, 7, 6);
+    whitePieces[8] = Piece(rook, true, 0, 7);
+    whitePieces[9] = Piece(night, true, 1, 7);
+    whitePieces[10] = Piece(bishop, true, 2, 7);
+    whitePieces[11] = Piece(queen, true, 3, 7);
+    whitePieces[12] = Piece(king, true, 4, 7);
+    whitePieces[13] = Piece(bishop, true, 5, 7);
+    whitePieces[14] = Piece(night, true, 6, 7);
+    whitePieces[15] = Piece(rook, true, 7, 7);
+    whitePieces[0] = Piece(pawn, true, 0, 6);
+    whitePieces[1] = Piece(pawn, true, 1, 6);
+    whitePieces[2] = Piece(pawn, true, 2, 6);
+    whitePieces[3] = Piece(pawn, true, 3, 6);
+    whitePieces[4] = Piece(pawn, true, 4, 6);
+    whitePieces[5] = Piece(pawn, true, 5, 6);
+    whitePieces[6] = Piece(pawn, true, 6, 6);
+    whitePieces[7] = Piece(pawn, true, 7, 6);
 
-    blackPieces[0] = Piece(0, rook, false, 0, 0);
-    blackPieces[1] = Piece(1, night, false, 1, 0);
-    blackPieces[2] = Piece(2, bishop, false, 2, 0);
-    blackPieces[3] = Piece(3, queen, false, 3, 0);
-    blackPieces[4] = Piece(4, king, false, 4, 0);
-    blackPieces[5] = Piece(5, bishop, false, 5, 0);
-    blackPieces[6] = Piece(6, night, false, 6, 0);
-    blackPieces[7] = Piece(7, rook, false, 7, 0);
-    blackPieces[8] = Piece(8, pawn, false, 0, 1);
-    blackPieces[9] = Piece(9, pawn, false, 1, 1);
-    blackPieces[10] = Piece(10, pawn, false, 2, 1);
-    blackPieces[11] = Piece(11, pawn, false, 3, 1);
-    blackPieces[12] = Piece(12, pawn, false, 4, 1);
-    blackPieces[13] = Piece(13, pawn, false, 5, 1);
-    blackPieces[14] = Piece(14, pawn, false, 6, 1);
-    blackPieces[15] = Piece(15, pawn, false, 7, 1);
+    blackPieces[0] = Piece(rook, false, 0, 0);
+    blackPieces[1] = Piece(night, false, 1, 0);
+    blackPieces[2] = Piece(bishop, false, 2, 0);
+    blackPieces[3] = Piece(queen, false, 3, 0);
+    blackPieces[4] = Piece(king, false, 4, 0);
+    blackPieces[5] = Piece(bishop, false, 5, 0);
+    blackPieces[6] = Piece(night, false, 6, 0);
+    blackPieces[7] = Piece(rook, false, 7, 0);
+    blackPieces[8] = Piece(pawn, false, 0, 1);
+    blackPieces[9] = Piece(pawn, false, 1, 1);
+    blackPieces[10] = Piece(pawn, false, 2, 1);
+    blackPieces[11] = Piece(pawn, false, 3, 1);
+    blackPieces[12] = Piece(pawn, false, 4, 1);
+    blackPieces[13] = Piece(pawn, false, 5, 1);
+    blackPieces[14] = Piece(pawn, false, 6, 1);
+    blackPieces[15] = Piece(pawn, false, 7, 1);
 
     // Save the location of the kings
     whiteKing = {whitePieces[12].x, whitePieces[12].y};
@@ -59,15 +55,11 @@ Game::Game()
 
 Game::Game(const Game &game) : whitePieces(game.whitePieces),
                                blackPieces(game.blackPieces),
-                               whiteKing(game.whiteKing),
-                               blackKing(game.blackKing),
                                turn(game.turn),
                                canCastle(game.canCastle),
-                            //    castleK(game.castleK),
-                            //    castleQ(game.castleQ),
-                            //    castlek(game.castlek),
-                            //    castleq(game.castleq),
                                sinceCapture(game.sinceCapture),
+                               whiteKing(game.whiteKing),
+                               blackKing(game.blackKing),
                                moveLog(game.moveLog)
 {
     // Place the pieces on the board
@@ -83,10 +75,6 @@ Game& Game::operator=(const Game& original) {
         moveLog = original.moveLog;
         turn = original.turn;
         canCastle = original.canCastle;
-        // castleK = original.castleK;
-        // castleQ = original.castleQ;
-        // castlek = original.castlek;
-        // castleq = original.castleq;
         sinceCapture = original.sinceCapture;
         
         initialize_board();
@@ -303,7 +291,7 @@ MoveDetails Game::move(Piece *piece, Position location)
     }
     else if (piece->type == pawn && piece->x != location.x)
     {
-        details.captured = board[location.y][location.x];
+        details.captured = board[piece->y][location.x];
         capture(board[piece->y][location.x]);
         sinceCapture = 0;
     }
@@ -337,32 +325,24 @@ MoveDetails Game::move(Piece *piece, Position location)
     {
         whiteKing = {piece->x, piece->y};
         canCastle &= 0b0011;
-        // castleK = false;
-        // castleQ = false;
     }
     if (piece->type == king && !piece->white)
     {
         blackKing = {piece->x, piece->y};
         canCastle &= 0b1100;
-        // castlek = false;
-        // castleq = false;
     }
 
     if (piece->type == rook && piece->white && log.from.x == 0)
         canCastle &= 0b1011;
-        // castleQ = false;
 
     if (piece->type == rook && piece->white && log.from.x == 7)
         canCastle &= 0b0111;
-        // castleK = false;
 
     if (piece->type == rook && !piece->white && log.from.x == 0)
         canCastle &= 0b1110;
-        // castleq = false;
 
     if (piece->type == rook && !piece->white && log.from.x == 7)
         canCastle &= 0b1101;
-        // castlek = false;
 
     return details;
 }

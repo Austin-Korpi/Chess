@@ -290,7 +290,7 @@ int main(int, char**)
                     printf("\n--Black Move--\n");
                     auto start = std::chrono::high_resolution_clock::now();
 
-                    move_with_opening(game, &call_minimax_IDS);
+                    // move_with_opening(game, &call_minimax_IDS);
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);

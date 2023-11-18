@@ -13,6 +13,13 @@ struct Position{
 	}
 };
 
+#define PAWN 1
+#define NIGHT 2
+#define BISHOP 3
+#define ROOK 4
+#define QUEEN 5
+#define KING 6
+
 typedef enum {
 	pawn = 0,
 	night = 1,
@@ -56,15 +63,13 @@ bool check_ob(Position move);
 
 class Piece {
 public:
-	int id;
 	pieceOptions type;
-	int x, y;
-	// Position position;
+	unsigned char x, y;
 	bool white;
 	bool captured;
 
 	Piece();
-	Piece(int i, pieceOptions pc, bool wht, int hor, int ver);
+	Piece(pieceOptions pc, bool wht, unsigned char hor, unsigned char ver);
 
 	bool can_capture(Piece* other);
 	int find_valid_moves(Game &game, Position (&moves)[27]);

@@ -7,18 +7,14 @@
 class Game {
 	
 public:
-	Piece* board[8][8] = { 0 };
 	std::array<Piece, 16> whitePieces;
 	std::array<Piece, 16> blackPieces;
-	Position whiteKing;
-	Position blackKing;
 	bool turn;
 	char canCastle;
-	// bool castleK;
-	// bool castleQ;
-	// bool castlek;
-	// bool castleq;
 	char sinceCapture;
+	Position whiteKing;
+	Position blackKing;
+	Piece* board[8][8] = { 0 };
 	std::vector<Move> moveLog;
 
 	Game();

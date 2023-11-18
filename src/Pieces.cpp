@@ -13,22 +13,19 @@ bool check_ob(Position move) {
 }
 
 Piece::Piece() {
-	id = x = y = 0;
+	x = y = 0;
 	white = true;
 	type = pawn;
 	captured = false;
 }
 
-Piece::Piece(int i, pieceOptions tp,bool wht, int hor, int ver) {
-	id = i;
+Piece::Piece(pieceOptions tp,bool wht, unsigned char hor, unsigned char ver) {
 	type = tp;
 	white = wht;
 	x = hor;
 	y = ver;
 	captured = false;
 }
-
-
 
 bool Piece::can_capture(Piece* other) {
 	if (other == NULL) {
@@ -76,7 +73,7 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 				//En passant
 				else if (can_capture(game.board[y][move.x]) && game.board[y][move.x]->type == pawn) {
 					Move lastMove = game.moveLog[game.moveLog.size() - 1];
-					if (lastMove.to == Position{y, move.x} && game.board[lastMove.to.y][lastMove.to.x]->type == pawn && abs(lastMove.from.y - lastMove.to.y) > 1 
+					if (lastMove.to == Position{move.x, y} && game.board[lastMove.to.y][lastMove.to.x]->type == pawn && abs(lastMove.from.y - lastMove.to.y) > 1 
 						&& !game.leap_then_look(this, move)) {
 
 						moves[numMoves] = move;

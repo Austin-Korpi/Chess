@@ -29,8 +29,8 @@ UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
 CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(INCLUDE_DIR) -I$(LIB_DIR)
-CXXFLAGS += -g -O0 -Wall -Wformat #-pg
-LIBS = -pthread -ltbb #-pg
+CXXFLAGS += -g -O3 -Wall -Wformat -pg
+LIBS = -pthread -ltbb -pg
 
 ##---------------------------------------------------------------------
 ## OPENGL ES

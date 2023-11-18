@@ -62,46 +62,52 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 	int i = 0;
 
 	// Initialize games with the next move
-	std::vector<std::tuple<int, Move*>> sortedGames;
+	std::vector<std::tuple<int, Move>> sortedMoves;
 	for (auto move : moves) {
-		Game* copy = new Game(game);
-		details = copy->move(copy->board[move.from.y][move.from.x], move.to);
-		copy->moveLog.push_back(details.move);
+		details = game.move(game.board[move.from.y][move.from.x], move.to);
+		game.moveLog.push_back(details.move);
 
 		int rating = 0;
 		// Rank move from table
 		if (useTransposition) {
-			std::string gameString = copy->toString();
+			std::string gameString = game.toString();
 			StringTable::const_accessor a;
 			if (transpositionTable.find(a, gameString)) {
 				rating = a->second[2];
 			}
 			a.release();
 		}
-		sortedGames.push_back({rating, copy});
+		sortedMoves.push_back({rating, move});
+		
+		// Move back
+		game.moveBack(details);
+		game.moveLog.pop_back();
 	}
 
 	if (useTransposition) {
 		// Sort them according to transposition table
 		if (game.turn) {
-			std::sort(sortedGames.begin(), sortedGames.end(), [](const std::tuple<int, Game*> &a, const std::tuple<int, Game*> &b) {
+			std::sort(sortedMoves.begin(), sortedMoves.end(), [](const std::tuple<int, Move> &a, const std::tuple<int, Move> &b) {
 				return std::get<0>(a) > std::get<0>(b);
 			});
 		} else {
-			std::sort(sortedGames.begin(), sortedGames.end(), [](const std::tuple<int, Game*> &a, const std::tuple<int, Game*> &b) {
+			std::sort(sortedMoves.begin(), sortedMoves.end(), [](const std::tuple<int, Move> &a, const std::tuple<int, Move> &b) {
 				return std::get<0>(a) < std::get<0>(b);			
 			});
 		}
 	}
 
-	// Iterate through game
-	for(auto currentGame : sortedGames) {
+	// Iterate through moves
+	for(auto currentMove : sortedMoves) {
 		i++; // Data collection
 		
 		int material = INT_MAX;
 
-		Game copy = *std::get<1>(currentGame);
-		std::string gameString = copy.toString();
+		Move moveToApply = std::get<1>(currentMove);
+		details = game.move(game.board[moveToApply.from.y][moveToApply.from.x], moveToApply.to);
+		game.moveLog.push_back(details.move);
+
+		std::string gameString = game.toString();
 
 		// Table lookup
 		if (useTransposition) {
@@ -117,18 +123,19 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 		// Evaluate node
 		if(material == INT_MAX) {
 			// Check for termination
-			int terminated = copy.check_for_winner(copy.turn);
+			int terminated = game.check_for_winner(game.turn);
 			if (terminated) {
-				material = utility(terminated, copy.turn, depth);
+				material = utility(terminated, game.turn, depth);
 			}
 			// Check for depth limit
 			else if (depth == maxdepth) {
-				material = heuristic(copy);
+				material = heuristic(game);
 			}
 			// Search
 			else {
-				copy.turn = !copy.turn;
-				material = minimax(copy, depth + 1, alpha, beta, NULL);
+				game.turn = !game.turn;
+				material = minimax(game, depth + 1, alpha, beta, NULL);
+				game.turn = !game.turn;
 			}
 			// Store result
 			if (useTransposition) {
@@ -140,13 +147,17 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 			}
 		}
 
+		// Move back
+		game.moveBack(details);
+		game.moveLog.pop_back();
+
 		int* alphaOrBeta;
 		// Set best material variable for pruning
 		if ((game.turn && material > *(alphaOrBeta = &alpha)) || 
 			(!game.turn && material < *(alphaOrBeta = &beta))) {
 			*alphaOrBeta = material;
 			if (depth == 1) {
-				*choice = copy.moveLog.back();
+				*choice = details.move;
 			}
 		}
 
@@ -154,11 +165,6 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 		if (beta <= alpha) {
 			break;
 		}
-	}
-
-	// Free memory
-	for (unsigned long i = 0; i < sortedGames.size(); i++) {
-		delete std::get<1>(sortedGames[i]);
 	}
  	
 	// Data collection
@@ -314,5 +320,5 @@ void printStats() {
 }
 
 void clearTable(){
-	transpositionTable = StringTable();
+	transpositionTable.clear();
 }

@@ -2,7 +2,7 @@
 #include "Pieces.h"
 #include "Game.h"
 
-#define MAXDEPTH 6
+#define MAXDEPTH 7
 
 Move move_with_opening(Game& game, Move (*func)(Game&));
 Move call_minimax(Game &game);
