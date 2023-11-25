@@ -289,25 +289,30 @@ int main(int, char**)
             else if(winner == ""){
                 if (game.turn == false) {
                     printf("\n--Black Move--\n");
+
+                    // move_with_opening(game, &call_minimax_IDS_fast);
                     auto start = std::chrono::high_resolution_clock::now();
 
-                    // move_with_opening(game, &call_minimax_IDS);
+                    // move_with_opening(game, &call_MTD);
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
+                    // std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
                     start = std::chrono::high_resolution_clock::now();
 
                     game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
+                    // game.log_move(call_MTD_IDS(game));
 
                     end = std::chrono::high_resolution_clock::now();
                     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
+                    std::cout << "MTD_IDS: " << duration.count() << " miliseconds" << std::endl;
+                    
                 } else {
                     printf("\n--White Move--\n");
                     auto start = std::chrono::high_resolution_clock::now();
                     
                     game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
+                    // game.log_move(call_minimax_IDS_fast(game));
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
@@ -315,7 +320,7 @@ int main(int, char**)
                 }
                 winner = game.switch_turns();
                 moveLog.push_back(game);
-                takeTurn = false;   
+                takeTurn = 5;   
                 // usleep(200000);
             }
         // }

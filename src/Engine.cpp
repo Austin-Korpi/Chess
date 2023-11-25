@@ -14,7 +14,7 @@
 int maxdepth = MAXDEPTH;
 
 // Global Data collection variables
-int visited[MAXDEPTH+1] = {0};
+int visited[11] = {0};
 
 typedef oneapi::tbb::concurrent_hash_map<std::string, std::array<int, 3>> StringTable;
 StringTable transpositionTable;
@@ -61,9 +61,9 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 	// Data collection
 	int i = 0;
 
-	// Initialize games with the next move
 	std::vector<std::tuple<int, Move>> sortedMoves;
 	for (auto move : moves) {
+		// Initialize game with the next move
 		details = game.move(game.board[move.from.y][move.from.x], move.to);
 		game.moveLog.push_back(details.move);
 
@@ -236,13 +236,50 @@ Move call_minimax_fast(Game& game) {
 	int beta = INT_MAX;
 	Move choice;
 
+	std::vector<std::tuple<int, Move>> sortedMoves;
+	for (auto move : moves) {
+		// Initialize game with the next move
+		MoveDetails details = game.move(game.board[move.from.y][move.from.x], move.to);
+		game.moveLog.push_back(details.move);
+
+		int rating = 0;
+		// Rank move from table
+		if (useTransposition) {
+			std::string gameString = game.toString();
+			StringTable::const_accessor a;
+			if (transpositionTable.find(a, gameString)) {
+				rating = a->second[2];
+			}
+			a.release();
+		}
+		sortedMoves.push_back({rating, move});
+		
+		// Move back
+		game.moveBack(details);
+		game.moveLog.pop_back();
+	}
+
+	if (useTransposition) {
+		// Sort them according to transposition table
+		if (game.turn) {
+			std::sort(sortedMoves.begin(), sortedMoves.end(), [](const std::tuple<int, Move> &a, const std::tuple<int, Move> &b) {
+				return std::get<0>(a) > std::get<0>(b);
+			});
+		} else {
+			std::sort(sortedMoves.begin(), sortedMoves.end(), [](const std::tuple<int, Move> &a, const std::tuple<int, Move> &b) {
+				return std::get<0>(a) < std::get<0>(b);			
+			});
+		}
+	}
+
 	std::mutex writeLock;
 	ctpl::thread_pool p(16); /* sixteen threads in the pool */
 	std::vector<std::future<void>> results(moves.size());
 
 	// TODO: Order moves
 	for (unsigned int i = 0; i < moves.size(); ++i){
-		results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &alpha, &beta, &choice);
+		// results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &alpha, &beta, &choice);
+		results[i] = p.push(thread_func_minimax, game, std::get<1>(sortedMoves[i]), &writeLock, &alpha, &beta, &choice);
 	}
 
 	for (unsigned int i = 0; i < moves.size(); ++i) {
@@ -279,12 +316,22 @@ Move call_minimax_IDS_fast(Game &game) {
 	useTransposition = true;
 	clearTable();
 
+    auto start = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(start - start);
+
 	Move move;
-	for (int i = 1; i <= MAXDEPTH; i += 1) {
-		maxdepth = i;
+	// for (int i = 1; i <= MAXDEPTH; i += 1) {
+	maxdepth = 0;
+    while (duration.count() < 1000) {
+		maxdepth ++;
 		move = call_minimax_fast(game);
+		auto end = std::chrono::high_resolution_clock::now();
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 	}
+    printf("IDS maxdepth: %d\n", maxdepth);
 	maxdepth = MAXDEPTH;
+
+    // printf("IDS: %s\n", move.toString().c_str());
 	
 	// Disable transposition and empty the transpostion table
 	clearTable();
@@ -311,12 +358,12 @@ Move move_with_opening(Game& game, Move (*func)(Game&)) {
 
 void printStats() {
     printf("{");
-    for (int i = 1; i <= MAXDEPTH; i++) {
+    for (int i = 1; i <= 10; i++) {
         printf("%d  ", visited[i]);
     }
     printf("}\n");
-    int visitedN[MAXDEPTH+1] = {0};
-    memcpy(visited, visitedN, sizeof(int) * (MAXDEPTH+1));
+    int visitedN[11] = {0};
+    memcpy(visited, visitedN, sizeof(int) * 11);
 }
 
 void clearTable(){
