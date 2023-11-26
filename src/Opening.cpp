@@ -83,10 +83,10 @@ bool lookupMove(std::string moveHistory, std::string& move) {
 
     delete moves;
 
+    int i  = 0;
     int length = current->children.size();
     float denominator = (length*length - length) / 2 + length;
     float randomNumber = (float) rand() / RAND_MAX;
-    int i;
     float p = 0;
     for (i = length - 1; i >= 0; i--) {
         p += (length - i)/denominator;

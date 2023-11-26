@@ -182,7 +182,7 @@ int main(int, char**)
             for (int i = 0; i < 27; i++) {
                 moves[i] = { -1, -1 };
             }
-            // game.board[selection.y][selection.x]->find_valid_moves(game, moves);
+            game.board[selection.y][selection.x]->find_valid_moves(game, moves);
         }
         else {
             moves[0] = { -1, -1 };
@@ -283,46 +283,46 @@ int main(int, char**)
             takeTurn = 5;
         }
         // if (game.turn == false) {
-            if (takeTurn > 0) {
-                takeTurn--;
-            }
-            else if(winner == ""){
-                if (game.turn == false) {
-                    printf("\n--Black Move--\n");
+        //     if (takeTurn > 0) {
+        //         takeTurn--;
+        //     }
+        //     else if(winner == ""){
+        //         if (game.turn == false) {
+        //             printf("\n--Black Move--\n");
 
-                    // move_with_opening(game, &call_minimax_IDS_fast);
-                    auto start = std::chrono::high_resolution_clock::now();
+        //             // move_with_opening(game, &call_minimax);
+        //             auto start = std::chrono::high_resolution_clock::now();
 
-                    // move_with_opening(game, &call_MTD);
+        //             // move_with_opening(game, &call_MTD);
 
-                    auto end = std::chrono::high_resolution_clock::now();
-                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    // std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
-                    start = std::chrono::high_resolution_clock::now();
+        //             auto end = std::chrono::high_resolution_clock::now();
+        //             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        //             // std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
+        //             start = std::chrono::high_resolution_clock::now();
 
-                    game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
-                    // game.log_move(call_MTD_IDS(game));
+        //             game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
+        //             // game.log_move(call_MTD_IDS(game));
 
-                    end = std::chrono::high_resolution_clock::now();
-                    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << "MTD_IDS: " << duration.count() << " miliseconds" << std::endl;
+        //             end = std::chrono::high_resolution_clock::now();
+        //             duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        //             std::cout << "MTD_IDS: " << duration.count() << " miliseconds" << std::endl;
                     
-                } else {
-                    printf("\n--White Move--\n");
-                    auto start = std::chrono::high_resolution_clock::now();
+        //         } else {
+        //             printf("\n--White Move--\n");
+        //             auto start = std::chrono::high_resolution_clock::now();
                     
-                    game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
-                    // game.log_move(call_minimax_IDS_fast(game));
+        //             game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
+        //             // game.log_move(call_minimax_IDS_fast(game));
 
-                    auto end = std::chrono::high_resolution_clock::now();
-                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
-                }
-                winner = game.switch_turns();
-                moveLog.push_back(game);
-                takeTurn = 5;   
-                // usleep(200000);
-            }
+        //             auto end = std::chrono::high_resolution_clock::now();
+        //             auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        //             std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
+        //         }
+        //         winner = game.switch_turns();
+        //         moveLog.push_back(game);
+        //         takeTurn = 5;   
+        //         // usleep(200000);
+        //     }
         // }
 
         // Rendering
