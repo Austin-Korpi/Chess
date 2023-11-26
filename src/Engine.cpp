@@ -52,7 +52,72 @@ int utility(int status, bool color, int depth){
 	return  1000 / depth;
 }
 
-int quiesce(Game game, int alpha, int beta, int depth) {
+void sortMovesCaptured(std::vector<Move>& moves, Game &game) {
+	bool sortNeeded = false;
+	std::vector<int> scores(moves.size());
+	for (unsigned int i = 0; i < moves.size(); i++) {
+		Piece* piece = game.board[moves[i].from.y][moves[i].from.x];
+		if (piece) {
+			sortNeeded = true;
+			scores[i] = piece->type;
+		}
+	}
+	if (sortNeeded) {
+		int j, key;
+		for (unsigned int i = 1; i < scores.size(); i++) {
+			key = scores[i];
+			Move value = moves[i];
+			j = i - 1;
+
+			while (j >= 0 && scores[j] < key) {
+				scores[j + 1] = scores[j];
+				moves[j+1] = moves[j];
+				j = j - 1;
+			}
+			scores[j + 1] = key;
+			moves[j+1] = value;
+		}
+	}
+}
+
+void sortMovesTable(std::vector<Move>& moves, Game &game) {
+	bool sortNeeded = false;
+	// Initialize scores
+	std::vector<int> scores;
+	for (auto move : moves) {
+		MoveDetails details = game.move(game.board[move.from.y][move.from.x], move.to);
+		game.moveLog.push_back(details.move);
+		int rating = 0;
+		std::string gameString = game.toString();
+		StringTable::const_accessor a;
+		if (transpositionTable.find(a, gameString)) {
+			rating = a->second[2];
+			sortNeeded = true;
+		}
+		a.release();
+		scores.push_back(rating);
+		game.moveBack(details);
+		game.moveLog.pop_back();
+	}
+	if (sortNeeded) {
+		int j, key;
+		for (unsigned int i = 1; i < scores.size(); i++) {
+			key = scores[i];
+			Move value = moves[i];
+			j = i - 1;
+	
+			while (j >= 0 && scores[j] < key) {
+				scores[j + 1] = scores[j];
+				moves[j+1] = moves[j];
+				j = j - 1;
+			}
+			scores[j + 1] = key;
+			moves[j+1] = value;
+		}
+	}
+}
+
+int quiesce(Game& game, int alpha, int beta, int depth) {
 	// Get default value
     int stand_pat = heuristic(game);
 	// Check beta
@@ -66,21 +131,7 @@ int quiesce(Game game, int alpha, int beta, int depth) {
 	std::vector<Move> moves = game.get_all_moves(game.turn);
 	 
 	// Sort moves by value of piece being captured
-	unsigned int i, j, min_idx;
-    for (i = 0; i < moves.size() - 1; i++) {
-        min_idx = i;
-        for (j = i + 1; j < moves.size(); j++) {
-			Piece* pieceA = game.board[moves[i].from.y][moves[i].from.x];
-			Piece* pieceB = game.board[moves[j].from.y][moves[j].from.x];
-            if ((pieceA ? pieceA->type : -1) > (pieceB ? pieceB->type : -1))
-                min_idx = j;
-        }
-        if (min_idx != i){
-			Move temp = moves[min_idx];
-			moves[min_idx] = moves[i];
-			moves[i] = temp;
-		}
-    }
+	sortMovesCaptured(moves, game);
 
 	// Loop through moves
     for(auto move : moves)  {
@@ -122,45 +173,20 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 
 	// Get all possible moves 
 	std::vector<Move> moves = game.get_all_moves(game.turn);
-	std::vector<std::tuple<int, Move>> sortedMoves;
-	for (auto move : moves) {
-		// Initialize game with the next move
-		details = game.move(game.board[move.from.y][move.from.x], move.to);
-		game.moveLog.push_back(details.move);
-
-		int rating = 0;
-		// Rank move from table
-		if (useTransposition) {
-			std::string gameString = game.toString();
-			StringTable::const_accessor a;
-			if (transpositionTable.find(a, gameString)) {
-				rating = a->second[2];
-			}
-			a.release();
-		}
-		sortedMoves.push_back({rating, move});
-		
-		// Move back
-		game.moveBack(details);
-		game.moveLog.pop_back();
-	}
-
+	
+	sortMovesCaptured(moves, game);
 	if (useTransposition) {
-		// Sort them according to transposition table
-		std::sort(sortedMoves.begin(), sortedMoves.end(), [](const std::tuple<int, Move> &a, const std::tuple<int, Move> &b) {
-			return std::get<0>(a) > std::get<0>(b);
-		});
+		sortMovesTable(moves, game);
 	}
 
 	int bestMat = INT_MIN;
 	// Iterate through moves
-	for(auto currentMove : sortedMoves) {
+	for(auto currentMove : moves) {
 		visited[depth]++; // Data collection
 		
 		int material = INT_MAX;
 
-		Move moveToApply = std::get<1>(currentMove);
-		details = game.move(game.board[moveToApply.from.y][moveToApply.from.x], moveToApply.to);
+		details = game.move(game.board[currentMove.from.y][currentMove.from.x], currentMove.to);
 		game.moveLog.push_back(details.move);
 
 		std::string gameString = game.toString();
@@ -184,9 +210,9 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 				material = utility(terminated, game.turn, depth);
 			}
 			// Check for depth limit
-			else if (depth == maxdepth) {
-				material = heuristic(game);
-				// material = quiesce(game, alpha, beta, depth+1);
+			else if (depth >= maxdepth) {
+				// material = heuristic(game);
+				material = quiesce(game, alpha, beta, depth+1);
 				// printf("quiesce: %d\n", material);
 			}
 			// Search
