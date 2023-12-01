@@ -11,43 +11,43 @@ Game::Game()
 	sinceCapture = 0;
 
     // Initialize pieces
-    whitePieces[8] = Piece(ROOK, true, 0, 7);
-    whitePieces[9] = Piece(NIGHT, true, 1, 7);
-    whitePieces[10] = Piece(BISHOP, true, 2, 7);
-    whitePieces[11] = Piece(QUEEN, true, 3, 7);
-    whitePieces[12] = Piece(KING, true, 4, 7);
-    whitePieces[13] = Piece(BISHOP, true, 5, 7);
-    whitePieces[14] = Piece(NIGHT, true, 6, 7);
-    whitePieces[15] = Piece(ROOK, true, 7, 7);
-    whitePieces[0] = Piece(PAWN, true, 0, 6);
-    whitePieces[1] = Piece(PAWN, true, 1, 6);
-    whitePieces[2] = Piece(PAWN, true, 2, 6);
-    whitePieces[3] = Piece(PAWN, true, 3, 6);
-    whitePieces[4] = Piece(PAWN, true, 4, 6);
-    whitePieces[5] = Piece(PAWN, true, 5, 6);
-    whitePieces[6] = Piece(PAWN, true, 6, 6);
-    whitePieces[7] = Piece(PAWN, true, 7, 6);
+    whitePieces[0] = Piece(PAWN, true, 2, 6);
+    whitePieces[1] = Piece(PAWN, true, 3, 6);
+    whitePieces[2] = Piece(PAWN, true, 4, 6);
+    whitePieces[3] = Piece(PAWN, true, 5, 6);
+    whitePieces[4] = Piece(NIGHT, true, 1, 7);
+    whitePieces[5] = Piece(NIGHT, true, 6, 7);
+    whitePieces[6] = Piece(BISHOP, true, 2, 7);
+    whitePieces[7] = Piece(BISHOP, true, 5, 7);
+    whitePieces[8] = Piece(PAWN, true, 0, 6);
+    whitePieces[9] = Piece(PAWN, true, 1, 6);
+    whitePieces[10] = Piece(PAWN, true, 6, 6);
+    whitePieces[11] = Piece(PAWN, true, 7, 6);
+    whitePieces[12] = Piece(ROOK, true, 0, 7);
+    whitePieces[13] = Piece(ROOK, true, 7, 7);    
+    whitePieces[14] = Piece(QUEEN, true, 3, 7);
+    whitePieces[15] = Piece(KING, true, 4, 7);
 
-    blackPieces[0] = Piece(ROOK, false, 0, 0);
-    blackPieces[1] = Piece(NIGHT, false, 1, 0);
-    blackPieces[2] = Piece(BISHOP, false, 2, 0);
-    blackPieces[3] = Piece(QUEEN, false, 3, 0);
-    blackPieces[4] = Piece(KING, false, 4, 0);
-    blackPieces[5] = Piece(BISHOP, false, 5, 0);
-    blackPieces[6] = Piece(NIGHT, false, 6, 0);
-    blackPieces[7] = Piece(ROOK, false, 7, 0);
+    blackPieces[0] = Piece(PAWN, false, 2, 1);
+    blackPieces[1] = Piece(PAWN, false, 3, 1);
+    blackPieces[2] = Piece(PAWN, false, 4, 1);
+    blackPieces[3] = Piece(PAWN, false, 5, 1);
+    blackPieces[4] = Piece(NIGHT, false, 1, 0);
+    blackPieces[5] = Piece(NIGHT, false, 6, 0);
+    blackPieces[6] = Piece(BISHOP, false, 2, 0);
+    blackPieces[7] = Piece(BISHOP, false, 5, 0);
     blackPieces[8] = Piece(PAWN, false, 0, 1);
     blackPieces[9] = Piece(PAWN, false, 1, 1);
-    blackPieces[10] = Piece(PAWN, false, 2, 1);
-    blackPieces[11] = Piece(PAWN, false, 3, 1);
-    blackPieces[12] = Piece(PAWN, false, 4, 1);
-    blackPieces[13] = Piece(PAWN, false, 5, 1);
-    blackPieces[14] = Piece(PAWN, false, 6, 1);
-    blackPieces[15] = Piece(PAWN, false, 7, 1);
+    blackPieces[10] = Piece(PAWN, false, 6, 1);
+    blackPieces[11] = Piece(PAWN, false, 7, 1);
+    blackPieces[12] = Piece(ROOK, false, 0, 0);
+    blackPieces[13] = Piece(ROOK, false, 7, 0);
+    blackPieces[14] = Piece(QUEEN, false, 3, 0);
+    blackPieces[15] = Piece(KING, false, 4, 0);
 
     // Save the location of the kings
-    whiteKing = {whitePieces[12].x, whitePieces[12].y};
-    blackKing = {blackPieces[4].x, blackPieces[4].y};
+    whiteKing = {whitePieces[15].x, whitePieces[15].y};
+    blackKing = {blackPieces[15].x, blackPieces[15].y};
 
     // Place the pieces on the board
     initialize_board();
@@ -148,11 +148,12 @@ int Game::check_for_winner(bool color)
         }
     }
 
+    // 50 move rule
     if (sinceCapture >= 100) {
         return -1;
-        printf("50 move rule\n");
     }
 
+    // Find a legal move
     auto pieces = color ? blackPieces : whitePieces;
     for (int i = 0; i < 16; i++)
     {
@@ -169,9 +170,11 @@ int Game::check_for_winner(bool color)
         }
     }
 
+    // Checkmate
     if (check_for_check(!color))
         return 1;
 
+    // Stalemate
     return -1;
 }
 
@@ -182,6 +185,7 @@ bool Game::check_for_check(bool color, Position location)
     {
         location = color ? whiteKing : blackKing;
     }
+    // Check in diagonal directions
     {
         Position dir[4] = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}};
         for (int k = 0; k < 4; k++)
@@ -209,6 +213,7 @@ bool Game::check_for_check(bool color, Position location)
         }
     }
 
+    // Check in cardinal directions
     Position dir[4] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
     for (int k = 0; k < 4; k++)
@@ -299,10 +304,12 @@ MoveDetails Game::move(Piece *piece, Position location)
     // Castling
     if (piece->type == KING && abs(location.x - piece->x) > 1)
     {
+        // Queenside
         if (location.x < piece->x)
         {
             movePiece(board[piece->y][0], {3, piece->y});
         }
+        // Kingside
         else
         {
             movePiece(board[piece->y][7], {5, piece->y});
@@ -310,7 +317,7 @@ MoveDetails Game::move(Piece *piece, Position location)
     }
 
     // Promotion
-    if (piece->type == PAWN && location.y == (piece->white ? 0 : 7))
+    if (piece->type == PAWN && (location.y == 0 || location.y == 7))
     {
         piece->type = QUEEN;
         details.promotion = true;
@@ -318,9 +325,11 @@ MoveDetails Game::move(Piece *piece, Position location)
 
     movePiece(piece, location);
 
+    // 50 move rule
     if (piece->type == PAWN)
         sinceCapture = 0;
 
+    // Castling rights
     if (piece->type == KING && piece->white)
     {
         whiteKing = {piece->x, piece->y};

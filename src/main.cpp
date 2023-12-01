@@ -282,7 +282,7 @@ int main(int, char**)
         if (ImGui::IsMouseReleased(0)) {
             takeTurn = 5;
         }
-        if (game.turn == false) {
+        // if (game.turn == false) {
             if (takeTurn > 0) {
                 takeTurn--;
             }
@@ -293,20 +293,20 @@ int main(int, char**)
                     // move_with_opening(game, &call_minimax);
                     auto start = std::chrono::high_resolution_clock::now();
 
-                    // move_with_opening(game, &call_minimax);
+                    Move choice = move_with_opening(game, &call_minimax);
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    // std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
+                    std::cout << "Time: " << duration.count() << " miliseconds. " << choice.toString() << std::endl;
                     start = std::chrono::high_resolution_clock::now();
 
-                    game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
+                    choice = move_with_opening(game, &call_minimax_IDS);
                     // game.log_move(call_MTD_IDS(game));
 
                     end = std::chrono::high_resolution_clock::now();
                     duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << "MTD_IDS: " << duration.count() << " miliseconds" << std::endl;
-                    
+                    std::cout << "Time: " << duration.count() << " miliseconds. " << choice.toString() << std::endl;
+                    game.log_move(choice);
                 } else {
                     printf("\n--White Move--\n");
                     auto start = std::chrono::high_resolution_clock::now();
@@ -323,7 +323,7 @@ int main(int, char**)
                 takeTurn = 5;   
                 // usleep(200000);
             }
-        }
+        // }
 
         // Rendering
         ImGui::Render();

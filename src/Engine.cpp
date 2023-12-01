@@ -11,7 +11,9 @@
 #include "Opening.h"
 #include "oneapi/tbb/concurrent_hash_map.h"
 
+#define R 3
 int maxdepth = MAXDEPTH;
+bool null_ok = false;
 
 // Global Data collection variables
 int visited[21] = {0};
@@ -24,7 +26,7 @@ bool useTransposition = false;
 int heuristic(Game &game) {
 	int material = 0;
 	// Lookup table
-	int worth[] = { 1,3,3,5,9,0 };
+	int worth[] = { 100,320,330,500,900,0 };
 
 	// White pieces
 	for (auto piece : game.whitePieces) {
@@ -46,10 +48,10 @@ int utility(int status, bool color, int depth){
 
 	// Stalemate
 	if (status == -1) {
-		return 100;
+		return -20000;
 	}
 	// Win
-	return  1000 / depth;
+	return  400000 / depth;
 }
 
 void sortMovesCaptured(std::vector<Move>& moves, Game &game) {
@@ -60,6 +62,8 @@ void sortMovesCaptured(std::vector<Move>& moves, Game &game) {
 		if (piece) {
 			sortNeeded = true;
 			scores[i] = piece->type;
+		} else {
+			scores[i] = -1;
 		}
 	}
 	if (sortNeeded) {
@@ -168,12 +172,13 @@ int quiesce(Game& game, int alpha, int beta, int depth) {
     return alpha;
 }
 
-int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
+int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verify) {
 	MoveDetails details;
 
 	// Get all possible moves 
 	std::vector<Move> moves = game.get_all_moves(game.turn);
 	
+	// Sort for better cutoffs
 	sortMovesCaptured(moves, game);
 	if (useTransposition) {
 		sortMovesTable(moves, game);
@@ -189,9 +194,8 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 		details = game.move(game.board[currentMove.from.y][currentMove.from.x], currentMove.to);
 		game.moveLog.push_back(details.move);
 
-		std::string gameString = game.toString();
-
 		// Table lookup
+		std::string gameString = game.toString();
 		if (useTransposition) {
 			StringTable::const_accessor a;
 			if (transpositionTable.find(a, gameString)) {
@@ -199,9 +203,9 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 					material = a->second[2];
 				}
 			}
-			a.release();
-		}
+		} 
 		
+		bool fail_high = false;
 		// Evaluate node
 		if(material == INT_MAX) {
 			// Check for termination
@@ -217,9 +221,52 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 			}
 			// Search
 			else {
+				// Null Search
+				if (!game.check_for_check(game.turn) && null_ok && (!verify || depth < maxdepth-1)) {
+					/* null-move search with minimal window around beta */
+					// int value = -minimax(game, depth+R+1,-beta, -beta+1, NULL, verify);
+					int value = minimax(game, depth+R+1, beta-1, beta, NULL, verify);
+					if (value >= beta) {
+
+						/* fail-high */
+						if (verify) {
+							/* reduce the depth by one ply */
+							depth++;
+							// printf("-");
+							/* turn verification off for the sub-tree */
+							verify = false;
+							/* mark a fail-high flag, to detect zugzwangs later*/
+							fail_high = true;
+						}
+						else {
+							/* cutoff in a sub-tree with fail-high report */
+							// Move back
+							game.moveBack(details);
+							game.moveLog.pop_back();
+							// for (int i = 0; i < depth; i++) {
+							// 	printf("  ");
+							// }
+							// printf("Depth %d. S=%d, a=%d, b=%d\n", depth, material, alpha, beta);
+							// printf("prune");
+							return value;
+							// bestMat = value;
+						}
+					}
+				}
+			research:
+				// Search
 				game.turn = !game.turn;
-				material = -minimax(game, depth + 1, -beta, -alpha, NULL);
+				material = -minimax(game, depth + 1, -beta, -alpha, NULL, verify);
 				game.turn = !game.turn;
+				
+				// Verify
+				if(fail_high && material < beta) {
+					depth--;
+					fail_high = false;
+					verify = true;
+					// printf("|");
+					goto research;
+				}
 			}
 			// Store result
 			if (useTransposition) {
@@ -227,7 +274,6 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 				if (transpositionTable.insert(a, gameString)) {
 					a->second = {depth, maxdepth, material};
 				}
-				a.release();
 			}
 		}
 
@@ -235,6 +281,11 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 		game.moveBack(details);
 		game.moveLog.pop_back();
 
+		// for (int i = 0; i < depth; i++) {
+		// 	printf("  ");
+		// }
+		// printf("Depth %d. S=%d, a=%d, b=%d\n", depth, material, alpha, beta);
+		
 		// Set best material variable for pruning
 		if (material >= beta) {
 			return material;
@@ -246,18 +297,8 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 			}
 			if (material > alpha) {
 				alpha = material;
-		}
-		}
-
-		// Prune
-		if (beta <= alpha) {
-			break;
 			}
-
-		// Prune
-		if (beta <= alpha) {
-			break;
-		}			
+		}
 	}
 
 	return bestMat;
@@ -265,8 +306,8 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice) {
 
 Move call_minimax(Game &game) {
 	Move choice;
-	minimax(game, 1, -INT_MAX, INT_MAX, &choice);
-	// printf("Minimax result: %d Move: %s\n", ret, choice.toString().c_str());
+	minimax(game, 1, -INT_MAX, INT_MAX, &choice, true);
+	// printf("Depth 0: %d\n", ret);
 	// Data collection
 	printStats();
 
@@ -298,7 +339,7 @@ void thread_func_minimax(int, Game &game, Move move, std::mutex* writeLock, int*
 		writeLock->unlock();
 		// Search
 		copy.turn = !copy.turn;
-		material = -minimax(copy, 2, -b, -a, NULL);
+		material = -minimax(copy, 2, -b, -a, NULL, true);
 	}
 	if (useTransposition) {
 		StringTable::accessor a;
@@ -325,34 +366,9 @@ Move call_minimax_fast(Game& game) {
 	int beta = INT_MAX;
 	Move choice;
 
-	std::vector<std::tuple<int, Move>> sortedMoves;
-	for (auto move : moves) {
-		// Initialize game with the next move
-		MoveDetails details = game.move(game.board[move.from.y][move.from.x], move.to);
-		game.moveLog.push_back(details.move);
-
-		int rating = 0;
-		// Rank move from table
-		if (useTransposition) {
-			std::string gameString = game.toString();
-			StringTable::const_accessor a;
-			if (transpositionTable.find(a, gameString)) {
-				rating = a->second[2];
-			}
-			a.release();
-		}
-		sortedMoves.push_back({rating, move});
-		
-		// Move back
-		game.moveBack(details);
-		game.moveLog.pop_back();
-	}
-
+	sortMovesCaptured(moves, game);
 	if (useTransposition) {
-		// Sort them according to transposition table
-		std::sort(sortedMoves.begin(), sortedMoves.end(), [](const std::tuple<int, Move> &a, const std::tuple<int, Move> &b) {
-			return std::get<0>(a) > std::get<0>(b);
-		});
+		sortMovesTable(moves, game);
 	}
 
 	std::mutex writeLock;
@@ -362,7 +378,7 @@ Move call_minimax_fast(Game& game) {
 	// TODO: Order moves
 	for (unsigned int i = 0; i < moves.size(); ++i){
 		// results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &alpha, &beta, &choice);
-		results[i] = p.push(thread_func_minimax, game, std::get<1>(sortedMoves[i]), &writeLock, &alpha, &beta, &choice);
+		results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &alpha, &beta, &choice);
 	}
 
 	for (unsigned int i = 0; i < moves.size(); ++i) {
@@ -379,6 +395,7 @@ Move call_minimax_fast(Game& game) {
 Move call_minimax_IDS(Game &game) {
 	//Enable transposition and empty the transpostion table
 	useTransposition = true;
+	// null_ok = true;
 	clearTable();
 
 	Move move;
@@ -390,6 +407,7 @@ Move call_minimax_IDS(Game &game) {
 	// Disable transposition and empty the transpostion table
 	clearTable();
 	useTransposition = false;
+	null_ok = false;
 
 	return move;
 }
@@ -397,15 +415,16 @@ Move call_minimax_IDS(Game &game) {
 Move call_minimax_IDS_fast(Game &game) {
 	//Enable transposition and empty the transpostion table
 	useTransposition = true;
+	// null_ok = true;
 	clearTable();
 
     auto start = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(start - start);
 
 	Move move;
-	// for (int i = 1; i <= MAXDEPTH; i += 1) {
 	maxdepth = 0;
-    while (duration.count() < 1000) {
+	for (int i = 1; i <= MAXDEPTH; i += 1) {
+    // while (duration.count() < 1000) {
 		maxdepth ++;
 		move = call_minimax_fast(game);
 		auto end = std::chrono::high_resolution_clock::now();
@@ -418,6 +437,7 @@ Move call_minimax_IDS_fast(Game &game) {
 	
 	// Disable transposition and empty the transpostion table
 	clearTable();
+	null_ok = false;
 	useTransposition = false;
 
 	return move;

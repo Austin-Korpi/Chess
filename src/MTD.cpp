@@ -21,7 +21,7 @@ int MTD(Game &game, int first, Move* choice)
 
     while (upper != lower)
     {
-        g = minimax(game, 1, bound - 1, bound, choice);
+        g = minimax(game, 1, bound - 1, bound, choice, true);
 	    // printf("MTD result: %d\n", g);
 
         if (g < bound) {
