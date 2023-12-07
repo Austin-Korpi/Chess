@@ -16,6 +16,7 @@ public:
 	Position blackKing;
 	Piece* board[8][8] = { 0 };
 	std::vector<Move> moveLog;
+	char hasCastled;
 
 	Game();
 	Game(const Game& game);
@@ -35,6 +36,12 @@ public:
 	//std::vector<position> get_moves(Piece*);
 	Move get_random_move(bool color);
 	std::vector<Move> get_all_moves(bool color);
+	int count_doubled_pawns(bool color);
+	int count_blocked_pawns(bool color);
+	int count_isolated_pawns(bool color);
+	int count_bid_pawns(bool color);
+	int count_passed_pawns(bool color);
+	int count_rook_attacks(bool color);
 	void print_board();
 	std::string toString();
 };

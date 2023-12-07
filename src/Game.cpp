@@ -8,38 +8,39 @@ Game::Game()
     moveLog = std::vector<Move>();
     turn = true;
     canCastle = 0b1111;
-	sinceCapture = 0;
+    sinceCapture = 0;
+    hasCastled = 0;
 
     // Initialize pieces
-    whitePieces[0] = Piece(PAWN, true, 2, 6);
-    whitePieces[1] = Piece(PAWN, true, 3, 6);
-    whitePieces[2] = Piece(PAWN, true, 4, 6);
-    whitePieces[3] = Piece(PAWN, true, 5, 6);
-    whitePieces[4] = Piece(NIGHT, true, 1, 7);
-    whitePieces[5] = Piece(NIGHT, true, 6, 7);
-    whitePieces[6] = Piece(BISHOP, true, 2, 7);
-    whitePieces[7] = Piece(BISHOP, true, 5, 7);
-    whitePieces[8] = Piece(PAWN, true, 0, 6);
-    whitePieces[9] = Piece(PAWN, true, 1, 6);
-    whitePieces[10] = Piece(PAWN, true, 6, 6);
-    whitePieces[11] = Piece(PAWN, true, 7, 6);
+    whitePieces[0] = Piece(PAWN, true, 0, 6);
+    whitePieces[1] = Piece(PAWN, true, 1, 6);
+    whitePieces[2] = Piece(PAWN, true, 2, 6);
+    whitePieces[3] = Piece(PAWN, true, 3, 6);
+    whitePieces[4] = Piece(PAWN, true, 4, 6);
+    whitePieces[5] = Piece(PAWN, true, 5, 6);
+    whitePieces[6] = Piece(PAWN, true, 6, 6);
+    whitePieces[7] = Piece(PAWN, true, 7, 6);
+    whitePieces[8] = Piece(NIGHT, true, 1, 7);
+    whitePieces[9] = Piece(NIGHT, true, 6, 7);
+    whitePieces[10] = Piece(BISHOP, true, 2, 7);
+    whitePieces[11] = Piece(BISHOP, true, 5, 7);
     whitePieces[12] = Piece(ROOK, true, 0, 7);
-    whitePieces[13] = Piece(ROOK, true, 7, 7);    
+    whitePieces[13] = Piece(ROOK, true, 7, 7);
     whitePieces[14] = Piece(QUEEN, true, 3, 7);
     whitePieces[15] = Piece(KING, true, 4, 7);
 
-    blackPieces[0] = Piece(PAWN, false, 2, 1);
-    blackPieces[1] = Piece(PAWN, false, 3, 1);
-    blackPieces[2] = Piece(PAWN, false, 4, 1);
-    blackPieces[3] = Piece(PAWN, false, 5, 1);
-    blackPieces[4] = Piece(NIGHT, false, 1, 0);
-    blackPieces[5] = Piece(NIGHT, false, 6, 0);
-    blackPieces[6] = Piece(BISHOP, false, 2, 0);
-    blackPieces[7] = Piece(BISHOP, false, 5, 0);
-    blackPieces[8] = Piece(PAWN, false, 0, 1);
-    blackPieces[9] = Piece(PAWN, false, 1, 1);
-    blackPieces[10] = Piece(PAWN, false, 6, 1);
-    blackPieces[11] = Piece(PAWN, false, 7, 1);
+    blackPieces[0] = Piece(PAWN, false, 0, 1);
+    blackPieces[1] = Piece(PAWN, false, 1, 1);
+    blackPieces[2] = Piece(PAWN, false, 2, 1);
+    blackPieces[3] = Piece(PAWN, false, 3, 1);
+    blackPieces[4] = Piece(PAWN, false, 4, 1);
+    blackPieces[5] = Piece(PAWN, false, 5, 1);
+    blackPieces[6] = Piece(PAWN, false, 6, 1);
+    blackPieces[7] = Piece(PAWN, false, 7, 1);
+    blackPieces[8] = Piece(NIGHT, false, 1, 0);
+    blackPieces[9] = Piece(NIGHT, false, 6, 0);
+    blackPieces[10] = Piece(BISHOP, false, 2, 0);
+    blackPieces[11] = Piece(BISHOP, false, 5, 0);
     blackPieces[12] = Piece(ROOK, false, 0, 0);
     blackPieces[13] = Piece(ROOK, false, 7, 0);
     blackPieces[14] = Piece(QUEEN, false, 3, 0);
@@ -60,14 +61,17 @@ Game::Game(const Game &game) : whitePieces(game.whitePieces),
                                sinceCapture(game.sinceCapture),
                                whiteKing(game.whiteKing),
                                blackKing(game.blackKing),
-                               moveLog(game.moveLog)
+                               moveLog(game.moveLog),
+                               hasCastled(game.hasCastled)
 {
     // Place the pieces on the board
     initialize_board();
 }
 
-Game& Game::operator=(const Game& original) {
-    if (this != &original) {
+Game &Game::operator=(const Game &original)
+{
+    if (this != &original)
+    {
         whitePieces = original.whitePieces;
         blackPieces = original.blackPieces;
         whiteKing = original.whiteKing;
@@ -76,7 +80,8 @@ Game& Game::operator=(const Game& original) {
         turn = original.turn;
         canCastle = original.canCastle;
         sinceCapture = original.sinceCapture;
-        
+        hasCastled = original.hasCastled;
+
         initialize_board();
     }
     return *this;
@@ -85,12 +90,12 @@ Game& Game::operator=(const Game& original) {
 void Game::initialize_board()
 {
     // Initialize 8 by 8 board of empty pieces
-    memset(board, 0, sizeof(void*) * 64);
+    memset(board, 0, sizeof(void *) * 64);
 
     // Place the white pieces
     for (int i = 0; i < 16; i++)
     {
-        Piece* piece = &whitePieces[i];
+        Piece *piece = &whitePieces[i];
         if (piece->white >= 0)
         {
             int x = piece->x;
@@ -101,7 +106,7 @@ void Game::initialize_board()
     // Place the black pieces
     for (int i = 0; i < 16; i++)
     {
-        Piece* piece = &blackPieces[i];
+        Piece *piece = &blackPieces[i];
         if (piece->white >= 0)
         {
             int x = piece->x;
@@ -138,18 +143,19 @@ int Game::check_for_winner(bool color)
     if (moveLog.size() > 9)
     {
         size_t n = moveLog.size();
-        if (moveLog[n - 1] == moveLog[n - 5] &&
-            moveLog[n - 1] == moveLog[n - 9] &&
-            moveLog[n - 2] == moveLog[n - 6] &&
-            moveLog[n - 3] == moveLog[n - 7] &&
-            moveLog[n - 4] == moveLog[n - 8])
+        if (moveLog[n - 1].to == moveLog[n - 5].to &&
+            moveLog[n - 1].to == moveLog[n - 9].to &&
+            moveLog[n - 2].to == moveLog[n - 6].to &&
+            moveLog[n - 3].to == moveLog[n - 7].to &&
+            moveLog[n - 4].to == moveLog[n - 8].to)
         {
             return -1;
         }
     }
 
     // 50 move rule
-    if (sinceCapture >= 100) {
+    if (sinceCapture >= 100)
+    {
         return -1;
     }
 
@@ -284,7 +290,7 @@ MoveDetails Game::move(Piece *piece, Position location)
 {
     Move log = {{piece->x, piece->y}, location};
     MoveDetails details = {log, NULL, false, sinceCapture, canCastle};
-    
+
     sinceCapture++;
 
     // Capture
@@ -304,6 +310,7 @@ MoveDetails Game::move(Piece *piece, Position location)
     // Castling
     if (piece->type == KING && abs(location.x - piece->x) > 1)
     {
+        hasCastled |= turn ? 0b10 : 0b01;
         // Queenside
         if (location.x < piece->x)
         {
@@ -370,36 +377,47 @@ void Game::capture(Piece *piece)
     board[piece->y][piece->x] = NULL;
 }
 
-void Game::moveBack(MoveDetails details) {
-    Piece* piece = board[details.move.to.y][details.move.to.x];
-    
-    //Move piece back
+void Game::moveBack(MoveDetails details)
+{
+    Piece *piece = board[details.move.to.y][details.move.to.x];
+
+    // Move piece back
     movePiece(piece, details.move.from);
 
-    if (piece->type == KING) {
-    //Undo castling
-        if (abs(details.move.from.x - details.move.to.x) > 1) {
-            if (details.move.to.x < 3) {
-                movePiece(board[details.move.to.y][3], { 0, details.move.to.y });
+    if (piece->type == KING)
+    {
+        // Undo castling
+        if (abs(details.move.from.x - details.move.to.x) > 1)
+        {
+            hasCastled &= turn ? 0b01 : 0b10;
+            if (details.move.to.x < 3)
+            {
+                movePiece(board[details.move.to.y][3], {0, details.move.to.y});
             }
-            else {
-                movePiece(board[details.move.to.y][5], { 7, details.move.to.y });
+            else
+            {
+                movePiece(board[details.move.to.y][5], {7, details.move.to.y});
             }
         }
-        if (piece->white) {
+        if (piece->white)
+        {
             whiteKing = details.move.from;
-        } else {
+        }
+        else
+        {
             blackKing = details.move.from;
         }
     }
 
-    //Undo promotion
-    if (details.promotion) { 
+    // Undo promotion
+    if (details.promotion)
+    {
         piece->type = PAWN;
     }
 
-    //Return captured piece
-    if (details.captured) {
+    // Return captured piece
+    if (details.captured)
+    {
         details.captured->white = !piece->white;
         board[details.captured->y][details.captured->x] = details.captured;
     }
@@ -408,7 +426,6 @@ void Game::moveBack(MoveDetails details) {
     canCastle = details.canCastle;
     sinceCapture = details.sinceCapture;
 }
-
 
 bool Game::leap_then_look(Piece *piece, Position location)
 {
@@ -487,80 +504,290 @@ std::vector<Move> Game::get_all_moves(bool color)
     return moves;
 }
 
-std::string Game::toString() {
+int Game::count_doubled_pawns(bool color)
+{
+    auto pieces = color ? whitePieces : blackPieces;
+    int numPawn[8] = {0};
+    for (int i = 0; i < 8; i++)
+    {
+        if (pieces[i].white > -1 && pieces[i].type == PAWN)
+        {
+            numPawn[pieces[i].x]++;
+        }
+    }
+    int sum = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        if (numPawn[i] > 1)
+        {
+            sum += numPawn[i];
+        }
+    }
+    return sum;
+}
+
+int Game::count_blocked_pawns(bool color)
+{
+    auto pieces = color ? whitePieces : blackPieces;
+    int direction = !color * -2 + 1;
+    int sum = 0;
+
+    for (int i = 0; i < 8; i++)
+    {
+        if (pieces[i].white > -1 && pieces[i].type == PAWN)
+        {
+            if (board[pieces[i].y + direction][pieces[i].x] != NULL &&
+                board[pieces[i].y + direction][pieces[i].x]->white != color)
+            {
+                sum++;
+            }
+        }
+    }
+    return sum;
+}
+
+int Game::count_isolated_pawns(bool color)
+{
+    auto pieces = color ? whitePieces : blackPieces;
+    int numPawn[8] = {0};
+    for (int i = 0; i < 8; i++)
+    {
+        if (pieces[i].white > -1 && pieces[i].type == PAWN)
+        {
+            numPawn[pieces[i].x]++;
+        }
+    }
+    int sum = 0;
+    int count = 1;
+    for (int i = 0; i < 8; i++)
+    {
+        if (numPawn[i] == 0)
+        {
+            if (count == 2)
+            {
+                sum++;
+            }
+            count = 1;
+        }
+        if (numPawn[i] == 1)
+        {
+            if (count == 1)
+            {
+                count++;
+            }
+            else
+            {
+                count = 0;
+            }
+        }
+        if (numPawn[i] > 1)
+        {
+            count = 0;
+        }
+    }
+    if (count == 2)
+    {
+        sum++;
+    }
+    return sum;
+}
+
+int Game::count_bid_pawns(bool color)
+{
+    auto pieces = color ? whitePieces : blackPieces;
+    int direction = !color * -2 + 1;
+    int numPawn[8] = {0};
+    int sum = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        if (pieces[i].white > -1 && pieces[i].type == PAWN)
+        {
+            // Make count array
+            numPawn[pieces[i].x]++;
+
+            // Blocked pawns
+            if (board[pieces[i].y + direction][pieces[i].x] != NULL &&
+                board[pieces[i].y + direction][pieces[i].x]->white != color)
+                sum++;
+        }
+    }
+
+    for (int i = 0; i < 8; i++)
+    {
+        // Doubled Pawns
+        if (numPawn[i] > 1)
+        {
+            sum++;
+            break;
+        }
+    }
+
+    int count = 1;
+    for (int i = 0; i < 8; i++)
+    {
+        // Isolated Pawns
+        if (numPawn[i] == 0)
+        {
+            if (count == 2) {
+                sum++;
+                count = 1;
+                break;
+            }
+            count = 1;
+        }
+        if (numPawn[i] == 1)
+        {
+            if (count == 1)
+                count++;
+            else
+                count = 0;
+        }
+        if (numPawn[i] > 1)
+            count = 0;
+    }
+    if (count == 2)
+        sum++;
+
+    return sum;
+}
+
+int Game::count_passed_pawns(bool color)
+{
+    auto enemyPawns = color ? blackPieces : whitePieces;
+    auto pieces = color ? whitePieces : blackPieces;
+
+    int line_to_cross[8] = {color ? 7 : 0};
+    for (int i = 0; i < 8; i++)
+    {
+        if (enemyPawns[i].white > -1 && pieces[i].type == PAWN)
+        {
+            if (i > 0)
+            {
+                if ((color && line_to_cross[i - 1] > enemyPawns[i].y) ||
+                    (!color && line_to_cross[i - 1] < enemyPawns[i].y))
+                {
+                    line_to_cross[i - 1] = enemyPawns[i].y;
+                }
+            }
+            if ((color && line_to_cross[i] > enemyPawns[i].y) ||
+                (!color && line_to_cross[i] < enemyPawns[i].y))
+            {
+                line_to_cross[i] = enemyPawns[i].y;
+            }
+            if (i < 7)
+            {
+                if ((color && line_to_cross[i + 1] > enemyPawns[i + 1].y) ||
+                    (!color && line_to_cross[i + 1] < enemyPawns[i + 1].y))
+                {
+                    line_to_cross[i + 1] = enemyPawns[i].y;
+                }
+            }
+        }
+    }
+
+    int sum = 0;
+    for (int i = 0; i < 8; i++)
+    {
+        if (pieces[i].white > -1 && pieces[i].type == PAWN)
+        {
+            if ((color && pieces[i].y < line_to_cross[i]) ||
+                (!color && pieces[i].y > line_to_cross[i]))
+            {
+                sum++;
+                // Rook
+                if (pieces[12].x == i || pieces[13].x == i)
+                {
+                    sum += 4;
+                }
+            }
+        }
+    }
+
+    return sum;
+}
+
+int Game::count_rook_attacks(bool color)
+{
+    auto pieces = color ? whitePieces : blackPieces;
+    Position enemyKing = color ? blackKing : whiteKing;
+    int sum = 0;
+    for (int i = 12; i < 14; i++)
+    {
+        if (pieces[i].white > -1)
+        {
+            // Count pieces in file
+            int count = 0;
+            for (int i = 0; i < 8; i++)
+            {
+
+                if (board[i][pieces[i].x] != NULL)
+                {
+                    count++;
+                }
+            }
+            // Attack King file
+            if (enemyKing.x == pieces[i].x)
+            {
+                if (count < 3)
+                {
+                    sum += 10;
+                }
+            }
+            // Attack king adjacent file
+            if (abs(enemyKing.x - pieces[i].x) < 2)
+            {
+                if (count < 2)
+                {
+                    sum += 2;
+                    // Attack king adjacent file on side
+                    if (pieces[i].x <= 1 || pieces[i].x >= 6)
+                    {
+                        sum += 3;
+                    }
+                }
+            }
+            // Empty file
+            if (count == 1)
+            {
+                sum += 5;
+            }
+
+            // On seventh rank
+            if ((color && pieces[i].y == 1) || (!color && pieces[i].y == 6))
+            {
+                sum += 6;
+            }
+        }
+    }
+    return sum;
+}
+
+std::string Game::toString()
+{
     char repr[131];
-    memcpy(repr,this, sizeof(Piece)*32+2);
-    for (int i = 0; i < 16; i++) {
-        *(((long*)repr) + i) ^= -1;
+    memcpy(repr, this, sizeof(Piece) * 32 + 2);
+    // xor so we don't have any zero bytes, which would terminate the string
+    for (int i = 0; i < 16; i++)
+    {
+        *(((long *)repr) + i) ^= -1;
     }
     repr[128] ^= -1;
     repr[129] ^= -1;
     repr[130] = 0;
 
-    // char repr[35];
-    // memset(repr, -1, 35);
-
-    // for (auto piece : whitePieces) {
-    //     int i = (piece.y*8+piece.x) >> 1;
-    //     repr[i] &= piece.toString();
-    // }
-
-    //  for (auto piece : blackPieces) {
-    //     int i = (piece.y*8+piece.x) >> 1;
-    //     repr[i] &= piece.toString();
-    // }
-
-    // repr[32] &= turn;
-    // repr[32] &= canCastle << 1;
-    // int i = moveLog.size();
-    // if (i) {
-    //     Move lastMove = moveLog[i-1];
-    //     if(board[lastMove.to.y][lastMove.to.x]->type == PAWN && abs(lastMove.from.y - lastMove.to.y) > 1) {
-    //         repr[32] &= 1 << 5;
-    //         repr[33] &= lastMove.to.x;
-    //         repr[33] &= (lastMove.to.y == 4) << 3;
-    //     }
-    // }
-    // repr[34] = 0;
-
-    // std::string repr = "";
-    // char white[6] = {'P', 'N', 'B', 'R', 'Q', 'K'};
-    // char black[6] = {'p', 'n', 'b', 'r', 'q', 'k'};
-    // for (int i = 0; i < 8; i++)
-    // {
-    //     for (int j = 0; j < 8; j++)
-    //     {
-    //         Piece* piece = board[i][j];
-    //         if (piece != NULL)
-    //             repr += piece->white ? white[piece->type] : black[piece->type];
-    //         else
-    //              repr += "/";
-    //     }
-    // }
-    // // Add extra state variables: castling rights, moves since capture, enPassant
-    // repr += turn ? "W" : "B";
-    // repr += castleK ? "K" : "";
-    // repr += castleQ ? "Q" : "";
-    // repr += castlek ? "k" : "";
-    // repr += castleq ? "q" : "";
-    // if (moveLog.size()) {
-    //     Move lastMove = moveLog.back();
-    //     if(board[lastMove.to.y][lastMove.to.x]->type == PAWN && abs(lastMove.from.y - lastMove.to.y) > 1) {
-    //         repr += lastMove.toString();
-    //     }
-    // }
     return std::string(repr);
 }
 
 void Game::print_board()
 {
-    char letters[6] = {'P', 'N', 'B', 'R', 'Q', 'K'};
+    char Uletters[6] = {'P', 'N', 'B', 'R', 'Q', 'K'};
+    char Lletters[6] = {'p', 'n', 'b', 'r', 'q', 'k'};
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
         {
             if (board[i][j] != NULL)
-                std::cout << letters[board[i][j]->type] << " ";
+                std::cout << (board[i][j]->white ? Uletters[board[i][j]->type] : Lletters[board[i][j]->type]) << " ";
             else
                 std::cout << "_ ";
         }
@@ -571,14 +798,14 @@ void Game::print_board()
     std::cout << "White Pieces: ";
     for (auto piece : whitePieces)
         if (piece.white >= 0)
-            std::cout << letters[piece.type] << ", ";
+            std::cout << Uletters[piece.type] << ", ";
 
     std::cout << "\n";
 
     std::cout << "Black Pieces: ";
     for (auto piece : blackPieces)
         if (piece.white >= 0)
-            std::cout << letters[piece.type] << ", ";
+            std::cout << Lletters[piece.type] << ", ";
 
     std::cout << "\n";
 }

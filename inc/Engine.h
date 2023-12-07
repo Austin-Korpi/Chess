@@ -9,6 +9,7 @@ Move call_minimax(Game &game);
 Move call_minimax_fast(Game& game);
 Move call_minimax_IDS(Game &game);
 Move call_minimax_IDS_fast(Game &game);
-int minimax(Game &game, int depth, int alpha, int beta, Move* choice);
+int minimax(Game &, int, int, int, Move*, bool);
 void printStats();
 void clearTable();
+int evaluate_board(Game& game);
