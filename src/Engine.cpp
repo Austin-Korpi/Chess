@@ -11,19 +11,32 @@
 #include "Opening.h"
 #include "oneapi/tbb/concurrent_hash_map.h"
 
+#define TIMER true
 #define R 3
+
 int maxdepth = MAXDEPTH;
 bool null_ok = false;
 bool useLMR = false;
+bool useQuiesce = true;
+bool useTransposition = false;
+bool extendEval = true;
 
 // Global Data collection variables
-int visited[21] = {0};
+int nodeCount = 0;
 
+// Transposition Table
 typedef oneapi::tbb::concurrent_hash_map<std::string, std::array<int, 3>> StringTable;
 StringTable transpositionTable;
 std::mutex tableLock;
-bool useTransposition = false;
 
+// Timer
+volatile bool timeUp = false;
+void waitForTimeAndChangeVariable(int seconds) {
+    std::this_thread::sleep_for(std::chrono::seconds(seconds));
+    timeUp = true;
+}
+
+// Midstate evalutation function
 int heuristic(Game &game) {
 	int material = 0;
 	// Lookup table
@@ -42,14 +55,18 @@ int heuristic(Game &game) {
 		}
 	}
 
+	if (!extendEval) {
+		return material;
+	}
+
 	// Pawn penalties
 	material -= (game.count_bid_pawns(true) - game.count_bid_pawns(false)) * 10;
 
 	// Passed Pawn
 	material += (game.count_passed_pawns(true) - game.count_passed_pawns(false)) * 10;
 
-	// // Mobility 
-	material += (game.get_all_moves(game.turn).size() - game.get_all_moves(!game.turn).size()) * 4;
+	// Mobility
+	// material += (game.get_all_moves(game.turn).size() - game.get_all_moves(!game.turn).size()) * 4;
 
 	// Bishop Pair
 	if (game.whitePieces[10].white > -1 && game.whitePieces[11].white > -1)
@@ -77,7 +94,7 @@ int utility(int status, bool color, int depth){
 		return -20000;
 	}
 	// Win
-	return  400000 / depth;
+	return  400000 - depth;
 }
 
 void sortMovesCaptured(std::vector<Move>& moves, Game &game) {
@@ -129,7 +146,6 @@ void sortMovesTable(std::vector<Move>& moves, Game &game) {
 		game.moveBack(details);
 		game.moveLog.pop_back();
 	}
-	// printf("%d/%ld ", sortNeeded, scores.size());
 	if (sortNeeded) {
 		int j, key;
 		for (unsigned int i = 1; i < scores.size(); i++) {
@@ -171,7 +187,7 @@ int quiesce(Game& game, int alpha, int beta, int depth) {
 			MoveDetails details = game.move(game.board[move.from.y][move.from.x], move.to);
 			game.moveLog.push_back(details.move);   
 			
-			// visited[depth]++; // Data collection
+			nodeCount++;
 
 			// Continue the search
 			game.turn = !game.turn;
@@ -199,151 +215,11 @@ int quiesce(Game& game, int alpha, int beta, int depth) {
     return alpha;
 }
 
-// int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verify) {
-// 	MoveDetails details;
-
-// 	// Get all possible moves 
-// 	std::vector<Move> moves = game.get_all_moves(game.turn);
-	
-// 	// Sort for better cutoffs
-// 	sortMovesCaptured(moves, game);
-// 	if (useTransposition) {
-// 		sortMovesTable(moves, game);
-// 	}
-
-// 	int bestMat = INT_MIN;
-// 	// Iterate through moves
-// 	for(auto currentMove : moves) {
-// 		visited[depth]++; // Data collection
-		
-// 		int material = INT_MAX;
-// 		int i = 0;
-
-// 		details = game.move(game.board[currentMove.from.y][currentMove.from.x], currentMove.to);
-// 		game.moveLog.push_back(details.move);
-
-// 		// Table lookup
-// 		std::string gameString = game.toString();
-// 		if (useTransposition) {
-// 			StringTable::const_accessor a;
-// 			if (transpositionTable.find(a, gameString)) {
-// 				if (a->second[0] == depth && a->second[1] == maxdepth) {
-// 					material = a->second[2];
-// 				}
-// 			}
-// 		} 
-		
-// 		bool fail_high = false;
-// 		// Evaluate node
-// 		if(material == INT_MAX) {
-// 			// Check for termination
-// 			int terminated = game.check_for_winner(game.turn);
-// 			if (terminated) {
-// 				material = utility(terminated, game.turn, depth);
-// 			}
-// 			// Check for depth limit
-// 			else if (depth >= maxdepth) {
-// 				// material = heuristic(game);
-// 				game.turn = !game.turn;
-// 				material = -quiesce(game, -beta, -alpha, depth+1);
-// 				game.turn = !game.turn; 
-// 				// printf("quiesce: %d\n", material);
-// 			}
-// 			// Search
-// 			else {
-// 				// Null Search
-// 				if (!game.check_for_check(game.turn) && null_ok && (!verify || depth < maxdepth-1)) {
-// 					/* null-move search with minimal window around beta */
-// 					// int value = -minimax(game, depth+R+1,-beta, -beta+1, NULL, verify);
-// 					int value = minimax(game, depth+R+1, beta-1, beta, NULL, verify);
-// 					if (value >= beta) {
-
-// 						/* fail-high */
-// 						if (verify) {
-// 							/* reduce the depth by one ply */
-// 							depth++;
-// 							// printf("-");
-// 							/* turn verification off for the sub-tree */
-// 							verify = false;
-// 							/* mark a fail-high flag, to detect zugzwangs later*/
-// 							fail_high = true;
-// 						}
-// 						else {
-// 							/* cutoff in a sub-tree with fail-high report */
-// 							// Move back
-// 							game.moveBack(details);
-// 							game.moveLog.pop_back();
-// 							// for (int i = 0; i < depth; i++) {
-// 							// 	printf("  ");
-// 							// }
-// 							// printf("Depth %d. S=%d, a=%d, b=%d\n", depth, material, alpha, beta);
-// 							// printf("prune");
-// 							return value;
-// 							// bestMat = value;
-// 						}
-// 					}
-// 				}
-// 			research:
-// 				// Search
-// 				game.turn = !game.turn;
-// 				if (!useLMR || i < 3 || maxdepth - depth < 3 || details.captured || game.check_for_check(game.turn)) {
-// 					// Search 
-// 					material = -minimax(game, depth + 1, -beta, -alpha, NULL, verify);
-// 				} else {
-// 					//Late Move Reduction
-// 					material = -minimax(game, depth + 2, -beta, -alpha, NULL, verify);
-// 					if (material > alpha) {
-// 						material = -minimax(game, depth + 1, -beta, -alpha, NULL, verify);
-// 					}
-// 				}				
-// 				game.turn = !game.turn;
-				
-// 				// Verify
-// 				if(fail_high && material < beta) {
-// 					depth--;
-// 					fail_high = false;
-// 					verify = true;
-// 					// printf("|");
-// 					goto research;
-// 				}
-// 			}
-// 			// Store result
-// 			if (useTransposition) {
-// 				StringTable::accessor a;
-// 				if (transpositionTable.insert(a, gameString)) {
-// 					a->second = {depth, maxdepth, material};
-// 				}
-// 			}
-// 		}
-
-// 		// Move back
-// 		game.moveBack(details);
-// 		game.moveLog.pop_back();
-
-// 		// for (int i = 0; i < depth; i++) {
-// 		// 	printf("  ");
-// 		// }
-// 		// printf("Depth %d. S=%d, a=%d, b=%d\n", depth, material, alpha, beta);
-		
-// 		// Set best material variable for pruning
-// 		if (material >= beta) {
-// 			return material;
-// 		}
-// 		if (material > bestMat) {
-// 			bestMat = material;
-// 			if (depth == 1) {
-// 				*choice = details.move;
-// 			}
-// 			if (material > alpha) {
-// 				alpha = material;
-// 			}
-// 		}
-// 		i++;
-// 	}
-
-// 	return bestMat;
-// }
 int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verify) {
+	if (timeUp) {
+		return alpha;
+	}
+
 	MoveDetails details;
 
 	// Get all possible moves 
@@ -356,19 +232,20 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 	}
 
 	int bestMat = INT_MIN;
-	int i = 0;
 	// Iterate through moves
 	for(auto currentMove : moves) {
-		visited[depth]++; // Data collection
+		nodeCount++;
 		
 		int material = INT_MAX;
+		int i = 0;
 
 		details = game.move(game.board[currentMove.from.y][currentMove.from.x], currentMove.to);
 		game.moveLog.push_back(details.move);
 
 		// Table lookup
-		std::string gameString = game.toString();
+		std::string gameString;
 		if (useTransposition) {
+			gameString = game.toString();
 			StringTable::const_accessor a;
 			if (transpositionTable.find(a, gameString)) {
 				if (a->second[0] == depth && a->second[1] == maxdepth) {
@@ -387,16 +264,46 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 			}
 			// Check for depth limit
 			else if (depth >= maxdepth) {
-				// material = heuristic(game);
-				game.turn = !game.turn;
-				material = -quiesce(game, -beta, -alpha, depth+1);
-				game.turn = !game.turn;
-				// printf("quiesce: %d\n", material);
+				if (useQuiesce) {
+					game.turn = !game.turn;
+					material = -quiesce(game, -beta, -alpha, depth+1);
+					game.turn = !game.turn;	
+				} else {
+					material = heuristic(game); 
+				}
 			}
 			// Search
 			else {
+				// Null Search
+				if (null_ok && !game.check_for_check(game.turn) && (!verify || depth < maxdepth-1)) {
+					/* null-move search with minimal window around beta */
+					// int value = -minimax(game, depth+R+1,-beta, -beta+1, NULL, verify);
+					int value = minimax(game, depth+R+1, beta-1, beta, NULL, verify);
+					if (value >= beta) {
+
+						/* fail-high */
+						if (verify) {
+							/* reduce the depth by one ply */
+							depth++;
+							/* turn verification off for the sub-tree */
+							verify = false;
+							/* mark a fail-high flag, to detect zugzwangs later*/
+							fail_high = true;
+						}
+						else {
+							/* cutoff in a sub-tree with fail-high report */
+							// Move back
+							game.moveBack(details);
+							game.moveLog.pop_back();
+
+							return value;
+						}
+					}
+				}
+			research:
+				// Search
 				game.turn = !game.turn;
-				if (!useLMR || i < 3 || maxdepth - depth < 3 || details.captured || game.check_for_check(game.turn)) {
+				if (!useLMR || i == 0 || maxdepth - depth < 3 || details.captured || game.check_for_check(game.turn)) {
 					// Search 
 					material = -minimax(game, depth + 1, -beta, -alpha, NULL, verify);
 				} else {
@@ -407,12 +314,21 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 					}
 				}				
 				game.turn = !game.turn;
+				
+				// Verify
+				if(fail_high && material < beta) {
+					depth--;
+					fail_high = false;
+					verify = true;
+					goto research;
+				}
 			}
 			// Store result
 			if (useTransposition) {
 				StringTable::accessor a;
-				transpositionTable.insert(a, gameString);
-				a->second = {depth, maxdepth, material};
+				if (transpositionTable.insert(a, gameString)) {
+					a->second = {depth, maxdepth, material};
+				}
 			}
 		}
 
@@ -420,22 +336,13 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 		game.moveBack(details);
 		game.moveLog.pop_back();
 
-		// for (int i = 0; i < depth; i++) {
-		// 	printf("  ");
-		// }
-		// printf("Depth %d. S=%d, a=%d, b=%d\n", depth, material, alpha, beta);
-
-		if (depth == 1) {
-			printf("%s: %d\n", currentMove.toString().c_str(), material);
-		}
-		
 		// Set best material variable for pruning
 		if (material >= beta) {
 			return material;
 		}
 		if (material > bestMat) {
 			bestMat = material;
-			if (choice != NULL) {
+			if (depth == 1) {
 				*choice = details.move;
 			}
 			if (material > alpha) {
@@ -451,16 +358,14 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 Move call_minimax(Game &game) {
 	Move choice;
 	minimax(game, 1, -INT_MAX, INT_MAX, &choice, true);
-	// printf("Depth 0: %d\n", ret);
 	// Data collection
-	printStats();
-
+	// printStats();
+	printf("%d, ", nodeCount);
+	nodeCount = 0;
 	return choice;
 }
 
 void thread_func_minimax(int, Game &game, Move move, std::mutex* writeLock, int* alpha, int* beta, Move* choice) {
-	visited[1]++;
-
 	Game copy = game;
 	// Try move - pointer to piece no longer valide, must use positions
 	MoveDetails details = copy.move(copy.board[move.from.y][move.from.x], move.to);
@@ -519,9 +424,7 @@ Move call_minimax_fast(Game& game) {
 	ctpl::thread_pool p(16); /* sixteen threads in the pool */
 	std::vector<std::future<void>> results(moves.size());
 
-	// TODO: Order moves
 	for (unsigned int i = 0; i < moves.size(); ++i){
-		// results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &alpha, &beta, &choice);
 		results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &alpha, &beta, &choice);
 	}
 
@@ -539,27 +442,34 @@ Move call_minimax_fast(Game& game) {
 Move call_minimax_IDS(Game &game) {
 	//Enable transposition and empty the transpostion table
 	useTransposition = true;
-	null_ok = true;
-	useLMR = true;;
 	clearTable();
 
-	printf("Current Score: %d\n", heuristic(game));
-
 	Move move;
-	for (int i = 1; i < MAXDEPTH; i += 1) {
-		maxdepth = i;
-		call_minimax(game);
+	if (TIMER) {
+		timeUp = false;
+		std::thread timerThread(waitForTimeAndChangeVariable, MAX_RUN_TIME);
+		maxdepth = 1;
+		while (!timeUp) {
+			minimax(game, 1, -INT_MAX, INT_MAX, &move, true);
+			maxdepth++;
+		}
+		timerThread.join();
+		timeUp = false;
+	} else {	
+		maxdepth = 1;
+		for (int i = 0; i < MAXDEPTH; i++) {
+			minimax(game, 1, -INT_MAX, INT_MAX, &move, true);
+			maxdepth++;
+		}
+		maxdepth = MAXDEPTH;
 	}
-	maxdepth = MAXDEPTH;
-	useLMR = true;
-	move = call_minimax(game);
 
+	printf("%d, ", nodeCount);
+	nodeCount = 0;
 
 	// Disable transposition and empty the transpostion table
 	clearTable();
 	useTransposition = false;
-	null_ok = false;
-	useLMR = false;
 
 	return move;
 }
@@ -609,16 +519,6 @@ Move move_with_opening(Game& game, Move (*func)(Game&)) {
 	}
 	// If the game is out of book, call the continuation function
 	return func(game);
-}
-
-void printStats() {
-    printf("{");
-    for (int i = 1; i <= 10; i++) {
-        printf("%d  ", visited[i]);
-    }
-    printf("}\n");
-    int visitedN[11] = {0};
-    memcpy(visited, visitedN, sizeof(int) * 11);
 }
 
 void clearTable(){

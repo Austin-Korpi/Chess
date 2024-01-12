@@ -1,7 +1,12 @@
 #include "MCTS.h"
+#include "Engine.h"
 #include <math.h>
+#include <chrono>
+#include <thread>
 
 #define REPETITIONS 1000
+
+extern volatile bool timeUp;
 
 Move MCNode::getBestMove()
 {
@@ -10,14 +15,14 @@ Move MCNode::getBestMove()
     for (auto child : children)
     {
         Move move = child->state.moveLog.back();
-        printf("%s %f/%d\n", move.toString().c_str(), child->wins, child->visited);
+        // printf("%s %f/%d\n", move.toString().c_str(), child->wins, child->visited);
         if (child->visited > max)
         {
             max = child->visited;
             bestMove = move;
         }
     }
-    printf("\n");
+    // printf("\n");
     return bestMove;
 }
 
@@ -131,24 +136,25 @@ Move monte_carlo_tree_search(Game &game)
     unvisitedNodes = 0;
     visitedNodes = 0;
     Move move;
+
+    // Put the current game state into the tree
+    MCNode root = MCNode(game);
+    timeUp = false;
+    std::thread timerThread(waitForTimeAndChangeVariable, MAX_RUN_TIME);
+    while (!timeUp)
     {
-        // Put the current game state into the tree
-        MCNode root = MCNode(game);
-        int i;
-        for (i = 0; i < REPETITIONS; i++)
-        {
-            // Chose one 'leaf' (not maxed out node) from the current tree using UCT
-            MCNode *leaf = root.select();
-            // Add one leaf's children to the tree
-            leaf->expand();
-            // Simulate the game from the child
-            leaf = leaf->select();
-            int result = leaf->simulate();
-            // Backpropogation
-            leaf->backpropogate(result);
-        }
-        move = root.getBestMove();
+        // Chose one 'leaf' (not maxed out node) from the current tree using UCT
+        MCNode *leaf = root.select();
+        // Add one leaf's children to the tree
+        leaf->expand();
+        // Simulate the game from the child
+        leaf = leaf->select();
+        int result = leaf->simulate();
+        // Backpropogation
+        leaf->backpropogate(result);
     }
+    move = root.getBestMove();
+    timerThread.join();
 
     return move;
 }

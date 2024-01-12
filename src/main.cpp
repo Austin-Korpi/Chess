@@ -283,51 +283,57 @@ int main(int, char**)
             takeTurn = 5;
         }
 
-        if (game.turn == false) {
+        // if (game.turn == false) {
             if (takeTurn > 0) {
                 takeTurn--;
-            } /*else if (takeTurn == 0){
-                printf("Score: %d\n", evaluate_board(game));
-                takeTurn--;
-            }*/
-            else if(winner == ""){
+            } else if(winner == ""){
                 Move choice;
-
+                
                 if (game.turn == false) {
-                    printf("\n--Black Move--\n");
-                    // move_with_opening(game, &call_minimax);
-                    // start = std::chrono::high_resolution_clock::now();
-
-                    // choice = move_with_opening(game, &call_minimax);
-
-                    //  end = std::chrono::high_resolution_clock::now();
-                    // duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    // std::cout << "Time: " << duration.count() << " miliseconds. " << choice.toString() << std::endl;
+                    // printf("\n--Black Move--\n");
                     auto start = std::chrono::high_resolution_clock::now();
+
+                    choice = move_with_opening(game, &call_minimax);
+
+                    auto end = std::chrono::high_resolution_clock::now();
+                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+                    std::cout << duration.count() << ",";
+                    // std::cout << "Time: " << duration.count() << " miliseconds." << choice.toString() << std::endl;
+                    start = std::chrono::high_resolution_clock::now();
 
                     choice = move_with_opening(game, &call_minimax_IDS);
 
-                    auto end = std::chrono::high_resolution_clock::now();
-                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << "Time: " << duration.count() << " miliseconds. " << choice.toString() << std::endl;
+                    end = std::chrono::high_resolution_clock::now();
+                    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+                    std::cout << duration.count() << "," << std::endl;
+                    // std::cout << "Time: " << duration.count() << " miliseconds. " << choice.toString() << std::endl;
                     game.log_move(choice);
                 } else {
-                    printf("\n--White Move--\n");
+                    // printf("\n--White Move--\n");
                     auto start = std::chrono::high_resolution_clock::now();
                     
-                    game.log_move(move_with_opening(game, &call_minimax_IDS));
-                    // game.log_move(call_minimax_IDS_fast(game));
+                    choice = move_with_opening(game, &call_minimax);
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
+                    std::cout << duration.count() << ",";
+                    // std::cout << "Time: " << duration.count() << " miliseconds. " << choice.toString() << std::endl;
+                    start = std::chrono::high_resolution_clock::now();
+
+                    choice = move_with_opening(game, &call_minimax_IDS);
+
+                    end = std::chrono::high_resolution_clock::now();
+                    duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+                    std::cout << duration.count() << "," << std::endl;
+                    // std::cout << "Time: " << duration.count() << " miliseconds. " << choice.toString() << std::endl;
+                    game.log_move(choice);
                 }
                 winner = game.switch_turns();
                 moveLog.push_back(game);
                 takeTurn = 5;   
                 // usleep(200000);
             }
-        }
+        // }
 
         // Rendering
         ImGui::Render();

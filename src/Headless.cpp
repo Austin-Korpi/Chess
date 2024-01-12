@@ -8,30 +8,68 @@
 #include "MTD.h"
 
 int main() {
-    Game game = Game();
-    std::string winner = "";
-    while (winner == "") {
-        if (game.turn == false) {
-            printf("\n--Black Move--\n");
-            auto start = std::chrono::high_resolution_clock::now();
-
-            game.log_move(move_with_opening(game, &call_minimax_IDS));
-
-            auto end = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-            std::cout << "Variable MTD: " << duration.count() << " miliseconds" << std::endl;
+    for(int numGames = 0; numGames < 1; numGames++) {
+        Game game = Game();
+        std::string winner = "";
+        while (winner == "") {
+            Move choice;
             
-        } else {
-            printf("\n--White Move--\n");
-            auto start = std::chrono::high_resolution_clock::now();
-            
-            game.log_move(move_with_opening(game, &call_minimax_IDS_fast));
+            extern bool null_ok;
+            extern bool useLMR;
+            extern bool useQuiesce;
+            extern bool useTransposition;
+            extern bool useSort;
+            extern int nodeCount;
 
-            auto end = std::chrono::high_resolution_clock::now();
-            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-            std::cout << "Time: " << duration.count() << " miliseconds" << std::endl;
-        }
-        winner = game.switch_turns();
-    }        
-    std::cout << "Winner: " << winner << std::endl;    
+            // No IDS
+            choice = move_with_opening(game, &call_minimax);
+            printf("%d, ", nodeCount);
+            nodeCount = 0;
+            // MTD(f) IDS
+            move_with_opening(game, &call_MTD_IDS);
+            printf("%d, ", nodeCount);
+            nodeCount = 0;
+            // Move Ordering
+            useSort = true;
+            move_with_opening(game, &call_minimax);
+            printf("%d, ", nodeCount);
+            nodeCount = 0;
+            useSort = false;
+            // TT
+            useTransposition = true;
+            move_with_opening(game, &call_minimax);
+            printf("%d, ", nodeCount);
+            nodeCount = 0;
+            // TT sort
+            useSort = true;
+            move_with_opening(game, &call_minimax_IDS);
+            printf("%d, ", nodeCount);
+            nodeCount = 0;
+            // LMR
+            useLMR = true;
+            move_with_opening(game, &call_minimax_IDS);
+            printf("%d, ", nodeCount);
+            nodeCount = 0;
+            useLMR = false;
+            useSort = false;
+            useTransposition = false;
+            // NULL
+            null_ok = true;
+            move_with_opening(game, &call_minimax);
+            printf("%d, ", nodeCount);
+            nodeCount = 0;
+            null_ok = false;
+            // Quiescent
+            useQuiesce = true;
+            move_with_opening(game, &call_minimax);
+            printf("%d, ", nodeCount);
+            nodeCount = 0;
+            useQuiesce = false;
+            
+            game.log_move(choice);
+            printf("\n");
+            winner = game.switch_turns();
+        }    
+        std::cout << winner << std::endl;    
+    }
 }
