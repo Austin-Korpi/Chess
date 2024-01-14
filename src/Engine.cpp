@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include "ctpl_stl.h"
+#include <sstream>
 
 #include "Engine.h"
 #include "Opening.h"
@@ -433,7 +434,6 @@ Move call_minimax_fast(Game& game) {
 	}
 
 	// Data collection
-	printStats();
 	// printf("Depth %d: %d Move: %s\n", maxdepth, game.turn ? alpha : beta, choice.toString().c_str());
 
 	return choice;
@@ -464,8 +464,8 @@ Move call_minimax_IDS(Game &game) {
 		maxdepth = MAXDEPTH;
 	}
 
-	printf("%d, ", nodeCount);
-	nodeCount = 0;
+	// printf("%d, ", nodeCount);
+	// nodeCount = 0;
 
 	// Disable transposition and empty the transpostion table
 	clearTable();
@@ -527,4 +527,28 @@ void clearTable(){
 
 int evaluate_board(Game& game){
 	return quiesce(game, -INT_MAX, INT_MAX, 1);
+}
+
+int main() {
+	std::string line;
+	while (std::getline(std::cin, line)){
+		// fprintf(stderr, "read:  %s\n", line.c_str());
+		Game state;
+
+		std::istringstream iss(line);
+
+		// Temporary variable to store each word
+		std::string word;
+
+		// Read words using a loop
+		while (iss >> word) {
+			// Process or store each word as needed
+			Move inputMove;
+			inputMove.translate(word);
+			state.log_move(inputMove);
+		}
+
+		Move choice = move_with_opening(state, call_minimax_IDS);
+		std::cout << choice.toString() << std::endl;
+	}
 }

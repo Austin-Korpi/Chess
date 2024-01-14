@@ -16,19 +16,22 @@
 #CXX = g++
 #CXX = clang++
 
+ENGINE = engine.app
 GUI = chess.app
 HEADLESS = chess.script
 IMGUI_DIR = imgui
 SRC_DIR = src
 INCLUDE_DIR = inc
 LIB_DIR = lib
-SOURCES =  $(SRC_DIR)/Game.cpp $(SRC_DIR)/Pieces.cpp $(SRC_DIR)/Engine.cpp $(SRC_DIR)/MCTS.cpp $(SRC_DIR)/Opening.cpp $(SRC_DIR)/MTD.cpp
+SOURCES =  $(SRC_DIR)/Game.cpp $(SRC_DIR)/Pieces.cpp $(SRC_DIR)/Opening.cpp
 SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
 GUI_SOURCES = $(SOURCES) $(SRC_DIR)/main.cpp
-HEADLESS_SOURCES = $(SOURCES) $(SRC_DIR)/Headless.cpp
+HEADLESS_SOURCES = $(SRC_DIR)/Game.cpp $(SRC_DIR)/Pieces.cpp $(SRC_DIR)/Headless.cpp
+ENGINE_SOURCES = $(SRC_DIR)/Game.cpp $(SRC_DIR)/Pieces.cpp $(SRC_DIR)/Engine.cpp $(SRC_DIR)/Opening.cpp
 GUI_OBJS = $(addprefix bin/, $(addsuffix .o, $(basename $(notdir $(GUI_SOURCES)))))
 HEADLESS_OBJS = $(addprefix bin/, $(addsuffix .o, $(basename $(notdir $(HEADLESS_SOURCES)))))
+ENGINE_OBJS = $(addprefix bin/, $(addsuffix .o, $(basename $(notdir $(ENGINE_SOURCES)))))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
 
@@ -97,7 +100,12 @@ $(GUI): $(GUI_OBJS)
 $(HEADLESS): $(HEADLESS_OBJS)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
 
+$(ENGINE): $(ENGINE_OBJS)
+	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
+
 clean:
 	rm -f $(GUI) $(HEADLESS_OBJS) $(GUI_OBJS)
 
 headless: $(HEADLESS)
+
+engine: $(ENGINE)
