@@ -134,7 +134,7 @@ void sortMovesTable(std::vector<Move>& moves, Game &game) {
 	std::vector<int> scores;
 	for (auto move : moves) {
 		MoveDetails details = game.move(game.board[move.from.y][move.from.x], move.to);
-		game.moveLog.push_back(details.move);
+		game.addToLog(details);
 		int rating = INT_MIN;
 		std::string gameString = game.toString();
 		StringTable::const_accessor a;
@@ -186,7 +186,7 @@ int quiesce(Game& game, int alpha, int beta, int depth) {
 		if (game.board[move.to.y][move.to.x]) {
 			//Move
 			MoveDetails details = game.move(game.board[move.from.y][move.from.x], move.to);
-			game.moveLog.push_back(details.move);   
+			game.addToLog(details);
 			
 			nodeCount++;
 
@@ -241,7 +241,7 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 		int i = 0;
 
 		details = game.move(game.board[currentMove.from.y][currentMove.from.x], currentMove.to);
-		game.moveLog.push_back(details.move);
+		game.addToLog(details);
 
 		// Table lookup
 		std::string gameString;
@@ -370,7 +370,7 @@ void thread_func_minimax(int, Game &game, Move move, std::mutex* writeLock, int*
 	Game copy = game;
 	// Try move - pointer to piece no longer valide, must use positions
 	MoveDetails details = copy.move(copy.board[move.from.y][move.from.x], move.to);
-	copy.moveLog.push_back(details.move);
+	game.addToLog(details);
 
 	int material;
 	// Check for termination
@@ -505,7 +505,7 @@ Move move_with_opening(Game& game, Move (*func)(Game&)) {
 	std::string moveHistory = "";
 	// Build move history string
 	for (auto i : game.moveLog) {
-		moveHistory += i.toString()+" ";
+		moveHistory += i+" ";
 	}
 	// Search for a response in the opening database
 	if (game.moveLog.size() < MAXLENGTH &&

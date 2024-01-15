@@ -72,7 +72,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27]) {
 				}
 				//En passant
 				else if (can_capture(game.board[y][move.x]) && game.board[y][move.x]->type == PAWN) {
-					Move lastMove = game.moveLog[game.moveLog.size() - 1];
+					Move lastMove;
+					lastMove.translate(game.moveLog.back());
 					if (lastMove.to == Position{move.x, y} && game.board[lastMove.to.y][lastMove.to.x]->type == PAWN && abs(lastMove.from.y - lastMove.to.y) > 1 
 						&& !game.leap_then_look(this, move)) {
 

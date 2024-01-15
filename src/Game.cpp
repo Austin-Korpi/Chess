@@ -5,7 +5,7 @@
 
 Game::Game()
 {
-    moveLog = std::vector<Move>();
+    moveLog = std::vector<std::string>();
     turn = true;
     canCastle = 0b1111;
     sinceCapture = 0;
@@ -143,11 +143,11 @@ int Game::check_for_winner(bool color)
     if (moveLog.size() > 9)
     {
         size_t n = moveLog.size();
-        if (moveLog[n - 1].to == moveLog[n - 5].to &&
-            moveLog[n - 1].to == moveLog[n - 9].to &&
-            moveLog[n - 2].to == moveLog[n - 6].to &&
-            moveLog[n - 3].to == moveLog[n - 7].to &&
-            moveLog[n - 4].to == moveLog[n - 8].to)
+        if (moveLog[n - 1] == moveLog[n - 5] &&
+            moveLog[n - 1] == moveLog[n - 9] &&
+            moveLog[n - 2] == moveLog[n - 6] &&
+            moveLog[n - 3] == moveLog[n - 7] &&
+            moveLog[n - 4] == moveLog[n - 8])
         {
             return -1;
         }
@@ -377,6 +377,14 @@ void Game::capture(Piece *piece)
     board[piece->y][piece->x] = NULL;
 }
 
+void Game::addToLog(MoveDetails details) {
+    std::string move = details.move.toString();
+    if (details.promotion) {
+        move += "q";
+    }
+    moveLog.push_back(move);
+}
+
 void Game::moveBack(MoveDetails details)
 {
     Piece *piece = board[details.move.to.y][details.move.to.x];
@@ -460,7 +468,7 @@ bool Game::log_move(Move location)
     MoveDetails details = move(piece, location.to);
 
     // Add move to log
-    moveLog.push_back(details.move);
+    addToLog(details);
 
     return true;
 }

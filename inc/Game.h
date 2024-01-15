@@ -15,7 +15,7 @@ public:
 	Position whiteKing;
 	Position blackKing;
 	Piece* board[8][8] = { 0 };
-	std::vector<Move> moveLog;
+	std::vector<std::string> moveLog;
 	char hasCastled;
 
 	Game();
@@ -28,6 +28,7 @@ public:
 	int check_for_winner(bool color);
 	bool check_for_check(bool color, Position type = {-1, -1});
 	MoveDetails move(Piece* piece, Position location);
+	void addToLog(MoveDetails);
 	void moveBack(MoveDetails);
 	void movePiece(Piece* piece, Position location);
 	void capture(Piece* piece);

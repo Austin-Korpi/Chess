@@ -210,7 +210,7 @@ Move getEngineMove(Game &game, FILE *engine_in, FILE *engine_out)
     std::string moves = "";
     for (int i = 0; i < (int)game.moveLog.size(); i++)
     {
-        moves += game.moveLog[i].toString() + " ";
+        moves += game.moveLog[i] + " ";
     }
     moves += '\n';
 
@@ -245,7 +245,7 @@ Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
     std::string moves = "position startpos moves ";
     for (int i = 0; i < (int)game.moveLog.size(); i++)
     {
-        moves += game.moveLog[i].toString() + " ";
+        moves += game.moveLog[i] + " ";
     }
     moves += "\ngo depth 3\n";
 

@@ -135,10 +135,9 @@ Move getEngineMove(Game &game, FILE *engine_in, FILE *engine_out)
     std::string moves = "";
     for (int i = 0; i < (int)game.moveLog.size(); i++)
     {
-        moves += game.moveLog[i].toString() + " ";
+        moves += game.moveLog[i] + " ";
     }
     moves += '\n';
-    std::cout << moves;
 
     // Write string to engine
     if (fwrite(moves.c_str(), 1, strlen(moves.c_str()), engine_in) < strlen(moves.c_str()))
@@ -161,7 +160,7 @@ Move getEngineMove(Game &game, FILE *engine_in, FILE *engine_out)
     // Convert move
     Move choice;
     choice.translate(std::string(buffer));
-    std::cout << choice.toString() << std::endl;
+
     return choice;
 }
 
@@ -171,10 +170,9 @@ Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
     std::string moves = "position startpos moves ";
     for (int i = 0; i < (int)game.moveLog.size(); i++)
     {
-        moves += game.moveLog[i].toString() + " ";
+        moves += game.moveLog[i] + " ";
     }
     moves += "\ngo depth 3\n";
-    std::cout << moves;
 
     // Write string to engine
     if (fwrite(moves.c_str(), 1, strlen(moves.c_str()), SF_in) < strlen(moves.c_str()))
@@ -198,7 +196,6 @@ Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
     Move choice;
     choice.translate(std::string(&buffer[9]));
 
-    std::cout << choice.toString() << std::endl;
     return choice;
 }
 
