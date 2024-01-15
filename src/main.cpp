@@ -197,6 +197,10 @@ void init_SF(FILE *&SF_in, FILE *&SF_out)
         close(pipe_out[1]);
         SF_in = fdopen(pipe_in[1], "w");
         SF_out = fdopen(pipe_out[0], "r");
+         
+        const char* msg= "setoption name Use NNUE value false\n";
+        fwrite(msg, 1, strlen(msg), SF_in);
+        fflush(SF_in);
     }
 }
 
@@ -243,7 +247,7 @@ Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
     {
         moves += game.moveLog[i].toString() + " ";
     }
-    moves += "\ngo movetime 1000\n";
+    moves += "\ngo depth 3\n";
 
     // Write string to engine
     if (fwrite(moves.c_str(), 1, strlen(moves.c_str()), SF_in) < strlen(moves.c_str()))
@@ -497,7 +501,7 @@ int main(int, char**)
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << duration.count() << ",";
+                    std::cout << choice.toString() << ": " << duration.count() << std::endl;
                     game.log_move(choice);
                 } else {
                     // printf("\n--White Move--\n");
@@ -507,7 +511,7 @@ int main(int, char**)
 
                     auto end = std::chrono::high_resolution_clock::now();
                     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << duration.count() << ",";
+                    std::cout << choice.toString() << ": " << duration.count() << std::endl;
                     game.log_move(choice);
                 }
                 winner = game.switch_turns();

@@ -122,6 +122,10 @@ void init_SF(FILE *&SF_in, FILE *&SF_out)
         close(pipe_out[1]);
         SF_in = fdopen(pipe_in[1], "w");
         SF_out = fdopen(pipe_out[0], "r");
+                 
+        const char* msg= "setoption name Use NNUE value false\n";
+        fwrite(msg, 1, strlen(msg), SF_in);
+        fflush(SF_in);
     }
 }
 
@@ -134,6 +138,7 @@ Move getEngineMove(Game &game, FILE *engine_in, FILE *engine_out)
         moves += game.moveLog[i].toString() + " ";
     }
     moves += '\n';
+    std::cout << moves;
 
     // Write string to engine
     if (fwrite(moves.c_str(), 1, strlen(moves.c_str()), engine_in) < strlen(moves.c_str()))
@@ -156,7 +161,7 @@ Move getEngineMove(Game &game, FILE *engine_in, FILE *engine_out)
     // Convert move
     Move choice;
     choice.translate(std::string(buffer));
-
+    std::cout << choice.toString() << std::endl;
     return choice;
 }
 
@@ -168,7 +173,8 @@ Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
     {
         moves += game.moveLog[i].toString() + " ";
     }
-    moves += "\ngo depth 5\n";
+    moves += "\ngo depth 3\n";
+    std::cout << moves;
 
     // Write string to engine
     if (fwrite(moves.c_str(), 1, strlen(moves.c_str()), SF_in) < strlen(moves.c_str()))
@@ -192,6 +198,7 @@ Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
     Move choice;
     choice.translate(std::string(&buffer[9]));
 
+    std::cout << choice.toString() << std::endl;
     return choice;
 }
 
@@ -209,7 +216,7 @@ int main()
     init_SF(SF_in, SF_out);
     std::cout << "StockFish started" << std::endl;
 
-    for (int numGames = 0; numGames < 1; numGames++)
+    for (int numGames = 0; numGames < 20; numGames++)
     {
         Game game = Game();
 
@@ -229,7 +236,7 @@ int main()
                 choice = getSFMove(game, SF_in, SF_out);
             }
 
-            std::cout << choice.toString() << std::endl;
+            // std::cout << choice.toString() << std::endl;
             game.log_move(choice);
 
             winner = game.switch_turns();

@@ -440,19 +440,18 @@ Move call_minimax_fast(Game& game) {
 }
 
 Move call_minimax_IDS(Game &game) {
-	//Enable transposition and empty the transpostion table
-	useTransposition = true;
-	clearTable();
-
 	Move move;
 	if (TIMER) {
 		timeUp = false;
 		std::thread timerThread(waitForTimeAndChangeVariable, MAX_RUN_TIME);
-		maxdepth = 1;
+		maxdepth = 0;
+		Move tempChoice;
 		while (!timeUp) {
-			minimax(game, 1, -INT_MAX, INT_MAX, &move, true);
 			maxdepth++;
+			move = tempChoice;
+			minimax(game, 1, -INT_MAX, INT_MAX, &tempChoice, true);
 		}
+		// fprintf(stderr, "Max depth: %d\n", maxdepth);
 		timerThread.join();
 		timeUp = false;
 	} else {	
@@ -464,12 +463,8 @@ Move call_minimax_IDS(Game &game) {
 		maxdepth = MAXDEPTH;
 	}
 
-	// printf("%d, ", nodeCount);
-	// nodeCount = 0;
-
 	// Disable transposition and empty the transpostion table
 	clearTable();
-	useTransposition = false;
 
 	return move;
 }
@@ -532,7 +527,6 @@ int evaluate_board(Game& game){
 int main() {
 	std::string line;
 	while (std::getline(std::cin, line)){
-		// fprintf(stderr, "read:  %s\n", line.c_str());
 		Game state;
 
 		std::istringstream iss(line);
@@ -546,6 +540,7 @@ int main() {
 			Move inputMove;
 			inputMove.translate(word);
 			state.log_move(inputMove);
+			state.switch_turns(); 
 		}
 
 		Move choice = move_with_opening(state, call_minimax_IDS);
