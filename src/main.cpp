@@ -37,12 +37,12 @@
 #include <string>
 
 // Simple helper function to load an image into a OpenGL texture with common settings
-bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
+bool LoadTextureFromFile(const char *filename, GLuint *out_texture, int *out_width, int *out_height)
 {
     // Load from file
     int image_width = 0;
     int image_height = 0;
-    unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
+    unsigned char *image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
     if (image_data == NULL)
         return false;
 
@@ -71,14 +71,15 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_wid
     return true;
 }
 
-static void glfw_error_callback(int error, const char* description)
+static void glfw_error_callback(int error, const char *description)
 {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
 // Sigint cleanup
 bool keepGoing = true;
-void signalHandler(int signum) {
+void signalHandler(int signum)
+{
     keepGoing = false;
 }
 
@@ -197,8 +198,8 @@ void init_SF(FILE *&SF_in, FILE *&SF_out)
         close(pipe_out[1]);
         SF_in = fdopen(pipe_in[1], "w");
         SF_out = fdopen(pipe_out[0], "r");
-         
-        const char* msg= "setoption name Use NNUE value false\n";
+
+        const char *msg = "setoption name Use NNUE value false\n";
         fwrite(msg, 1, strlen(msg), SF_in);
         fflush(SF_in);
     }
@@ -275,7 +276,7 @@ Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
 }
 
 // Main code
-int main(int, char**)
+int main(int, char **)
 {
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
@@ -283,12 +284,12 @@ int main(int, char**)
 
     // Decide GL+GLSL versions
     // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 130";
+    const char *glsl_version = "#version 130";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(960, 960, "Chess, but its on linux", nullptr, nullptr);
+    GLFWwindow *window = glfwCreateWindow(960, 960, "Chess, but its on linux", nullptr, nullptr);
     if (window == nullptr)
         return 1;
     glfwMakeContextCurrent(window);
@@ -297,14 +298,15 @@ int main(int, char**)
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    ImGuiIO &io = ImGui::GetIO();
+    (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
-    ImGuiStyle& style = ImGui::GetStyle();
+    // ImGui::StyleColorsLight();
+    ImGuiStyle &style = ImGui::GetStyle();
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -313,25 +315,28 @@ int main(int, char**)
     // Our state
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    //Load images
-    const char* paths[] = { "resources/Chess_plt60.png",
-                            "resources/Chess_nlt60.png",
-                            "resources/Chess_blt60.png",
-                            "resources/Chess_rlt60.png",
-                            "resources/Chess_qlt60.png",
-                            "resources/Chess_klt60.png",
-                            "resources/Chess_pdt60.png",
-                            "resources/Chess_ndt60.png",
-                            "resources/Chess_bdt60.png",
-                            "resources/Chess_rdt60.png",
-                            "resources/Chess_qdt60.png",
-                            "resources/Chess_kdt60.png",
-                            "resources/blank.png",};
+    // Load images
+    const char *paths[] = {
+        "resources/Chess_plt60.png",
+        "resources/Chess_nlt60.png",
+        "resources/Chess_blt60.png",
+        "resources/Chess_rlt60.png",
+        "resources/Chess_qlt60.png",
+        "resources/Chess_klt60.png",
+        "resources/Chess_pdt60.png",
+        "resources/Chess_ndt60.png",
+        "resources/Chess_bdt60.png",
+        "resources/Chess_rdt60.png",
+        "resources/Chess_qdt60.png",
+        "resources/Chess_kdt60.png",
+        "resources/blank.png",
+    };
 
     GLuint pieceTextures[13]{};
     int my_image_width = 0;
     int my_image_height = 0;
-    for (int i = 0; i < 13; i++) {
+    for (int i = 0; i < 13; i++)
+    {
         LoadTextureFromFile(paths[i], &pieceTextures[i], &my_image_width, &my_image_height);
     }
 
@@ -351,7 +356,7 @@ int main(int, char**)
     Game game = Game();
     std::vector<Game> moveLog;
     moveLog.push_back(game);
-    //State variable to hold the current selection
+    // State variable to hold the current selection
     Position selection{-1, -1};
     Position moves[27];
     std::string winner = "";
@@ -376,20 +381,21 @@ int main(int, char**)
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
         style.WindowBorderSize = 0.0f;
         ImGui::Begin("Chess", nullptr, ImGuiWindowFlags_NoDecoration);
-        
-        
+
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 0.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
 
-
-        if (selection.x > 0) {
-            for (int i = 0; i < 27; i++) {
-                moves[i] = { -1, -1 };
+        if (selection.x > 0)
+        {
+            for (int i = 0; i < 27; i++)
+            {
+                moves[i] = {-1, -1};
             }
             game.board[selection.y][selection.x]->find_valid_moves(game, moves);
         }
-        else {
-            moves[0] = { -1, -1 };
+        else
+        {
+            moves[0] = {-1, -1};
         }
         for (int y = 0; y < 8; y++)
             for (int x = 0; x < 8; x++)
@@ -398,19 +404,22 @@ int main(int, char**)
                     ImGui::SameLine();
                 ImGui::PushID(y * 8 + x);
 
-                Piece* piece = game.board[y][x];
+                Piece *piece = game.board[y][x];
 
-                //Coloring
+                // Coloring
                 ImVec4 color;
-                if (selection == Position{ x, y }) {
+                if (selection == Position{x, y})
+                {
                     color = (ImVec4)ImColor::HSV(0.0f, 0.8f, 1.0f);
                 }
-                else{
-                    color = (y + x) % 2 ? (ImVec4)ImColor::HSV(0.35f, 0.42f, 0.58f) :
-                    (ImVec4)ImColor::HSV(0.24f, 0.12f, 0.93f);
+                else
+                {
+                    color = (y + x) % 2 ? (ImVec4)ImColor::HSV(0.35f, 0.42f, 0.58f) : (ImVec4)ImColor::HSV(0.24f, 0.12f, 0.93f);
                 }
-                for (int i = 0; moves[i].x != -1; i++) {
-                    if (moves[i] == Position {x, y}) {
+                for (int i = 0; moves[i].x != -1; i++)
+                {
+                    if (moves[i] == Position{x, y})
+                    {
                         color = (ImVec4)ImColor::HSV(0.21f, .4f, 1.0f);
                         break;
                     }
@@ -419,45 +428,55 @@ int main(int, char**)
 
                 // Picture selection
                 int textureIndex = 0;
-                if (piece == NULL) {
+                if (piece == NULL)
+                {
                     textureIndex = 12;
                 }
-                else {
+                else
+                {
                     textureIndex = piece->type;
                     int color = !piece->white;
-                    if (color) {
+                    if (color)
+                    {
                         textureIndex += 6;
                     }
                 }
 
                 // Button click
-                if (ImGui::ImageButton("", (void*)(intptr_t)pieceTextures[textureIndex], ImVec2(120.0f, 120.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), color, ImVec4(1.0f, 1.0f, 1.0f, 1.0f))) {
-                    if (piece != NULL && piece->white == game.turn) {
-                        selection = { x, y };
+                if (ImGui::ImageButton("", (void *)(intptr_t)pieceTextures[textureIndex], ImVec2(120.0f, 120.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), color, ImVec4(1.0f, 1.0f, 1.0f, 1.0f)))
+                {
+                    if (piece != NULL && piece->white == game.turn)
+                    {
+                        selection = {x, y};
                     }
                     // Move
-                    else if (selection.x >= 0) {
-                        bool ret = game.log_move({selection, {x,y}});
-                        selection = { -1, -1 };
-                        //Switch turns
-                        if (ret) {
+                    else if (selection.x >= 0)
+                    {
+                        bool ret = game.log_move({selection, {x, y}});
+                        selection = {-1, -1};
+                        // Switch turns
+                        if (ret)
+                        {
                             std::string message = game.switch_turns();
                             moveLog.push_back(game);
-                            if (message != "") {
+                            if (message != "")
+                            {
                                 winner = message;
                             }
                         }
                     }
-                    else {
-                        selection = { -1, -1 };
+                    else
+                    {
+                        selection = {-1, -1};
                     }
                 }
-                ImGui::PopStyleColor();                
+                ImGui::PopStyleColor();
                 ImGui::PopID();
             }
 
         // Game Over Pop Up
-        if (winner != "") {
+        if (winner != "")
+        {
             ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(200, 150));
             ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings;
             ImGui::Begin("Game Over!", nullptr, window_flags);
@@ -470,55 +489,63 @@ int main(int, char**)
         ImGui::PopStyleVar(4);
         ImGui::End();
 
-
-        //Undo
-        if (ImGui::IsMouseReleased(1)) {
-            if(moveLog.size() > 2){
+        // Undo
+        if (ImGui::IsMouseReleased(1))
+        {
+            if (moveLog.size() > 2)
+            {
                 moveLog.pop_back();
                 moveLog.pop_back();
                 game = moveLog.back();
-                selection = { -1, -1 };
+                selection = {-1, -1};
                 winner = "";
             }
         }
 
-        //Engine Turn
-        if (ImGui::IsMouseReleased(0)) {
+        // Engine Turn
+        if (ImGui::IsMouseReleased(0))
+        {
             takeTurn = 5;
         }
 
         // if (game.turn == false) {
-            if (takeTurn > 0) {
-                takeTurn--;
-            } else if(winner == ""){
-                Move choice;
-                
-                if (game.turn == true) {
-                    // printf("\n--Black Move--\n");
-                    auto start = std::chrono::high_resolution_clock::now();
+        if (takeTurn > 0)
+        {
+            takeTurn--;
+        }
+        else if (winner == "")
+        {
+            Move choice;
 
-                    choice = getEngineMove(game, engine_in, engine_out);
+            if (game.turn == true)
+            {
+                // printf("\n--Black Move--\n");
+                auto start = std::chrono::high_resolution_clock::now();
 
-                    auto end = std::chrono::high_resolution_clock::now();
-                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << choice.toString() << ": " << duration.count() << std::endl;
-                    game.log_move(choice);
-                } else {
-                    // printf("\n--White Move--\n");
-                    auto start = std::chrono::high_resolution_clock::now();
-                    
-                    choice = getSFMove(game, SF_in, SF_out);
+                choice = getEngineMove(game, engine_in, engine_out);
 
-                    auto end = std::chrono::high_resolution_clock::now();
-                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                    std::cout << choice.toString() << ": " << duration.count() << std::endl;
-                    game.log_move(choice);
-                }
-                winner = game.switch_turns();
-                moveLog.push_back(game);
-                takeTurn = 5;   
-                // usleep(200000);
+                auto end = std::chrono::high_resolution_clock::now();
+                auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+                std::cout << choice.toString() << ": " << duration.count() << std::endl;
+                game.log_move(choice);
             }
+            else
+            {
+                // printf("\n--White Move--\n");
+                auto start = std::chrono::high_resolution_clock::now();
+
+                choice = getSFMove(game, SF_in, SF_out);
+
+                auto end = std::chrono::high_resolution_clock::now();
+                auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+                std::cout << choice.toString() << ": " << duration.count() << std::endl;
+                game.log_move(choice);
+            }
+            winner = game.switch_turns();
+            moveLog.push_back(game);
+            takeTurn = 5;
+            // usleep(200000);
+        }
         // }
 
         // Rendering

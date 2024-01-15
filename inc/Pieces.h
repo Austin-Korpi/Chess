@@ -1,15 +1,17 @@
 #pragma once
 #include <vector>
-#include <string> 
+#include <string>
 
 class Piece;
 class Game;
 
-struct Position{
+struct Position
+{
 	int x, y;
 
-	bool operator==(const Position& other) {
-		return(x == other.x && y == other.y);
+	bool operator==(const Position &other)
+	{
+		return (x == other.x && y == other.y);
 	}
 };
 
@@ -29,31 +31,35 @@ struct Position{
 // 	KING = 5
 // } pieceOptions;
 
-
-struct Move {
+struct Move
+{
 	Position from;
 	Position to;
 
-	bool operator==(const Move & other) {
-		return(from == other.from && to == other.to);
+	bool operator==(const Move &other)
+	{
+		return (from == other.from && to == other.to);
 	}
 
-	std::string toString() {
-		return std::string(1, (char) from.x+97) + std::to_string(8-from.y)+std::string(1, (char) to.x+97) +std::to_string(8-to.y);
+	std::string toString()
+	{
+		return std::string(1, (char)from.x + 97) + std::to_string(8 - from.y) + std::string(1, (char)to.x + 97) + std::to_string(8 - to.y);
 	}
-	
-	Move translate(std::string repr) {
-		from.x = repr.c_str()[0]-97;
+
+	Move translate(std::string repr)
+	{
+		from.x = repr.c_str()[0] - 97;
 		from.y = int(7 - (repr.c_str()[1] - 49));
-		to.x = repr.c_str()[2]-97;
-		to.y = int(7 - (repr.c_str()[3] - 49));		
+		to.x = repr.c_str()[2] - 97;
+		to.y = int(7 - (repr.c_str()[3] - 49));
 		return *this;
 	}
 };
 
-struct MoveDetails {
+struct MoveDetails
+{
 	Move move;
-	Piece* captured;
+	Piece *captured;
 	bool promotion;
 	char sinceCapture;
 	char canCastle;
@@ -61,7 +67,8 @@ struct MoveDetails {
 
 bool check_ob(Position move);
 
-class Piece {
+class Piece
+{
 public:
 	unsigned char type;
 	unsigned char x, y;
@@ -71,15 +78,20 @@ public:
 	Piece();
 	Piece(unsigned char pc, bool wht, unsigned char hor, unsigned char ver);
 
-	bool can_capture(Piece* other);
+	bool can_capture(Piece *other);
 	int find_valid_moves(Game &game, Position (&moves)[27]);
-	char toString() {
-    	char codes[12] = {0b1001, 0b1010, 0b1011, 0b1100, 0b1101, 0b1110, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110};
+	char toString()
+	{
+		char codes[12] = {0b1001, 0b1010, 0b1011, 0b1100, 0b1101, 0b1110, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110};
 		char buff = -1;
-		if (white >= 0) {
-			if (x & 1) {
+		if (white >= 0)
+		{
+			if (x & 1)
+			{
 				buff ^= codes[type + (white * 6)];
-			} else {
+			}
+			else
+			{
 				buff ^= codes[type + (white * 6)] << 4;
 			}
 		}

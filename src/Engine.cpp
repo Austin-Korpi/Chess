@@ -19,7 +19,7 @@ int maxdepth = MAXDEPTH;
 bool null_ok = false;
 bool useLMR = false;
 bool useQuiesce = true;
-bool useTransposition = false;
+bool useTransposition = true;
 bool extendEval = true;
 
 // Global Data collection variables
@@ -32,31 +32,38 @@ std::mutex tableLock;
 
 // Timer
 volatile bool timeUp = false;
-void waitForTimeAndChangeVariable(int seconds) {
-    std::this_thread::sleep_for(std::chrono::seconds(seconds));
-    timeUp = true;
+void waitForTimeAndChangeVariable(int seconds)
+{
+	std::this_thread::sleep_for(std::chrono::seconds(seconds));
+	timeUp = true;
 }
 
 // Midstate evalutation function
-int heuristic(Game &game) {
+int heuristic(Game &game)
+{
 	int material = 0;
 	// Lookup table
-	int worth[] = { 100,320,330,500,900,0 };
+	int worth[] = {100, 320, 330, 500, 900, 0};
 
 	// White Material
-	for (auto piece : game.whitePieces) {
-		if (piece.white >= 0) {
+	for (auto piece : game.whitePieces)
+	{
+		if (piece.white >= 0)
+		{
 			material += worth[piece.type];
 		}
 	}
 	// Black Material
-	for (auto piece : game.blackPieces) {
-		if (piece.white >= 0) {
+	for (auto piece : game.blackPieces)
+	{
+		if (piece.white >= 0)
+		{
 			material -= worth[piece.type];
 		}
 	}
 
-	if (!extendEval) {
+	if (!extendEval)
+	{
 		return material;
 	}
 
@@ -82,63 +89,76 @@ int heuristic(Game &game) {
 	if (game.hasCastled & 0b10)
 		material += 20;
 	if (game.hasCastled & 0b01)
-		material -= 20;	
+		material -= 20;
 
 	return game.turn ? material : -material;
 }
 
-int utility(int status, bool color, int depth){
-	//Color signifies who just took their move
+int utility(int status, bool color, int depth)
+{
+	// Color signifies who just took their move
 
 	// Stalemate
-	if (status == -1) {
+	if (status == -1)
+	{
 		return -20000;
 	}
 	// Win
-	return  400000 - depth;
+	return 400000 - depth;
 }
 
-void sortMovesCaptured(std::vector<Move>& moves, Game &game) {
+void sortMovesCaptured(std::vector<Move> &moves, Game &game)
+{
 	bool sortNeeded = false;
 	std::vector<int> scores(moves.size());
-	for (unsigned int i = 0; i < moves.size(); i++) {
-		Piece* piece = game.board[moves[i].to.y][moves[i].to.x];
-		if (piece) {
+	for (unsigned int i = 0; i < moves.size(); i++)
+	{
+		Piece *piece = game.board[moves[i].to.y][moves[i].to.x];
+		if (piece)
+		{
 			sortNeeded = true;
 			scores[i] = piece->type;
-		} else {
+		}
+		else
+		{
 			scores[i] = -1;
 		}
 	}
-	if (sortNeeded) {
+	if (sortNeeded)
+	{
 		int j, key;
-		for (unsigned int i = 1; i < scores.size(); i++) {
+		for (unsigned int i = 1; i < scores.size(); i++)
+		{
 			key = scores[i];
 			Move value = moves[i];
 			j = i - 1;
 
-			while (j >= 0 && scores[j] < key) {
+			while (j >= 0 && scores[j] < key)
+			{
 				scores[j + 1] = scores[j];
-				moves[j+1] = moves[j];
+				moves[j + 1] = moves[j];
 				j = j - 1;
 			}
 			scores[j + 1] = key;
-			moves[j+1] = value;
+			moves[j + 1] = value;
 		}
 	}
 }
 
-void sortMovesTable(std::vector<Move>& moves, Game &game) {
+void sortMovesTable(std::vector<Move> &moves, Game &game)
+{
 	int sortNeeded = 0;
 	// Initialize scores
 	std::vector<int> scores;
-	for (auto move : moves) {
+	for (auto move : moves)
+	{
 		MoveDetails details = game.move(game.board[move.from.y][move.from.x], move.to);
 		game.addToLog(details);
 		int rating = INT_MIN;
 		std::string gameString = game.toString();
 		StringTable::const_accessor a;
-		if (transpositionTable.find(a, gameString)) {
+		if (transpositionTable.find(a, gameString))
+		{
 			rating = a->second[2];
 			sortNeeded++;
 		}
@@ -147,96 +167,108 @@ void sortMovesTable(std::vector<Move>& moves, Game &game) {
 		game.moveBack(details);
 		game.moveLog.pop_back();
 	}
-	if (sortNeeded) {
+	if (sortNeeded)
+	{
 		int j, key;
-		for (unsigned int i = 1; i < scores.size(); i++) {
+		for (unsigned int i = 1; i < scores.size(); i++)
+		{
 			key = scores[i];
 			Move value = moves[i];
 			j = i - 1;
-	
-			while (j >= 0 && scores[j] < key) {
+
+			while (j >= 0 && scores[j] < key)
+			{
 				scores[j + 1] = scores[j];
-				moves[j+1] = moves[j];
+				moves[j + 1] = moves[j];
 				j = j - 1;
 			}
 			scores[j + 1] = key;
-			moves[j+1] = value;
+			moves[j + 1] = value;
 		}
 	}
 }
 
-int quiesce(Game& game, int alpha, int beta, int depth) {
+int quiesce(Game &game, int alpha, int beta, int depth)
+{
 	// Get default value
-    int stand_pat = heuristic(game);
+	int stand_pat = heuristic(game);
 	// Check beta
-    if( stand_pat >= beta )
-        return beta;
+	if (stand_pat >= beta)
+		return beta;
 	// Check alpha
-    if( alpha < stand_pat ) {
-        alpha = stand_pat;
+	if (alpha < stand_pat)
+	{
+		alpha = stand_pat;
 	}
 	// Get all moves
 	std::vector<Move> moves = game.get_all_moves(game.turn);
-	 
+
 	// Sort moves by value of piece being captured
 	sortMovesCaptured(moves, game);
 
 	// Loop through moves
-    for(auto move : moves)  {
-		if (game.board[move.to.y][move.to.x]) {
-			//Move
+	for (auto move : moves)
+	{
+		if (game.board[move.to.y][move.to.x])
+		{
+			// Move
 			MoveDetails details = game.move(game.board[move.from.y][move.from.x], move.to);
 			game.addToLog(details);
-			
+
 			nodeCount++;
 
 			// Continue the search
 			game.turn = !game.turn;
-			int score = -quiesce(game, -beta, -alpha, depth+1);
+			int score = -quiesce(game, -beta, -alpha, depth + 1);
 			game.turn = !game.turn;
-			
+
 			// Move back
 			game.moveBack(details);
 			game.moveLog.pop_back();
 
 			// Check beta
-			if( score >= beta )
+			if (score >= beta)
 				return beta;
 
 			// Update alpha
-			if( score > alpha )
+			if (score > alpha)
 				alpha = score;
-		} 
+		}
 		// Don't search non-capture moves
-		else {
+		else
+		{
 			break;
 		}
-    }
+	}
 	// alpha is the highest material found
-    return alpha;
+	return alpha;
 }
 
-int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verify) {
-	if (timeUp) {
+int minimax(Game &game, int depth, int alpha, int beta, Move *choice, bool verify)
+{
+	if (timeUp)
+	{
 		return alpha;
 	}
 
 	MoveDetails details;
 
-	// Get all possible moves 
+	// Get all possible moves
 	std::vector<Move> moves = game.get_all_moves(game.turn);
-	
+
 	// Sort for better cutoffs
 	sortMovesCaptured(moves, game);
-	if (useTransposition && maxdepth - depth > 1) {
+	if (useTransposition && maxdepth - depth > 1)
+	{
 		sortMovesTable(moves, game);
 	}
 
 	int bestMat = INT_MIN;
 	// Iterate through moves
-	for(auto currentMove : moves) {
+	for (auto currentMove : moves)
+	{
 		nodeCount++;
-		
+
 		int material = INT_MAX;
 		int i = 0;
 
@@ -245,45 +277,58 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 
 		// Table lookup
 		std::string gameString;
-		if (useTransposition) {
+		if (useTransposition)
+		{
 			gameString = game.toString();
 			StringTable::const_accessor a;
-			if (transpositionTable.find(a, gameString)) {
-				if (a->second[0] == depth && a->second[1] == maxdepth) {
+			if (transpositionTable.find(a, gameString))
+			{
+				if (a->second[0] == depth && a->second[1] == maxdepth)
+				{
 					material = a->second[2];
 				}
 			}
-		} 
-		
+		}
+
 		bool fail_high = false;
 		// Evaluate node
-		if(material == INT_MAX) {
+		if (material == INT_MAX)
+		{
 			// Check for termination
 			int terminated = game.check_for_winner(game.turn);
-			if (terminated) {
+			if (terminated)
+			{
 				material = utility(terminated, game.turn, depth);
 			}
 			// Check for depth limit
-			else if (depth >= maxdepth) {
-				if (useQuiesce) {
+			else if (depth >= maxdepth)
+			{
+				if (useQuiesce)
+				{
 					game.turn = !game.turn;
-					material = -quiesce(game, -beta, -alpha, depth+1);
-					game.turn = !game.turn;	
-				} else {
-					material = heuristic(game); 
+					material = -quiesce(game, -beta, -alpha, depth + 1);
+					game.turn = !game.turn;
+				}
+				else
+				{
+					material = heuristic(game);
 				}
 			}
 			// Search
-			else {
+			else
+			{
 				// Null Search
-				if (null_ok && !game.check_for_check(game.turn) && (!verify || depth < maxdepth-1)) {
+				if (null_ok && !game.check_for_check(game.turn) && (!verify || depth < maxdepth - 1))
+				{
 					/* null-move search with minimal window around beta */
 					// int value = -minimax(game, depth+R+1,-beta, -beta+1, NULL, verify);
-					int value = minimax(game, depth+R+1, beta-1, beta, NULL, verify);
-					if (value >= beta) {
+					int value = minimax(game, depth + R + 1, beta - 1, beta, NULL, verify);
+					if (value >= beta)
+					{
 
 						/* fail-high */
-						if (verify) {
+						if (verify)
+						{
 							/* reduce the depth by one ply */
 							depth++;
 							/* turn verification off for the sub-tree */
@@ -291,7 +336,8 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 							/* mark a fail-high flag, to detect zugzwangs later*/
 							fail_high = true;
 						}
-						else {
+						else
+						{
 							/* cutoff in a sub-tree with fail-high report */
 							// Move back
 							game.moveBack(details);
@@ -304,20 +350,25 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 			research:
 				// Search
 				game.turn = !game.turn;
-				if (!useLMR || i == 0 || maxdepth - depth < 3 || details.captured || game.check_for_check(game.turn)) {
-					// Search 
+				if (!useLMR || i == 0 || maxdepth - depth < 3 || details.captured || game.check_for_check(game.turn))
+				{
+					// Search
 					material = -minimax(game, depth + 1, -beta, -alpha, NULL, verify);
-				} else {
-					//Late Move Reduction
+				}
+				else
+				{
+					// Late Move Reduction
 					material = -minimax(game, depth + 2, -beta, -alpha, NULL, verify);
-					if (material > alpha) {
+					if (material > alpha)
+					{
 						material = -minimax(game, depth + 1, -beta, -alpha, NULL, verify);
 					}
-				}				
+				}
 				game.turn = !game.turn;
-				
+
 				// Verify
-				if(fail_high && material < beta) {
+				if (fail_high && material < beta)
+				{
 					depth--;
 					fail_high = false;
 					verify = true;
@@ -325,9 +376,11 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 				}
 			}
 			// Store result
-			if (useTransposition) {
+			if (useTransposition)
+			{
 				StringTable::accessor a;
-				if (transpositionTable.insert(a, gameString)) {
+				if (transpositionTable.insert(a, gameString))
+				{
 					a->second = {depth, maxdepth, material};
 				}
 			}
@@ -338,15 +391,19 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 		game.moveLog.pop_back();
 
 		// Set best material variable for pruning
-		if (material >= beta) {
+		if (material >= beta)
+		{
 			return material;
 		}
-		if (material > bestMat) {
+		if (material > bestMat)
+		{
 			bestMat = material;
-			if (depth == 1) {
+			if (depth == 1)
+			{
 				*choice = details.move;
 			}
-			if (material > alpha) {
+			if (material > alpha)
+			{
 				alpha = material;
 			}
 		}
@@ -356,7 +413,8 @@ int minimax(Game &game, int depth, int alpha, int beta, Move* choice, bool verif
 	return bestMat;
 }
 
-Move call_minimax(Game &game) {
+Move call_minimax(Game &game)
+{
 	Move choice;
 	minimax(game, 1, -INT_MAX, INT_MAX, &choice, true);
 	// Data collection
@@ -366,7 +424,8 @@ Move call_minimax(Game &game) {
 	return choice;
 }
 
-void thread_func_minimax(int, Game &game, Move move, std::mutex* writeLock, int* alpha, int* beta, Move* choice) {
+void thread_func_minimax(int, Game &game, Move move, std::mutex *writeLock, int *alpha, int *beta, Move *choice)
+{
 	Game copy = game;
 	// Try move - pointer to piece no longer valide, must use positions
 	MoveDetails details = copy.move(copy.board[move.from.y][move.from.x], move.to);
@@ -375,13 +434,17 @@ void thread_func_minimax(int, Game &game, Move move, std::mutex* writeLock, int*
 	int material;
 	// Check for termination
 	int terminated = copy.check_for_winner(copy.turn);
-	if (terminated) {
+	if (terminated)
+	{
 		material = utility(terminated, copy.turn, 1);
 	}
 	// Check for depth limit
-	else if (maxdepth == 1) {
+	else if (maxdepth == 1)
+	{
 		material = heuristic(copy);
-	} else {
+	}
+	else
+	{
 		// Get updated cutoff to reflect current search progress
 		writeLock->lock();
 		int a = *alpha;
@@ -391,9 +454,11 @@ void thread_func_minimax(int, Game &game, Move move, std::mutex* writeLock, int*
 		copy.turn = !copy.turn;
 		material = -minimax(copy, 2, -b, -a, NULL, true);
 	}
-	if (useTransposition) {
+	if (useTransposition)
+	{
 		StringTable::accessor a;
-		if (transpositionTable.insert(a, game.toString())) {
+		if (transpositionTable.insert(a, game.toString()))
+		{
 			a->second = {1, maxdepth, material};
 		}
 		a.release();
@@ -401,23 +466,26 @@ void thread_func_minimax(int, Game &game, Move move, std::mutex* writeLock, int*
 
 	// Update choice if we have a better move
 	writeLock->lock();
-	
-	// Set best material variable for pruning	
-	if (material > *alpha) {
+
+	// Set best material variable for pruning
+	if (material > *alpha)
+	{
 		*alpha = material;
 		*choice = details.move;
-	}	
+	}
 	writeLock->unlock();
 }
 
-Move call_minimax_fast(Game& game) {
+Move call_minimax_fast(Game &game)
+{
 	std::vector<Move> moves = game.get_all_moves(game.turn);
 	int alpha = -INT_MAX;
 	int beta = INT_MAX;
 	Move choice;
 
 	sortMovesCaptured(moves, game);
-	if (useTransposition) {
+	if (useTransposition)
+	{
 		sortMovesTable(moves, game);
 	}
 
@@ -425,11 +493,13 @@ Move call_minimax_fast(Game& game) {
 	ctpl::thread_pool p(16); /* sixteen threads in the pool */
 	std::vector<std::future<void>> results(moves.size());
 
-	for (unsigned int i = 0; i < moves.size(); ++i){
+	for (unsigned int i = 0; i < moves.size(); ++i)
+	{
 		results[i] = p.push(thread_func_minimax, game, moves[i], &writeLock, &alpha, &beta, &choice);
 	}
 
-	for (unsigned int i = 0; i < moves.size(); ++i) {
+	for (unsigned int i = 0; i < moves.size(); ++i)
+	{
 		results[i].get();
 	}
 
@@ -439,14 +509,17 @@ Move call_minimax_fast(Game& game) {
 	return choice;
 }
 
-Move call_minimax_IDS(Game &game) {
+Move call_minimax_IDS(Game &game)
+{
 	Move move;
-	if (TIMER) {
+	if (TIMER)
+	{
 		timeUp = false;
 		std::thread timerThread(waitForTimeAndChangeVariable, MAX_RUN_TIME);
 		maxdepth = 0;
 		Move tempChoice;
-		while (!timeUp) {
+		while (!timeUp)
+		{
 			maxdepth++;
 			move = tempChoice;
 			minimax(game, 1, -INT_MAX, INT_MAX, &tempChoice, true);
@@ -454,9 +527,12 @@ Move call_minimax_IDS(Game &game) {
 		// fprintf(stderr, "Max depth: %d\n", maxdepth);
 		timerThread.join();
 		timeUp = false;
-	} else {	
+	}
+	else
+	{
 		maxdepth = 1;
-		for (int i = 0; i < MAXDEPTH; i++) {
+		for (int i = 0; i < MAXDEPTH; i++)
+		{
 			minimax(game, 1, -INT_MAX, INT_MAX, &move, true);
 			maxdepth++;
 		}
@@ -469,29 +545,31 @@ Move call_minimax_IDS(Game &game) {
 	return move;
 }
 
-Move call_minimax_IDS_fast(Game &game) {
-	//Enable transposition and empty the transpostion table
+Move call_minimax_IDS_fast(Game &game)
+{
+	// Enable transposition and empty the transpostion table
 	useTransposition = true;
 	// null_ok = true;
 	clearTable();
 
-    auto start = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(start - start);
+	auto start = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(start - start);
 
 	Move move;
 	maxdepth = 0;
-	for (int i = 1; i <= MAXDEPTH; i += 1) {
-    // while (duration.count() < 1000) {
-		maxdepth ++;
+	for (int i = 1; i <= MAXDEPTH; i += 1)
+	{
+		// while (duration.count() < 1000) {
+		maxdepth++;
 		move = call_minimax_fast(game);
 		auto end = std::chrono::high_resolution_clock::now();
-        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 	}
-    printf("IDS maxdepth: %d\n", maxdepth);
+	printf("IDS maxdepth: %d\n", maxdepth);
 	maxdepth = MAXDEPTH;
 
-    // printf("IDS: %s\n", move.toString().c_str());
-	
+	// printf("IDS: %s\n", move.toString().c_str());
+
 	// Disable transposition and empty the transpostion table
 	clearTable();
 	null_ok = false;
@@ -500,33 +578,40 @@ Move call_minimax_IDS_fast(Game &game) {
 	return move;
 }
 
-Move move_with_opening(Game& game, Move (*func)(Game&)) {
+Move move_with_opening(Game &game, Move (*func)(Game &))
+{
 	std::string bookMove;
 	std::string moveHistory = "";
 	// Build move history string
-	for (auto i : game.moveLog) {
-		moveHistory += i+" ";
+	for (auto i : game.moveLog)
+	{
+		moveHistory += i + " ";
 	}
 	// Search for a response in the opening database
 	if (game.moveLog.size() < MAXLENGTH &&
-		lookupMove(moveHistory, bookMove)) {
-			return Move().translate(bookMove);
+		lookupMove(moveHistory, bookMove))
+	{
+		return Move().translate(bookMove);
 	}
 	// If the game is out of book, call the continuation function
 	return func(game);
 }
 
-void clearTable(){
+void clearTable()
+{
 	transpositionTable.clear();
 }
 
-int evaluate_board(Game& game){
+int evaluate_board(Game &game)
+{
 	return quiesce(game, -INT_MAX, INT_MAX, 1);
 }
 
-int main() {
+int main()
+{
 	std::string line;
-	while (std::getline(std::cin, line)){
+	while (std::getline(std::cin, line))
+	{
 		Game state;
 
 		std::istringstream iss(line);
@@ -535,12 +620,13 @@ int main() {
 		std::string word;
 
 		// Read words using a loop
-		while (iss >> word) {
+		while (iss >> word)
+		{
 			// Process or store each word as needed
 			Move inputMove;
 			inputMove.translate(word);
 			state.log_move(inputMove);
-			state.switch_turns(); 
+			state.switch_turns();
 		}
 
 		Move choice = move_with_opening(state, call_minimax_IDS);

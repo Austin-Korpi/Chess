@@ -1,0 +1,5 @@
+Engine (Q,EE): 3 sec vs StockFish: depth 3   20-0-0 
+Engine (Q,EE): 3 sec vs StockFish: depth 5   10-5-5 
+Engine (Q): 3 sec vs StockFish: depth 5   0-0-20 (is this because of time or information?)
+Engine (EE): 3 sec vs StockFish: depth 5   7-3-10
+Engine (Q,EE,TT)

@@ -122,8 +122,8 @@ void init_SF(FILE *&SF_in, FILE *&SF_out)
         close(pipe_out[1]);
         SF_in = fdopen(pipe_in[1], "w");
         SF_out = fdopen(pipe_out[0], "r");
-                 
-        const char* msg= "setoption name Use NNUE value false\n";
+
+        const char *msg = "setoption name Use NNUE value false\n";
         fwrite(msg, 1, strlen(msg), SF_in);
         fflush(SF_in);
     }
@@ -172,7 +172,7 @@ Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
     {
         moves += game.moveLog[i] + " ";
     }
-    moves += "\ngo depth 3\n";
+    moves += "\ngo depth 5\n";
 
     // Write string to engine
     if (fwrite(moves.c_str(), 1, strlen(moves.c_str()), SF_in) < strlen(moves.c_str()))

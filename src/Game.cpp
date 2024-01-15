@@ -377,9 +377,11 @@ void Game::capture(Piece *piece)
     board[piece->y][piece->x] = NULL;
 }
 
-void Game::addToLog(MoveDetails details) {
+void Game::addToLog(MoveDetails details)
+{
     std::string move = details.move.toString();
-    if (details.promotion) {
+    if (details.promotion)
+    {
         move += "q";
     }
     moveLog.push_back(move);
@@ -636,7 +638,8 @@ int Game::count_bid_pawns(bool color)
         // Isolated Pawns
         if (numPawn[i] == 0)
         {
-            if (count == 2) {
+            if (count == 2)
+            {
                 sum++;
                 count = 1;
                 break;

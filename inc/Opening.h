@@ -3,14 +3,15 @@
 
 #define MAXLENGTH 36
 
-struct OpeningNode{
+struct OpeningNode
+{
     std::string name;
-    std::vector<OpeningNode*> children;
+    std::vector<OpeningNode *> children;
 
-    OpeningNode(char* token): name(token), children(){}
-    OpeningNode* next(char* token);
+    OpeningNode(char *token) : name(token), children() {}
+    OpeningNode *next(char *token);
 };
 
 int buildOpeningTree();
 
-bool lookupMove(std::string moveHistory, std::string& move);
+bool lookupMove(std::string moveHistory, std::string &move);

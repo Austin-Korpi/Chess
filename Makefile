@@ -91,7 +91,7 @@ bin/%.o:$(IMGUI_DIR)/%.cpp
 bin/%.o:$(IMGUI_DIR)/backends/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-all: $(GUI)
+all: $(GUI) $(HEADLESS) $(ENGINE)
 	@echo Build complete for $(ECHO_MESSAGE)
 
 $(GUI): $(GUI_OBJS)

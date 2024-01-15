@@ -11,7 +11,7 @@ extern bool useQuiesce;
 extern int maxdepth;
 extern volatile bool timeUp;
 
-int MTD(Game &game, int first, Move* choice)
+int MTD(Game &game, int first, Move *choice)
 {
     int g;
     int upper = INT_MAX;
@@ -27,18 +27,22 @@ int MTD(Game &game, int first, Move* choice)
     {
         g = minimax(game, 1, bound - 1, bound, choice, true);
 
-        if (g < bound) {
+        if (g < bound)
+        {
             upper = g;
             bound = g;
-        } else {
+        }
+        else
+        {
             lower = g;
-            bound = g+1;
+            bound = g + 1;
         }
     }
     return upper;
 }
 
-Move call_MTD(Game& game) {
+Move call_MTD(Game &game)
+{
     Move choice;
     useTransposition = true;
     clearTable();
@@ -50,20 +54,22 @@ Move call_MTD(Game& game) {
     return choice;
 }
 
-Move call_MTD_IDS(Game& game) {
+Move call_MTD_IDS(Game &game)
+{
     Move choice;
     useTransposition = true;
     useLMR = false;
-	useQuiesce = false;
+    useQuiesce = false;
     timeUp = false;
     clearTable();
 
     int estimate = 0;
     maxdepth = 0;
 
-	// std::thread timerThread(waitForTimeAndChangeVariable, MAX_RUN_TIME);
+    // std::thread timerThread(waitForTimeAndChangeVariable, MAX_RUN_TIME);
     // while (!timeUp) {
-    for (int i = 0; i < MAXDEPTH; i++) {
+    for (int i = 0; i < MAXDEPTH; i++)
+    {
         maxdepth++;
         estimate = MTD(game, estimate, &choice);
     }
@@ -76,4 +82,3 @@ Move call_MTD_IDS(Game& game) {
     useTransposition = false;
     return choice;
 }
-
