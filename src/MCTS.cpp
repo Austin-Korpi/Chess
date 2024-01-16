@@ -6,7 +6,7 @@
 
 #define REPETITIONS 1000
 
-extern volatile bool timeUp;
+extern volatile bool time_up;
 
 Move MCNode::getBestMove()
 {
@@ -14,8 +14,8 @@ Move MCNode::getBestMove()
     Move bestMove;
     for (auto child : children)
     {
-        Move move = child->state.moveLog.back();
-        // printf("%s %f/%d\n", move.toString().c_str(), child->wins, child->visited);
+        Move move = child->state.move_log.back();
+        // printf("%s %f/%d\n", move.to_string().c_str(), child->wins, child->visited);
         if (child->visited > max)
         {
             max = child->visited;
@@ -139,9 +139,9 @@ Move monte_carlo_tree_search(Game &game)
 
     // Put the current game state into the tree
     MCNode root = MCNode(game);
-    timeUp = false;
-    std::thread timerThread(waitForTimeAndChangeVariable, MAX_RUN_TIME);
-    while (!timeUp)
+    time_up = false;
+    std::thread timerThread(start_timer, MAX_RUN_TIME);
+    while (!time_up)
     {
         // Chose one 'leaf' (not maxed out node) from the current tree using UCT
         MCNode *leaf = root.select();
@@ -164,7 +164,7 @@ Move monte_carlo(Game &game)
     Move move = monte_carlo_tree_search(game);
     if (!Game(game).log_move(move))
     {
-        printf("Illegal move: %s\n", move.toString().c_str());
+        printf("Illegal move: %s\n", move.to_string().c_str());
         return monte_carlo(game);
     }
     return move;

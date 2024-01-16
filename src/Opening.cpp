@@ -22,7 +22,7 @@ OpeningNode *OpeningNode::next(char *token)
 // Global tree reference
 OpeningNode *openingTree = NULL;
 
-int buildOpeningTree()
+int build_opening_tree()
 {
     FILE *file = fopen(DATABASE, "r");
 
@@ -68,11 +68,11 @@ int buildOpeningTree()
     return 0;
 }
 
-bool lookupMove(std::string moveHistory, std::string &move)
+bool lookup_move(std::string moveHistory, std::string &move)
 {
     if (!openingTree)
     {
-        buildOpeningTree();
+        build_opening_tree();
         srand(time(0));
     }
 

@@ -5,64 +5,64 @@
 
 Game::Game()
 {
-    moveLog = std::vector<std::string>();
+    move_log = std::vector<std::string>();
     turn = true;
-    canCastle = 0b1111;
-    sinceCapture = 0;
-    hasCastled = 0;
+    can_castle = 0b1111;
+    since_capture = 0;
+    has_castled = 0;
 
     // Initialize pieces
-    whitePieces[0] = Piece(PAWN, true, 0, 6);
-    whitePieces[1] = Piece(PAWN, true, 1, 6);
-    whitePieces[2] = Piece(PAWN, true, 2, 6);
-    whitePieces[3] = Piece(PAWN, true, 3, 6);
-    whitePieces[4] = Piece(PAWN, true, 4, 6);
-    whitePieces[5] = Piece(PAWN, true, 5, 6);
-    whitePieces[6] = Piece(PAWN, true, 6, 6);
-    whitePieces[7] = Piece(PAWN, true, 7, 6);
-    whitePieces[8] = Piece(NIGHT, true, 1, 7);
-    whitePieces[9] = Piece(NIGHT, true, 6, 7);
-    whitePieces[10] = Piece(BISHOP, true, 2, 7);
-    whitePieces[11] = Piece(BISHOP, true, 5, 7);
-    whitePieces[12] = Piece(ROOK, true, 0, 7);
-    whitePieces[13] = Piece(ROOK, true, 7, 7);
-    whitePieces[14] = Piece(QUEEN, true, 3, 7);
-    whitePieces[15] = Piece(KING, true, 4, 7);
+    white_pieces[0] = Piece(PAWN, true, 0, 6);
+    white_pieces[1] = Piece(PAWN, true, 1, 6);
+    white_pieces[2] = Piece(PAWN, true, 2, 6);
+    white_pieces[3] = Piece(PAWN, true, 3, 6);
+    white_pieces[4] = Piece(PAWN, true, 4, 6);
+    white_pieces[5] = Piece(PAWN, true, 5, 6);
+    white_pieces[6] = Piece(PAWN, true, 6, 6);
+    white_pieces[7] = Piece(PAWN, true, 7, 6);
+    white_pieces[8] = Piece(NIGHT, true, 1, 7);
+    white_pieces[9] = Piece(NIGHT, true, 6, 7);
+    white_pieces[10] = Piece(BISHOP, true, 2, 7);
+    white_pieces[11] = Piece(BISHOP, true, 5, 7);
+    white_pieces[12] = Piece(ROOK, true, 0, 7);
+    white_pieces[13] = Piece(ROOK, true, 7, 7);
+    white_pieces[14] = Piece(QUEEN, true, 3, 7);
+    white_pieces[15] = Piece(KING, true, 4, 7);
 
-    blackPieces[0] = Piece(PAWN, false, 0, 1);
-    blackPieces[1] = Piece(PAWN, false, 1, 1);
-    blackPieces[2] = Piece(PAWN, false, 2, 1);
-    blackPieces[3] = Piece(PAWN, false, 3, 1);
-    blackPieces[4] = Piece(PAWN, false, 4, 1);
-    blackPieces[5] = Piece(PAWN, false, 5, 1);
-    blackPieces[6] = Piece(PAWN, false, 6, 1);
-    blackPieces[7] = Piece(PAWN, false, 7, 1);
-    blackPieces[8] = Piece(NIGHT, false, 1, 0);
-    blackPieces[9] = Piece(NIGHT, false, 6, 0);
-    blackPieces[10] = Piece(BISHOP, false, 2, 0);
-    blackPieces[11] = Piece(BISHOP, false, 5, 0);
-    blackPieces[12] = Piece(ROOK, false, 0, 0);
-    blackPieces[13] = Piece(ROOK, false, 7, 0);
-    blackPieces[14] = Piece(QUEEN, false, 3, 0);
-    blackPieces[15] = Piece(KING, false, 4, 0);
+    black_pieces[0] = Piece(PAWN, false, 0, 1);
+    black_pieces[1] = Piece(PAWN, false, 1, 1);
+    black_pieces[2] = Piece(PAWN, false, 2, 1);
+    black_pieces[3] = Piece(PAWN, false, 3, 1);
+    black_pieces[4] = Piece(PAWN, false, 4, 1);
+    black_pieces[5] = Piece(PAWN, false, 5, 1);
+    black_pieces[6] = Piece(PAWN, false, 6, 1);
+    black_pieces[7] = Piece(PAWN, false, 7, 1);
+    black_pieces[8] = Piece(NIGHT, false, 1, 0);
+    black_pieces[9] = Piece(NIGHT, false, 6, 0);
+    black_pieces[10] = Piece(BISHOP, false, 2, 0);
+    black_pieces[11] = Piece(BISHOP, false, 5, 0);
+    black_pieces[12] = Piece(ROOK, false, 0, 0);
+    black_pieces[13] = Piece(ROOK, false, 7, 0);
+    black_pieces[14] = Piece(QUEEN, false, 3, 0);
+    black_pieces[15] = Piece(KING, false, 4, 0);
 
     // Save the location of the kings
-    whiteKing = {whitePieces[15].x, whitePieces[15].y};
-    blackKing = {blackPieces[15].x, blackPieces[15].y};
+    white_king = {white_pieces[15].x, white_pieces[15].y};
+    black_king = {black_pieces[15].x, black_pieces[15].y};
 
     // Place the pieces on the board
     initialize_board();
 }
 
-Game::Game(const Game &game) : whitePieces(game.whitePieces),
-                               blackPieces(game.blackPieces),
+Game::Game(const Game &game) : white_pieces(game.white_pieces),
+                               black_pieces(game.black_pieces),
                                turn(game.turn),
-                               canCastle(game.canCastle),
-                               sinceCapture(game.sinceCapture),
-                               whiteKing(game.whiteKing),
-                               blackKing(game.blackKing),
-                               moveLog(game.moveLog),
-                               hasCastled(game.hasCastled)
+                               can_castle(game.can_castle),
+                               since_capture(game.since_capture),
+                               white_king(game.white_king),
+                               black_king(game.black_king),
+                               move_log(game.move_log),
+                               has_castled(game.has_castled)
 {
     // Place the pieces on the board
     initialize_board();
@@ -72,15 +72,15 @@ Game &Game::operator=(const Game &original)
 {
     if (this != &original)
     {
-        whitePieces = original.whitePieces;
-        blackPieces = original.blackPieces;
-        whiteKing = original.whiteKing;
-        blackKing = original.blackKing;
-        moveLog = original.moveLog;
+        white_pieces = original.white_pieces;
+        black_pieces = original.black_pieces;
+        white_king = original.white_king;
+        black_king = original.black_king;
+        move_log = original.move_log;
         turn = original.turn;
-        canCastle = original.canCastle;
-        sinceCapture = original.sinceCapture;
-        hasCastled = original.hasCastled;
+        can_castle = original.can_castle;
+        since_capture = original.since_capture;
+        has_castled = original.has_castled;
 
         initialize_board();
     }
@@ -95,7 +95,7 @@ void Game::initialize_board()
     // Place the white pieces
     for (int i = 0; i < 16; i++)
     {
-        Piece *piece = &whitePieces[i];
+        Piece *piece = &white_pieces[i];
         if (piece->white >= 0)
         {
             int x = piece->x;
@@ -106,7 +106,7 @@ void Game::initialize_board()
     // Place the black pieces
     for (int i = 0; i < 16; i++)
     {
-        Piece *piece = &blackPieces[i];
+        Piece *piece = &black_pieces[i];
         if (piece->white >= 0)
         {
             int x = piece->x;
@@ -140,27 +140,27 @@ std::string Game::switch_turns()
 int Game::check_for_winner(bool color)
 {
     // Check for stalemate
-    if (moveLog.size() > 9)
+    if (move_log.size() > 9)
     {
-        size_t n = moveLog.size();
-        if (moveLog[n - 1] == moveLog[n - 5] &&
-            moveLog[n - 1] == moveLog[n - 9] &&
-            moveLog[n - 2] == moveLog[n - 6] &&
-            moveLog[n - 3] == moveLog[n - 7] &&
-            moveLog[n - 4] == moveLog[n - 8])
+        size_t n = move_log.size();
+        if (move_log[n - 1] == move_log[n - 5] &&
+            move_log[n - 1] == move_log[n - 9] &&
+            move_log[n - 2] == move_log[n - 6] &&
+            move_log[n - 3] == move_log[n - 7] &&
+            move_log[n - 4] == move_log[n - 8])
         {
             return -1;
         }
     }
 
     // 50 move rule
-    if (sinceCapture >= 100)
+    if (since_capture >= 100)
     {
         return -1;
     }
 
     // Find a legal move
-    auto pieces = color ? blackPieces : whitePieces;
+    auto pieces = color ? black_pieces : white_pieces;
     for (int i = 0; i < 16; i++)
     {
         if (pieces[i].white >= 0)
@@ -189,7 +189,7 @@ bool Game::check_for_check(bool color, Position location)
     // Default location
     if (location == Position{-1, -1})
     {
-        location = color ? whiteKing : blackKing;
+        location = color ? white_king : black_king;
     }
     // Check in diagonal directions
     {
@@ -260,7 +260,7 @@ bool Game::check_for_check(bool color, Position location)
         }
     }
 
-    Position enemyKing = !color ? whiteKing : blackKing;
+    Position enemyKing = !color ? white_king : black_king;
     if (abs(enemyKing.y - y) < 2 && abs(enemyKing.x - x) < 2)
     {
         return true;
@@ -289,37 +289,37 @@ bool Game::check_for_check(bool color, Position location)
 MoveDetails Game::move(Piece *piece, Position location)
 {
     Move log = {{piece->x, piece->y}, location};
-    MoveDetails details = {log, NULL, false, sinceCapture, canCastle};
+    MoveDetails details = {log, NULL, false, since_capture, can_castle};
 
-    sinceCapture++;
+    since_capture++;
 
     // Capture
     if (board[location.y][location.x] != NULL)
     {
         details.captured = board[location.y][location.x];
         capture(board[location.y][location.x]);
-        sinceCapture = 0;
+        since_capture = 0;
     }
     else if (piece->type == PAWN && piece->x != location.x)
     {
         details.captured = board[piece->y][location.x];
         capture(board[piece->y][location.x]);
-        sinceCapture = 0;
+        since_capture = 0;
     }
 
     // Castling
     if (piece->type == KING && abs(location.x - piece->x) > 1)
     {
-        hasCastled |= turn ? 0b10 : 0b01;
+        has_castled |= turn ? 0b10 : 0b01;
         // Queenside
         if (location.x < piece->x)
         {
-            movePiece(board[piece->y][0], {3, piece->y});
+            move_piece(board[piece->y][0], {3, piece->y});
         }
         // Kingside
         else
         {
-            movePiece(board[piece->y][7], {5, piece->y});
+            move_piece(board[piece->y][7], {5, piece->y});
         }
     }
 
@@ -330,40 +330,40 @@ MoveDetails Game::move(Piece *piece, Position location)
         details.promotion = true;
     }
 
-    movePiece(piece, location);
+    move_piece(piece, location);
 
     // 50 move rule
     if (piece->type == PAWN)
-        sinceCapture = 0;
+        since_capture = 0;
 
     // Castling rights
     if (piece->type == KING && piece->white)
     {
-        whiteKing = {piece->x, piece->y};
-        canCastle &= 0b0011;
+        white_king = {piece->x, piece->y};
+        can_castle &= 0b0011;
     }
     if (piece->type == KING && !piece->white)
     {
-        blackKing = {piece->x, piece->y};
-        canCastle &= 0b1100;
+        black_king = {piece->x, piece->y};
+        can_castle &= 0b1100;
     }
 
     if (piece->type == ROOK && piece->white && log.from.x == 0)
-        canCastle &= 0b1011;
+        can_castle &= 0b1011;
 
     if (piece->type == ROOK && piece->white && log.from.x == 7)
-        canCastle &= 0b0111;
+        can_castle &= 0b0111;
 
     if (piece->type == ROOK && !piece->white && log.from.x == 0)
-        canCastle &= 0b1110;
+        can_castle &= 0b1110;
 
     if (piece->type == ROOK && !piece->white && log.from.x == 7)
-        canCastle &= 0b1101;
+        can_castle &= 0b1101;
 
     return details;
 }
 
-void Game::movePiece(Piece *piece, Position location)
+void Game::move_piece(Piece *piece, Position location)
 {
     board[piece->y][piece->x] = NULL;
     board[location.y][location.x] = piece;
@@ -377,45 +377,45 @@ void Game::capture(Piece *piece)
     board[piece->y][piece->x] = NULL;
 }
 
-void Game::addToLog(MoveDetails details)
+void Game::add_to_log(MoveDetails details)
 {
-    std::string move = details.move.toString();
+    std::string move = details.move.to_string();
     if (details.promotion)
     {
         move += "q";
     }
-    moveLog.push_back(move);
+    move_log.push_back(move);
 }
 
-void Game::moveBack(MoveDetails details)
+void Game::move_back(MoveDetails details)
 {
     Piece *piece = board[details.move.to.y][details.move.to.x];
 
     // Move piece back
-    movePiece(piece, details.move.from);
+    move_piece(piece, details.move.from);
 
     if (piece->type == KING)
     {
         // Undo castling
         if (abs(details.move.from.x - details.move.to.x) > 1)
         {
-            hasCastled &= turn ? 0b01 : 0b10;
+            has_castled &= turn ? 0b01 : 0b10;
             if (details.move.to.x < 3)
             {
-                movePiece(board[details.move.to.y][3], {0, details.move.to.y});
+                move_piece(board[details.move.to.y][3], {0, details.move.to.y});
             }
             else
             {
-                movePiece(board[details.move.to.y][5], {7, details.move.to.y});
+                move_piece(board[details.move.to.y][5], {7, details.move.to.y});
             }
         }
         if (piece->white)
         {
-            whiteKing = details.move.from;
+            white_king = details.move.from;
         }
         else
         {
-            blackKing = details.move.from;
+            black_king = details.move.from;
         }
     }
 
@@ -433,16 +433,16 @@ void Game::moveBack(MoveDetails details)
     }
 
     // Restore other state variables
-    canCastle = details.canCastle;
-    sinceCapture = details.sinceCapture;
+    can_castle = details.can_castle;
+    since_capture = details.since_capture;
 }
 
 bool Game::leap_then_look(Piece *piece, Position location)
 {
     MoveDetails details = move(board[piece->y][piece->x], location);
-    Position king = piece->white ? whiteKing : blackKing;
+    Position king = piece->white ? white_king : black_king;
     bool check = check_for_check(board[king.y][king.x]->white, king);
-    moveBack(details);
+    move_back(details);
     return check;
 }
 
@@ -470,14 +470,14 @@ bool Game::log_move(Move location)
     MoveDetails details = move(piece, location.to);
 
     // Add move to log
-    addToLog(details);
+    add_to_log(details);
 
     return true;
 }
 
 Move Game::get_random_move(bool color)
 {
-    auto pieces = color ? whitePieces : blackPieces;
+    auto pieces = color ? white_pieces : black_pieces;
     Piece piece;
     int n = 0;
     Position pieceMoves[27];
@@ -496,7 +496,7 @@ Move Game::get_random_move(bool color)
 std::vector<Move> Game::get_all_moves(bool color)
 {
     std::vector<Move> moves = std::vector<Move>();
-    auto pieces = color ? whitePieces : blackPieces;
+    auto pieces = color ? white_pieces : black_pieces;
 
     for (int i = 0; i < 16; i++)
     {
@@ -516,7 +516,7 @@ std::vector<Move> Game::get_all_moves(bool color)
 
 int Game::count_doubled_pawns(bool color)
 {
-    auto pieces = color ? whitePieces : blackPieces;
+    auto pieces = color ? white_pieces : black_pieces;
     int numPawn[8] = {0};
     for (int i = 0; i < 8; i++)
     {
@@ -538,7 +538,7 @@ int Game::count_doubled_pawns(bool color)
 
 int Game::count_blocked_pawns(bool color)
 {
-    auto pieces = color ? whitePieces : blackPieces;
+    auto pieces = color ? white_pieces : black_pieces;
     int direction = !color * -2 + 1;
     int sum = 0;
 
@@ -558,7 +558,7 @@ int Game::count_blocked_pawns(bool color)
 
 int Game::count_isolated_pawns(bool color)
 {
-    auto pieces = color ? whitePieces : blackPieces;
+    auto pieces = color ? white_pieces : black_pieces;
     int numPawn[8] = {0};
     for (int i = 0; i < 8; i++)
     {
@@ -604,7 +604,7 @@ int Game::count_isolated_pawns(bool color)
 
 int Game::count_bid_pawns(bool color)
 {
-    auto pieces = color ? whitePieces : blackPieces;
+    auto pieces = color ? white_pieces : black_pieces;
     int direction = !color * -2 + 1;
     int numPawn[8] = {0};
     int sum = 0;
@@ -664,8 +664,8 @@ int Game::count_bid_pawns(bool color)
 
 int Game::count_passed_pawns(bool color)
 {
-    auto enemyPawns = color ? blackPieces : whitePieces;
-    auto pieces = color ? whitePieces : blackPieces;
+    auto enemyPawns = color ? black_pieces : white_pieces;
+    auto pieces = color ? white_pieces : black_pieces;
 
     int line_to_cross[8] = {color ? 7 : 0};
     for (int i = 0; i < 8; i++)
@@ -719,8 +719,8 @@ int Game::count_passed_pawns(bool color)
 
 int Game::count_rook_attacks(bool color)
 {
-    auto pieces = color ? whitePieces : blackPieces;
-    Position enemyKing = color ? blackKing : whiteKing;
+    auto pieces = color ? white_pieces : black_pieces;
+    Position enemyKing = color ? black_king : white_king;
     int sum = 0;
     for (int i = 12; i < 14; i++)
     {
@@ -773,7 +773,7 @@ int Game::count_rook_attacks(bool color)
     return sum;
 }
 
-std::string Game::toString()
+std::string Game::to_string()
 {
     char repr[131];
     memcpy(repr, this, sizeof(Piece) * 32 + 2);
@@ -807,14 +807,14 @@ void Game::print_board()
     std::cout << "\n";
 
     std::cout << "White Pieces: ";
-    for (auto piece : whitePieces)
+    for (auto piece : white_pieces)
         if (piece.white >= 0)
             std::cout << Uletters[piece.type] << ", ";
 
     std::cout << "\n";
 
     std::cout << "Black Pieces: ";
-    for (auto piece : blackPieces)
+    for (auto piece : black_pieces)
         if (piece.white >= 0)
             std::cout << Lletters[piece.type] << ", ";
 

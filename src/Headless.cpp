@@ -129,13 +129,13 @@ void init_SF(FILE *&SF_in, FILE *&SF_out)
     }
 }
 
-Move getEngineMove(Game &game, FILE *engine_in, FILE *engine_out)
+Move get_engine_move(Game &game, FILE *engine_in, FILE *engine_out)
 {
     // Get string with all game moves
     std::string moves = "";
-    for (int i = 0; i < (int)game.moveLog.size(); i++)
+    for (int i = 0; i < (int)game.move_log.size(); i++)
     {
-        moves += game.moveLog[i] + " ";
+        moves += game.move_log[i] + " ";
     }
     moves += '\n';
 
@@ -164,13 +164,13 @@ Move getEngineMove(Game &game, FILE *engine_in, FILE *engine_out)
     return choice;
 }
 
-Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
+Move get_SF_move(Game &game, FILE *SF_in, FILE *SF_out)
 {
     // Get string with all game moves
     std::string moves = "position startpos moves ";
-    for (int i = 0; i < (int)game.moveLog.size(); i++)
+    for (int i = 0; i < (int)game.move_log.size(); i++)
     {
-        moves += game.moveLog[i] + " ";
+        moves += game.move_log[i] + " ";
     }
     moves += "\ngo depth 5\n";
 
@@ -213,7 +213,7 @@ int main()
     init_SF(SF_in, SF_out);
     std::cout << "StockFish started" << std::endl;
 
-    for (int numGames = 0; numGames < 20; numGames++)
+    for (int num_games = 0; num_games < 20; num_games++)
     {
         Game game = Game();
 
@@ -225,15 +225,15 @@ int main()
             // My AI
             if (game.turn)
             {
-                choice = getEngineMove(game, engine_in, engine_out);
+                choice = get_engine_move(game, engine_in, engine_out);
             }
             // StockFish
             else
             {
-                choice = getSFMove(game, SF_in, SF_out);
+                choice = get_SF_move(game, SF_in, SF_out);
             }
 
-            // std::cout << choice.toString() << std::endl;
+            // std::cout << choice.to_string() << std::endl;
             game.log_move(choice);
 
             winner = game.switch_turns();

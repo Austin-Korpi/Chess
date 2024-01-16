@@ -8,10 +8,10 @@ struct OpeningNode
     std::string name;
     std::vector<OpeningNode *> children;
 
-    OpeningNode(char *token) : name(token), children() {}
+    OpeningNode(const char *token) : name(token), children() {}
     OpeningNode *next(char *token);
 };
 
-int buildOpeningTree();
+int build_opening_tree();
 
-bool lookupMove(std::string moveHistory, std::string &move);
+bool lookup_move(std::string moveHistory, std::string &move);

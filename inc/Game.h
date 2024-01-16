@@ -8,16 +8,16 @@ class Game
 {
 
 public:
-	std::array<Piece, 16> whitePieces;
-	std::array<Piece, 16> blackPieces;
+	std::array<Piece, 16> white_pieces;
+	std::array<Piece, 16> black_pieces;
 	bool turn;
-	char canCastle;
-	char sinceCapture;
-	Position whiteKing;
-	Position blackKing;
+	char can_castle;
+	char since_capture;
+	Position white_king;
+	Position black_king;
 	Piece *board[8][8] = {0};
-	std::vector<std::string> moveLog;
-	char hasCastled;
+	std::vector<std::string> move_log;
+	char has_castled;
 
 	Game();
 	Game(const Game &game);
@@ -29,13 +29,12 @@ public:
 	int check_for_winner(bool color);
 	bool check_for_check(bool color, Position type = {-1, -1});
 	MoveDetails move(Piece *piece, Position location);
-	void addToLog(MoveDetails);
-	void moveBack(MoveDetails);
-	void movePiece(Piece *piece, Position location);
+	void add_to_log(MoveDetails);
+	void move_back(MoveDetails);
+	void move_piece(Piece *piece, Position location);
 	void capture(Piece *piece);
 	bool leap_then_look(Piece *piece, Position move);
 	bool log_move(Move move);
-	// std::vector<position> get_moves(Piece*);
 	Move get_random_move(bool color);
 	std::vector<Move> get_all_moves(bool color);
 	int count_doubled_pawns(bool color);
@@ -45,5 +44,5 @@ public:
 	int count_passed_pawns(bool color);
 	int count_rook_attacks(bool color);
 	void print_board();
-	std::string toString();
+	std::string to_string();
 };

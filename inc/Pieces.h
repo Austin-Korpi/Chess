@@ -22,15 +22,6 @@ struct Position
 #define QUEEN 4
 #define KING 5
 
-// typedef enum {
-// 	PAWN = 0,
-// 	NIGHT = 1,
-// 	BISHOP = 2,
-// 	ROOK = 3,
-// 	QUEEN = 4,
-// 	KING = 5
-// } pieceOptions;
-
 struct Move
 {
 	Position from;
@@ -41,7 +32,7 @@ struct Move
 		return (from == other.from && to == other.to);
 	}
 
-	std::string toString()
+	std::string to_string()
 	{
 		return std::string(1, (char)from.x + 97) + std::to_string(8 - from.y) + std::string(1, (char)to.x + 97) + std::to_string(8 - to.y);
 	}
@@ -61,8 +52,8 @@ struct MoveDetails
 	Move move;
 	Piece *captured;
 	bool promotion;
-	char sinceCapture;
-	char canCastle;
+	char since_capture;
+	char can_castle;
 };
 
 bool check_ob(Position move);
@@ -73,14 +64,13 @@ public:
 	unsigned char type;
 	unsigned char x, y;
 	char white;
-	// char captured;
 
 	Piece();
 	Piece(unsigned char pc, bool wht, unsigned char hor, unsigned char ver);
 
 	bool can_capture(Piece *other);
 	int find_valid_moves(Game &game, Position (&moves)[27]);
-	char toString()
+	char to_string()
 	{
 		char codes[12] = {0b1001, 0b1010, 0b1011, 0b1100, 0b1101, 0b1110, 0b0001, 0b0010, 0b0011, 0b0100, 0b0101, 0b0110};
 		char buff = -1;

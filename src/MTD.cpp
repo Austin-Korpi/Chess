@@ -5,11 +5,11 @@
 #include <chrono>
 #include <thread>
 
-extern bool useTransposition;
-extern bool useLMR;
-extern bool useQuiesce;
-extern int maxdepth;
-extern volatile bool timeUp;
+extern bool use_transposition;
+extern bool use_LMR;
+extern bool use_quiesce;
+extern int max_depth;
+extern volatile bool time_up;
 
 int MTD(Game &game, int first, Move *choice)
 {
@@ -44,41 +44,35 @@ int MTD(Game &game, int first, Move *choice)
 Move call_MTD(Game &game)
 {
     Move choice;
-    useTransposition = true;
-    clearTable();
+    use_transposition = true;
+    clear_table();
 
     MTD(game, 0, &choice);
-    printStats();
 
-    useTransposition = false;
+    use_transposition = false;
     return choice;
 }
 
 Move call_MTD_IDS(Game &game)
 {
     Move choice;
-    useTransposition = true;
-    useLMR = false;
-    useQuiesce = false;
-    timeUp = false;
-    clearTable();
+    use_transposition = true;
+    use_LMR = false;
+    use_quiesce = false;
+    time_up = false;
+    clear_table();
 
     int estimate = 0;
-    maxdepth = 0;
+    max_depth = 0;
 
-    // std::thread timerThread(waitForTimeAndChangeVariable, MAX_RUN_TIME);
-    // while (!timeUp) {
-    for (int i = 0; i < MAXDEPTH; i++)
+    for (int i = 0; i < MAX_DEPTH; i++)
     {
-        maxdepth++;
+        max_depth++;
         estimate = MTD(game, estimate, &choice);
     }
-    // printStats();
-    // printf("MTD maxdepth: %d, %s\n", maxdepth, choice.toString().c_str());
 
-    // timerThread.join();
-    clearTable();
-    maxdepth = MAXDEPTH;
-    useTransposition = false;
+    clear_table();
+    max_depth = MAX_DEPTH;
+    use_transposition = false;
     return choice;
 }

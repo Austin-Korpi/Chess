@@ -18,7 +18,6 @@ Piece::Piece()
 	x = y = 0;
 	white = true;
 	type = PAWN;
-	// captured = false;
 }
 
 Piece::Piece(unsigned char tp, bool wht, unsigned char hor, unsigned char ver)
@@ -27,7 +26,6 @@ Piece::Piece(unsigned char tp, bool wht, unsigned char hor, unsigned char ver)
 	white = wht;
 	x = hor;
 	y = ver;
-	// captured = false;
 }
 
 bool Piece::can_capture(Piece *other)
@@ -49,7 +47,7 @@ bool Piece::can_capture(Piece *other)
 
 int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 {
-	int numMoves = 0;
+	int num_moves = 0;
 
 	if (type == PAWN)
 	{
@@ -60,14 +58,14 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 			if (!game.leap_then_look(this, {x, y + direction}))
 			{
 
-				moves[numMoves] = {x, y + direction};
-				numMoves++;
+				moves[num_moves] = {x, y + direction};
+				num_moves++;
 				// Move two
 			}
 			if (!check_ob({x, y + 2 * direction}) && game.board[y + 2 * direction][x] == NULL && ((white && y == 6) || (!white && y == 1)) && !game.leap_then_look(this, {x, y + 2 * direction}))
 			{
-				moves[numMoves] = {x, y + 2 * direction};
-				numMoves++;
+				moves[num_moves] = {x, y + 2 * direction};
+				num_moves++;
 			}
 		}
 
@@ -79,19 +77,19 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 				if (can_capture(game.board[move.y][move.x]) && !game.leap_then_look(this, move))
 				{
 
-					moves[numMoves] = move;
-					numMoves++;
+					moves[num_moves] = move;
+					num_moves++;
 				}
 				// En passant
 				else if (can_capture(game.board[y][move.x]) && game.board[y][move.x]->type == PAWN)
 				{
-					Move lastMove;
-					lastMove.translate(game.moveLog.back());
-					if (lastMove.to == Position{move.x, y} && game.board[lastMove.to.y][lastMove.to.x]->type == PAWN && abs(lastMove.from.y - lastMove.to.y) > 1 && !game.leap_then_look(this, move))
+					Move last_move;
+					last_move.translate(game.move_log.back());
+					if (last_move.to == Position{move.x, y} && game.board[last_move.to.y][last_move.to.x]->type == PAWN && abs(last_move.from.y - last_move.to.y) > 1 && !game.leap_then_look(this, move))
 					{
 
-						moves[numMoves] = move;
-						numMoves++;
+						moves[num_moves] = move;
+						num_moves++;
 					}
 				}
 			}
@@ -106,8 +104,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 			if (!check_ob(move) && (game.board[move.y][move.x] == NULL || can_capture(game.board[move.y][move.x])) && !game.leap_then_look(this, move))
 			{
 
-				moves[numMoves] = move;
-				numMoves++;
+				moves[num_moves] = move;
+				num_moves++;
 			}
 		}
 	}
@@ -124,8 +122,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 				{
 					if (!game.leap_then_look(this, {potX, potY}))
 					{
-						moves[numMoves] = {potX, potY};
-						numMoves++;
+						moves[num_moves] = {potX, potY};
+						num_moves++;
 					}
 					potX += dir[i].x;
 					potY += dir[i].y;
@@ -135,8 +133,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 					if (can_capture(game.board[potY][potX]) && !game.leap_then_look(this, {potX, potY}))
 					{
 
-						moves[numMoves] = {potX, potY};
-						numMoves++;
+						moves[num_moves] = {potX, potY};
+						num_moves++;
 					}
 					break;
 				}
@@ -157,8 +155,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 					if (!game.leap_then_look(this, {potX, potY}))
 					{
 
-						moves[numMoves] = {potX, potY};
-						numMoves++;
+						moves[num_moves] = {potX, potY};
+						num_moves++;
 					}
 					potX += dir[i].x;
 					potY += dir[i].y;
@@ -168,8 +166,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 					if (can_capture(game.board[potY][potX]) && !game.leap_then_look(this, {potX, potY}))
 					{
 
-						moves[numMoves] = {potX, potY};
-						numMoves++;
+						moves[num_moves] = {potX, potY};
+						num_moves++;
 					}
 					break;
 				}
@@ -190,8 +188,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 					if (!game.leap_then_look(this, {potX, potY}))
 					{
 
-						moves[numMoves] = {potX, potY};
-						numMoves++;
+						moves[num_moves] = {potX, potY};
+						num_moves++;
 					}
 					potX += dir[i].x;
 					potY += dir[i].y;
@@ -201,8 +199,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 					if (can_capture(game.board[potY][potX]) && !game.leap_then_look(this, {potX, potY}))
 					{
 
-						moves[numMoves] = {potX, potY};
-						numMoves++;
+						moves[num_moves] = {potX, potY};
+						num_moves++;
 					}
 					break;
 				}
@@ -217,8 +215,8 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 			if (!check_ob(move) && (game.board[move.y][move.x] == NULL || can_capture(game.board[move.y][move.x])) && !game.leap_then_look(this, move))
 			{
 
-				moves[numMoves] = move;
-				numMoves++;
+				moves[num_moves] = move;
+				num_moves++;
 			}
 		}
 
@@ -227,22 +225,22 @@ int Piece::find_valid_moves(Game &game, Position (&moves)[27])
 		{
 			// King side
 			if (game.board[y][7] != NULL && game.board[y][7]->type == ROOK &&
-				((white && game.canCastle & 0b1000) || (!white && game.canCastle & 0b0010)) &&
+				((white && game.can_castle & 0b1000) || (!white && game.can_castle & 0b0010)) &&
 				game.board[y][5] == NULL && game.board[y][6] == NULL &&
 				!game.leap_then_look(this, {5, y}) && !game.leap_then_look(this, {6, y}))
 			{
-				moves[numMoves] = {6, y};
-				numMoves++;
+				moves[num_moves] = {6, y};
+				num_moves++;
 			}
 			// Queen side
 			if (game.board[y][0] != NULL && game.board[y][0]->type == ROOK &&
-				((white && game.canCastle & 0b0100) || (!white && game.canCastle & 0b0001)) &&
+				((white && game.can_castle & 0b0100) || (!white && game.can_castle & 0b0001)) &&
 				game.board[y][1] == NULL && game.board[y][2] == NULL && game.board[y][3] == NULL && !game.leap_then_look(this, {3, y}) && !game.leap_then_look(this, {2, y}))
 			{
-				moves[numMoves] = {2, y};
-				numMoves++;
+				moves[num_moves] = {2, y};
+				num_moves++;
 			}
 		}
 	}
-	return numMoves;
+	return num_moves;
 }

@@ -205,13 +205,13 @@ void init_SF(FILE *&SF_in, FILE *&SF_out)
     }
 }
 
-Move getEngineMove(Game &game, FILE *engine_in, FILE *engine_out)
+Move get_engine_move(Game &game, FILE *engine_in, FILE *engine_out)
 {
     // Get string with all game moves
     std::string moves = "";
-    for (int i = 0; i < (int)game.moveLog.size(); i++)
+    for (int i = 0; i < (int)game.move_log.size(); i++)
     {
-        moves += game.moveLog[i] + " ";
+        moves += game.move_log[i] + " ";
     }
     moves += '\n';
 
@@ -240,13 +240,13 @@ Move getEngineMove(Game &game, FILE *engine_in, FILE *engine_out)
     return choice;
 }
 
-Move getSFMove(Game &game, FILE *SF_in, FILE *SF_out)
+Move get_SF_move(Game &game, FILE *SF_in, FILE *SF_out)
 {
     // Get string with all game moves
     std::string moves = "position startpos moves ";
-    for (int i = 0; i < (int)game.moveLog.size(); i++)
+    for (int i = 0; i < (int)game.move_log.size(); i++)
     {
-        moves += game.moveLog[i] + " ";
+        moves += game.move_log[i] + " ";
     }
     moves += "\ngo depth 3\n";
 
@@ -332,12 +332,12 @@ int main(int, char **)
         "resources/blank.png",
     };
 
-    GLuint pieceTextures[13]{};
+    GLuint piece_textures[13]{};
     int my_image_width = 0;
     int my_image_height = 0;
     for (int i = 0; i < 13; i++)
     {
-        LoadTextureFromFile(paths[i], &pieceTextures[i], &my_image_width, &my_image_height);
+        LoadTextureFromFile(paths[i], &piece_textures[i], &my_image_width, &my_image_height);
     }
 
     // Initialize AI
@@ -354,13 +354,13 @@ int main(int, char **)
 
     // Initialize Game Object
     Game game = Game();
-    std::vector<Game> moveLog;
-    moveLog.push_back(game);
+    std::vector<Game> state_history;
+    state_history.push_back(game);
     // State variable to hold the current selection
     Position selection{-1, -1};
     Position moves[27];
     std::string winner = "";
-    int takeTurn = 5;
+    int take_turn = 5;
     signal(SIGINT, signalHandler);
     // Main loop
     while (!glfwWindowShouldClose(window) && keepGoing)
@@ -427,23 +427,23 @@ int main(int, char **)
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
 
                 // Picture selection
-                int textureIndex = 0;
+                int texture_index = 0;
                 if (piece == NULL)
                 {
-                    textureIndex = 12;
+                    texture_index = 12;
                 }
                 else
                 {
-                    textureIndex = piece->type;
+                    texture_index = piece->type;
                     int color = !piece->white;
                     if (color)
                     {
-                        textureIndex += 6;
+                        texture_index += 6;
                     }
                 }
 
                 // Button click
-                if (ImGui::ImageButton("", (void *)(intptr_t)pieceTextures[textureIndex], ImVec2(120.0f, 120.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), color, ImVec4(1.0f, 1.0f, 1.0f, 1.0f)))
+                if (ImGui::ImageButton("", (void *)(intptr_t)piece_textures[texture_index], ImVec2(120.0f, 120.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), color, ImVec4(1.0f, 1.0f, 1.0f, 1.0f)))
                 {
                     if (piece != NULL && piece->white == game.turn)
                     {
@@ -458,7 +458,7 @@ int main(int, char **)
                         if (ret)
                         {
                             std::string message = game.switch_turns();
-                            moveLog.push_back(game);
+                            state_history.push_back(game);
                             if (message != "")
                             {
                                 winner = message;
@@ -492,11 +492,11 @@ int main(int, char **)
         // Undo
         if (ImGui::IsMouseReleased(1))
         {
-            if (moveLog.size() > 2)
+            if (state_history.size() > 2)
             {
-                moveLog.pop_back();
-                moveLog.pop_back();
-                game = moveLog.back();
+                state_history.pop_back();
+                state_history.pop_back();
+                game = state_history.back();
                 selection = {-1, -1};
                 winner = "";
             }
@@ -505,13 +505,13 @@ int main(int, char **)
         // Engine Turn
         if (ImGui::IsMouseReleased(0))
         {
-            takeTurn = 5;
+            take_turn = 5;
         }
 
         // if (game.turn == false) {
-        if (takeTurn > 0)
+        if (take_turn > 0)
         {
-            takeTurn--;
+            take_turn--;
         }
         else if (winner == "")
         {
@@ -522,11 +522,11 @@ int main(int, char **)
                 // printf("\n--Black Move--\n");
                 auto start = std::chrono::high_resolution_clock::now();
 
-                choice = getEngineMove(game, engine_in, engine_out);
+                choice = get_engine_move(game, engine_in, engine_out);
 
                 auto end = std::chrono::high_resolution_clock::now();
                 auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                std::cout << choice.toString() << ": " << duration.count() << std::endl;
+                std::cout << choice.to_string() << ": " << duration.count() << std::endl;
                 game.log_move(choice);
             }
             else
@@ -534,16 +534,16 @@ int main(int, char **)
                 // printf("\n--White Move--\n");
                 auto start = std::chrono::high_resolution_clock::now();
 
-                choice = getSFMove(game, SF_in, SF_out);
+                choice = get_SF_move(game, SF_in, SF_out);
 
                 auto end = std::chrono::high_resolution_clock::now();
                 auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-                std::cout << choice.toString() << ": " << duration.count() << std::endl;
+                std::cout << choice.to_string() << ": " << duration.count() << std::endl;
                 game.log_move(choice);
             }
             winner = game.switch_turns();
-            moveLog.push_back(game);
-            takeTurn = 5;
+            state_history.push_back(game);
+            take_turn = 5;
             // usleep(200000);
         }
         // }
