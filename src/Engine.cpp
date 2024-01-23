@@ -17,7 +17,7 @@
 
 int max_depth = MAX_DEPTH;
 bool null_ok = false;
-bool use_LMR = false;
+bool use_LMR = true;
 bool use_quiesce = true;
 bool use_transposition = true;
 bool extend_eval = true;
@@ -74,7 +74,7 @@ int heuristic(Game &game)
 	material += (game.count_passed_pawns(true) - game.count_passed_pawns(false)) * 10;
 
 	// Mobility
-	// material += (game.get_all_moves(game.turn).size() - game.get_all_moves(!game.turn).size()) * 4;
+	material += (game.get_all_moves(game.turn).size() - game.get_all_moves(!game.turn).size()) * 4;
 
 	// Bishop Pair
 	if (game.white_pieces[10].white > -1 && game.white_pieces[11].white > -1)

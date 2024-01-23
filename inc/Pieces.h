@@ -1,8 +1,16 @@
-#pragma once
+#ifndef PIECES_H
+#define PIECES_H
+
 #include <vector>
 #include <string>
 
-class Piece;
+#define PAWN 0
+#define NIGHT 1
+#define BISHOP 2
+#define ROOK 3
+#define QUEEN 4
+#define KING 5
+
 class Game;
 
 struct Position
@@ -14,13 +22,6 @@ struct Position
 		return (x == other.x && y == other.y);
 	}
 };
-
-#define PAWN 0
-#define NIGHT 1
-#define BISHOP 2
-#define ROOK 3
-#define QUEEN 4
-#define KING 5
 
 struct Move
 {
@@ -46,17 +47,6 @@ struct Move
 		return *this;
 	}
 };
-
-struct MoveDetails
-{
-	Move move;
-	Piece *captured;
-	bool promotion;
-	char since_capture;
-	char can_castle;
-};
-
-bool check_ob(Position move);
 
 class Piece
 {
@@ -88,3 +78,18 @@ public:
 		return buff;
 	}
 };
+
+struct MoveDetails
+{
+	Move move;
+	Piece *captured;
+	bool promotion;
+	char since_capture;
+	char can_castle;
+};
+
+bool check_ob(Position move);
+
+
+
+#endif

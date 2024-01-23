@@ -1,4 +1,6 @@
-#pragma once
+#ifndef GAME_H
+#define GAME_H
+
 #include "Pieces.h"
 #include <vector>
 #include <array>
@@ -46,3 +48,5 @@ public:
 	void print_board();
 	std::string to_string();
 };
+
+#endif

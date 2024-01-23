@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ENGINE_H
+#define ENGINE_H
+
 #include "Pieces.h"
 #include "Game.h"
 
@@ -15,3 +17,5 @@ Move call_minimax_IDS_fast(Game &game);
 int minimax(Game &, int, int, int, Move *, bool);
 void clear_table();
 int evaluate_board(Game &game);
+
+#endif
