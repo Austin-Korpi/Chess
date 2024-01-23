@@ -16,7 +16,7 @@
 #define R 3
 
 int max_depth = MAX_DEPTH;
-bool null_ok = false;
+bool use_null = false;
 bool use_LMR = true;
 bool use_quiesce = true;
 bool use_transposition = true;
@@ -139,6 +139,18 @@ void sort_moves_captured(std::vector<Move> &moves, Game &game)
 				moves[j + 1] = moves[j];
 				j = j - 1;
 			}
+
+			while (j >= 0 && key == scores[j] && key != 0) {
+				Piece *pieceI = game.board[moves[i].to.y][moves[i].to.x];
+				Piece *pieceJ = game.board[moves[j].to.y][moves[j].to.x];
+				if (pieceJ->type <= pieceI->type)
+				{
+					break;
+				}
+				scores[j + 1] = scores[j];
+				moves[j + 1] = moves[j];
+				j = j - 1;
+			}
 			scores[j + 1] = key;
 			moves[j + 1] = value;
 		}
@@ -194,7 +206,7 @@ int quiesce(Game &game, int alpha, int beta, int depth)
 	int stand_pat = heuristic(game);
 	// Check beta
 	if (stand_pat >= beta)
-		return beta;
+		return stand_pat;
 	// Check alpha
 	if (alpha < stand_pat)
 	{
@@ -228,7 +240,7 @@ int quiesce(Game &game, int alpha, int beta, int depth)
 
 			// Check beta
 			if (score >= beta)
-				return beta;
+				return score;
 
 			// Update alpha
 			if (score > alpha)
@@ -318,7 +330,7 @@ int minimax(Game &game, int depth, int alpha, int beta, Move *choice, bool verif
 			else
 			{
 				// Null Search
-				if (null_ok && !game.check_for_check(game.turn) && (!verify || depth < max_depth - 1))
+				if (use_null && !game.check_for_check(game.turn) && (!verify || depth < max_depth - 1))
 				{
 					/* null-move search with minimal window around beta */
 					// int value = -minimax(game, depth+R+1,-beta, -beta+1, NULL, verify);

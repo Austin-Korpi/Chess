@@ -4,4 +4,9 @@ Engine (Q): 3 sec vs StockFish: depth 5   0-0-20 (is this because of time or inf
 Engine (EE): 3 sec vs StockFish: depth 5   7-3-10
 Engine (Q,EE,TT): 3 sec vs StockFish: depth 5  9-2-9
 Engine (Q,EE,TT, LMR): 3 sec vs StockFish: depth 5  12-3-5
-Engine (Q,EE,TT,LMR,MAT): 3 sec vs StockFish: depth 5  7-6-7
+Engine (Q,EE,TT,LMR,MOB): 3 sec vs StockFish: depth 5  7-6-7
+
+Null Move Pruning
+Verified Null Move pruning
+NegaMax
+mvv-lva
