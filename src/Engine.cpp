@@ -140,9 +140,9 @@ void sort_moves_captured(std::vector<Move> &moves, Game &game)
 				j = j - 1;
 			}
 
+			Piece *pieceI = game.board[moves[i].from.y][moves[i].from.x];
 			while (j >= 0 && key == scores[j] && key != 0) {
-				Piece *pieceI = game.board[moves[i].to.y][moves[i].to.x];
-				Piece *pieceJ = game.board[moves[j].to.y][moves[j].to.x];
+				Piece *pieceJ = game.board[moves[j].from.y][moves[j].from.x];
 				if (pieceJ->type <= pieceI->type)
 				{
 					break;
